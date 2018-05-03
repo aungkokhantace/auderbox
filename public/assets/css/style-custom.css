@@ -1,0 +1,136 @@
+  @charset "UTF-8";
+/*================== Overwrite Style.min.css CSS ==================/*
+
+/*Top Header */
+.navbar-brand {width: 550px;}
+
+.sidebar {font-family: Helvetica; !important;}
+.sidebar {background: #418DD8 !important;}
+.sidebar .sub-menu {background: #2B1AFF !important;}
+.sidebar .sub-menu:before{background: #125acd;}
+.nav > li.active > a {background: #2B1AFF !important;}
+.sidebar .sub-menu>li a:hover{color: #fff;font-weight: bold; !important;}
+.sidebar .sub-menu>li a {color: #fff; !important;}
+.sidebar .sub-menu>li a:focus{color: #fff;font-weight: bold; !important;}
+.sidebar .nav>li.expand>a {background-color:#016AE7;color: #fff;font-weight: bold;!important;}
+.sidebar .nav>li>a:hover{background-color:#016AE7;color: #fff;font-weight: bold;!important;}
+.sidebar .nav>li>a:focus{background-color:#016AE7 !important;}
+.sidebar .nav>li>a{color:#fff !important;}
+.sidebar .nav>li {font-weight: bold;color:#fff2e3 !important;}
+
+.sidebar-minify-btn {
+  margin: 10px 0;
+  float: right;
+  padding: 5px 20px 5px 10px !important;
+  background: #0d6aad;
+  color: #fff;
+  -webkit-border-radius: 20px 0 0 20px;
+  -moz-border-radius: 20px 0 0 20px;
+  border-radius: 20px 0 0 20px;
+}
+.sidebar-minify-btn i {
+  margin: 0 !important;
+  color: #fff;
+}
+.page-sidebar-minified .sidebar-minify-btn i:before {
+  content: '\f101';
+}
+
+.page-sidebar-minified.page-with-right-sidebar .sidebar-minify-btn i:before {
+  content: '\f100';
+}
+
+/*content */
+.breadcrumb {margin: 20px 0 0;}
+.page-header{margin: 20px 0 0px;padding-bottom: 10px;border-bottom: 1px dotted #ccc;}
+
+/* Overwrite Template Colors */
+.navbar.navbar-inverse .navbar-brand, .sidebar .nav > li.active > a, .sidebar .nav > li.active > a:focus, .sidebar .nav > li.active > a:hover, .page-sidebar-minified .sidebar .nav > li.has-sub.active:focus > a, .page-sidebar-minified .sidebar .nav > li.has-sub.active:hover > a, .page-sidebar-minified .sidebar .nav > li.has-sub.active > a, .label.label-theme, .btn.btn-scroll-to-top {
+background: #d38563 !important;
+}
+
+.navbar-logo,
+.coming-soon .brand .logo,
+.login .login-header .brand .logo {
+    border-color: #DF8F19 #c47d15 #935e10; !important
+}
+.navbar.navbar-inverse .navbar-brand,
+.sidebar .nav > li.active > a,
+.sidebar .nav > li.active > a:focus,
+.sidebar .nav > li.active > a:hover,
+.page-sidebar-minified .sidebar .nav > li.has-sub.active:focus > a,
+.page-sidebar-minified .sidebar .nav > li.has-sub.active:hover > a,
+.page-sidebar-minified .sidebar .nav > li.has-sub.active > a,
+.label.label-theme,
+.btn.btn-scroll-to-top {
+    background: #f59c1a; !important
+}
+.navbar.navbar-inverse .navbar-brand {
+    color: #fff !important;
+}
+.text-theme,
+.sidebar .sub-menu > li.active > a:before {
+    color: #f59c1a !important;
+}
+@media (max-width: 767px) {
+    .navbar-inverse .navbar-header {
+        background: #f59c1a !important;
+    }
+}
+
+/* For Creating and Removing via a table view */
+.add-table caption {text-align:right;margin-top:-30px;}
+.add-table thead tr th:first-child, .add-table tbody tr td:first-child{max-width:40px;}
+.add-table thead tr {background:#999;}
+.add-table thead tr.search {background:none;}
+/* For Manage Page eg item-manage, tender-manage - This control the table for listing view*/
+
+
+.list-table > thead > th, .list-table > thead > tr {
+  background-color: #418DD8!important;
+}
+
+.list-table > thead > tr > th{
+  color: #ffffff;
+  font-weight:bold;
+}
+
+.list-table > thead > tr > th{
+  border-left: 1px solid #FFF;
+}
+.list-table tbody{
+  background-color:#FFF;
+}
+.list-table tbody td{
+  border-left: 1px solid #FFF;
+}
+
+.list-table tbody i {
+  color:#2F3B7F;
+}
+.list-table td a:hover i {
+  opacity:0.5;
+}
+
+#list-table tfoot {
+    display:table-header-group;
+}
+
+.list-table tfoot tr th input{
+  color: #333133;
+  font-weight:normal;
+}
+.list-table thead tr.search td {
+  border:none;
+}
+.list-table thead tr.search th{
+  border:none;
+}
+.list-table thead tr.search input{
+  width:100%;
+  font-weight:normal;
+}
+
+.pull-right {
+  float: right !important;
+}

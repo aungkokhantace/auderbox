@@ -1,0 +1,95 @@
+/*
+ * 
+ * More info at https://github.com/JawaJava/Jakarta-Cute-Dropdown/blob/master/LICENSE
+ *
+ * Copyright (c) 2015, Jawa Java, Rudy Hermawan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
+.jktCD a,
+.jktCD li,
+.jktCD ul,
+.jktCD span,
+.jktCD div{
+	margin:0;
+	padding:0;
+}
+.jktCD{
+	display:inline;
+}
+.jktCD-click{
+	cursor:pointer;
+	display:inline;
+	color:#6666aa;
+	font-size:14px;
+}
+.jktCD-click:hover{
+	color:#ffa500;
+}
+.jktCD-main{
+	clear:both;
+	position:absolute;
+	z-index:1500;
+	background-color:#fff;
+	padding:5px 0 !important;
+	display:none;
+}
+.jktCD-main:after{
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #ccc;
+	margin-left: -10px;
+}
+.jktCD-main.jktCD-hide-after:after{
+	display:none !important;
+}
+.jktCD-main li > a, .jktCD-main li{		
+	text-align:left;
+	color:#333;
+	text-decoration:none;
+
+	display:-moz-inline-stack;
+	display:inline-block;
+	zoom:1;
+	*display:inline;
+
+	margin:0;
+	float:none !important;
+}
+.jktCD-main li:hover > a{
+	display:block;
+	color:#ffa500;
+}
+.jktCD-main .pemisah{
+	border-bottom:1px solid #DDD;
+	
+	padding:0 !important;
+	margin:3px 0 0 0 !important;
+	height:1px;
+	
+	width: 100%;
+	display:block;
+}

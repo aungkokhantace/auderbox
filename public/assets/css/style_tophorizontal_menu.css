@@ -1,0 +1,41 @@
+.bcolor{
+    background-color: #a6e1ec;
+}
+/* For Accordion */
+.multiselect {
+    /*margin-top: px;*/
+    margin-left: 59px;
+    width:20em;
+    height:10em;
+    border:solid 1px #c0c0c0;
+    overflow:auto;
+}
+
+.multiselect label {
+    display:block;
+}
+
+.list-style{
+    list-style: none;
+}
+#accordion{
+    cursor: pointer;
+}
+.accordion-content{
+    display: none;
+}
+
+
+.date_button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.btn_submit{
+    margin: 23px;
+    padding: 6px;
+    background-color: #D84315;
+    border: none;
+    color: #fff;
+    width: 100px;
+
+}

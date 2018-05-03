@@ -1,0 +1,147 @@
+html{
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+body {
+    margin:0;
+    padding:0;
+    height:100%;
+    background-image:url('/images/aceplus_background.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+.header{
+    background-color: rgb(255, 255, 255);
+}
+.glyphicon-user{
+    color:rgb(243, 164, 46);
+}
+
+.logo-center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+.header-title{
+    color: #000 ;
+    padding-top:15px;
+    padding-bottom: 30px;
+}
+
+.logout {
+    padding-top: 50px;
+    font-size: 14px;
+    color: #000;
+    text-align:right;
+}
+
+.logout-font{
+    font-size: 18px;
+}
+
+.middle{
+    margin-top: 120px;
+}
+
+.border{
+    border: 1px solid #c2c2c2;
+    border-radius: 5px;
+    height: 300px;
+}
+.login-left{
+    padding-left: 60px;
+}
+
+.login-center{
+    padding-left: 90px;
+}
+
+.login{
+    height:55px;
+    background-color: #418DD8;
+    text-align:center;
+    color: white;
+    font-size: 18px;
+    padding-top: 15px;
+}
+.login_btn{
+    border:none;
+    width: 100px;
+    height: 50px;
+    margin-left: 50px;
+}
+
+.user_color{
+    color: #418DD8;
+    padding-left: 29px;
+    padding-top: 4px;
+    font-size:20px;
+}
+
+.err{
+    color: #d84315;
+}
+
+.user,.lock{
+    margin-top: 30px;
+}
+
+
+.fill_color
+{
+    background-color: #418DD8;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+#logo
+{
+    color: #418DD8;
+    font-size: 23px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+.gap
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 13px;
+}
+
+.gap1
+{
+    padding-left: 10px;
+}
+
+/*Ending Login CSS*/
+
+/*Start Password Reset*/
+.reset_pwd_lbl{
+    padding-top: 7px;
+}
+.reset_btn{
+    border:none;
+    width: 300px;
+    height: 50px;
+    margin-left: 50px;
+}
+
+/*End Password Reset*/
+
+/*start password reset page*/
+.password_reset_border{
+    border: 1px solid #c2c2c2;
+    border-radius: 5px;
+    height: 350px;
+    width: 500px;
+}
+
+.password_reset_left{
+    padding-left: 30px;
+}
+/*end password reset page*/

@@ -1,0 +1,55 @@
+.navbar{
+    min-height:80px;
+}
+
+.sidebar{
+    padding-top: 75px;
+}
+
+.sidebar-bg {
+    background: #418DD8;
+}
+
+.content{
+    padding-top: 30px;
+}
+
+.center {
+    margin: auto;
+    padding: 10px;
+}
+
+.first_btn
+{
+    /*background-color: #2ca02c !important;*/
+    background-color: yellowgreen !important;
+    color: #FFFFFF ;
+}
+.second_btn
+{
+    /*background-color: rgba(115, 160, 44, 0.98) ;*/
+    color: #fff;
+}
+.third_btn
+{
+    background-color:red !important;
+    color: #FFFFFF ;
+}
+
+.cancel_btn
+{
+    background-color:#db4947 !important;
+    color: #FFFFFF ;
+}
+
+.dashboard_blue{
+    background-color:#4791db !important;
+}
+
+.dashboard_green{
+    background-color:#7cc576 !important;
+}
+
+.dashboard_yellow{
+    background-color:#ffc400 !important;
+}
