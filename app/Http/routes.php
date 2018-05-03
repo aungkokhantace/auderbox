@@ -9,7 +9,9 @@ Route::group(['middleware' => 'web'], function () {
     //Backend
     Route::group(['prefix' => 'backend'], function () {
 
-    Route::get('/', 'Auth\AuthController@showLogin');
+    // Route::get('/', 'Auth\AuthController@showLogin');
+    Route::get('/', 'Auth\AuthController@showFirstLogin');
+    Route::post('first_login','Auth\AuthController@doFirstLogin');
     Route::get('login', array('as'=>'backend/login','uses'=>'Auth\AuthController@showLogin'));
     Route::post('login', array('as'=>'backend/login','uses'=>'Auth\AuthController@doLogin'));
     Route::get('logout', array('as'=>'backend/logout','uses'=>'Auth\AuthController@doLogout'));
@@ -71,7 +73,7 @@ Route::group(['middleware' => 'web'], function () {
 
 
  Route::group(['prefix' => 'api'], function () {
-        
+
         Route::post('activate', array('as'=>'activate','uses'=>'ApiController@Activate'));
         Route::post('check', array('as'=>'check','uses'=>'ApiController@check'));
     });

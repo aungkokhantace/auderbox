@@ -84,4 +84,9 @@ class UserRepository implements UserRepositoryInterface
         }
         return null;
     }
+
+    public function firstLogin(){
+      $result  = User::where('role_id',1)->whereNull('deleted_at')->first();
+      return $result;
+    }
 }

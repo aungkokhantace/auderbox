@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
          $this->call(Default_RolePermissionSeeder::class);
          $this->call(Default_Syncs_TablesSeeder::class);
          $this->call(Default_CountriesSeeder::class);
+         $this->call(Default_StateSeeder::class);
+         $this->call(Default_TownshipSeeder::class);
     }
 }

@@ -87,14 +87,48 @@ class AuthController extends Controller
         ]);
     }
 
+    public function showFirstLogin()
+    {
+        if(!$this->validSession) {
+            return view('auth.first_login');
+        }
+        $aplusRedirect = new AceplusRedirect();
+        return $aplusRedirect->firstRedirect();
+    }
+
     public function showLogin()
     {
         if(!$this->validSession) {
-           
+
             return view('auth.login');
         }
         $aplusRedirect = new AceplusRedirect();
         return $aplusRedirect->firstRedirect();
+    }
+
+    public function dofirstLogin(LoginFormRequest $request){
+        $request->validate();
+        $validation = Auth::guard('User')->attempt([
+            'user_name'=>$request->user_name,
+            'password'=>$request->password,
+            'role_id' =>1
+        ]);
+
+        if(!$validation){
+            return redirect()->back()->withErrors($this->getFailedLoginMessage());
+        }
+        else{
+            $username=$request->user_name;
+            $userRepo= new UserRepository;
+            $user=$userRepo->firstLogin();
+            $case_user=strcmp($username,$user->user_name);
+            if($case_user!=0){
+                 return redirect()->back()->withErrors($this->getFailedLoginMessage());
+            }
+
+
+            return redirect('/backend/login');
+        }
     }
 
     public function doLogin(LoginFormRequest $request){
