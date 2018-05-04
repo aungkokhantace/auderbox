@@ -68,12 +68,13 @@ Route::group(['middleware' => 'web'], function () {
     });
 
 
-
 });
 
 
  Route::group(['prefix' => 'api'], function () {
-
         Route::post('activate', array('as'=>'activate','uses'=>'ApiController@Activate'));
         Route::post('check', array('as'=>'check','uses'=>'ApiController@check'));
+
+        //login api
+        Route::post('login_api', array('as'=>'login_api','uses'=>'Api\LoginApiController@doLogin'));
     });

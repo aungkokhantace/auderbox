@@ -21,6 +21,7 @@ class Default_ConfigSeeder extends Seeder
         $roles = array(
             ['code'=>'SETTING_COMPANY_NAME', 'type'=>'SETTING', 'value'=>'AcePlus Backend','description'=>'Company Name'],
             ['code'=>'SETTING_LOGO', 'type'=>'SETTING', 'value'=>'/images/logo.jpg','description'=>'Company Logo'],
+            ['code'=>'SETTING_SITE_ACTIVATION_KEY', 'type'=>'SETTING', 'value'=>'1234567','description'=>'Site Activation Key'],
         );
 
         DB::table('core_configs')->insert($roles);

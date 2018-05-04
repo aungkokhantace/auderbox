@@ -27,9 +27,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Core\Permission\PermissionRepositoryInterface','App\Core\Permission\PermissionRepository');
         $this->app->bind('App\Core\Config\ConfigRepositoryInterface','App\Core\Config\ConfigRepository');
         $this->app->bind('App\Core\User\UserRepositoryInterface','App\Core\User\UserRepository');
-        $this->app->bind('App\Setup\Customer\CustomerRepositoryInterface','App\Setup\Customer\CustomerRepository');
-        $this->app->bind('App\Setup\Backend\BackendRepositoryInterface','App\Setup\Backend\BackendRepository');
-        $this->app->bind('App\Setup\FrontEnd\FrontEndRepositoryInterface','App\Setup\FrontEnd\FrontEndRepository');
-        $this->app->bind('App\Setup\BackendClient\BackendClientRepositoryInterface','App\Setup\BackendClient\BackendClientRepository');
+
+        // API
+        $this->app->bind('App\Api\Login\LoginApiRepositoryInterface','App\Api\Login\LoginApiRepository');
+        $this->app->bind('App\Api\User\UserApiRepositoryInterface','App\Api\User\UserApiRepository');
     }
 }

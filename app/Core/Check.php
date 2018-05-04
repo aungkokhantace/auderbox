@@ -115,4 +115,36 @@ class Check
         session(['permissions' => $permissions]);
     }
 
+    public static function checkCodes($inputAll)
+    {
+        $configRepo = new ConfigRepository();
+        $rawSiteActivationKey = $configRepo->getSiteActivationKey();
+        $siteActivationKey = "";
+
+        if(isset($rawSiteActivationKey[0]->value) && $rawSiteActivationKey[0]->value != ""){
+            $siteActivationKey = $rawSiteActivationKey[0]->value;
+        }
+
+        if(isset($inputAll->site_activation_key) && $inputAll->site_activation_key == $siteActivationKey) {
+            $returnArray = array();
+            foreach($inputAll->data as $k => $v ){
+                    $returnArray[$k] = $v;
+            }
+
+            //return success code
+            $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+            // $returnedObj['user_id'] = $inputAll->user_id;
+            $returnedObj['data'] = $returnArray;
+            return $returnedObj;
+        }
+
+        //key is not included or keys are not matching
+        //unauthorized
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::UNAUTHORIZED;
+        $returnedObj['aceplusStatusMessage'] = "Unauthorized request !";
+        $returnedObj['data'] = (object) array();
+
+        return $returnedObj;
+    }
+
 }
