@@ -31,5 +31,6 @@ class RepositoryServiceProvider extends ServiceProvider
         // API
         $this->app->bind('App\Api\Login\LoginApiRepositoryInterface','App\Api\Login\LoginApiRepository');
         $this->app->bind('App\Api\User\UserApiRepositoryInterface','App\Api\User\UserApiRepository');
+        $this->app->bind('App\Api\RetailerProfile\RetailerProfileApiRepositoryInterface','App\Api\RetailerProfile\RetailerProfileApiRepository');
     }
 }

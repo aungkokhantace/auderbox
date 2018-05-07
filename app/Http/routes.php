@@ -77,4 +77,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //login api
         Route::post('login_api', array('as'=>'login_api','uses'=>'Api\LoginApiController@doLogin'));
+
+        //retailer profile api
+        Route::post('retailer_profile', array('as'=>'retailer_profile','uses'=>'Api\RetailerProfileApiController@getRetailerProfile'));
     });
