@@ -35,7 +35,8 @@
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 <input type="password" name="password" id="pw" class="form-control" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-primary btn-first-login" name="login">LOG IN</button> <a class="btn btn-link" href="{{ url('/backend/password/reset') }}" style="color: #f37023";>Forgot Your Password?</a>
+                            <button type="submit" class="btn btn-primary btn-first-login" name="login">LOG IN</button>
+                            <!-- <a class="btn btn-link" href="{{ url('/backend/password/reset') }}" style="color: #f37023";>Forgot Your Password?</a> -->
                         {!! Form::close() !!}
                     </div>
                 </div>

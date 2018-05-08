@@ -26,6 +26,7 @@
             <li nav-id="menu-manage" class="has-sub">
                 <a href="javascript:;">
                     <b class="caret pull-right"></b>
+                    <i class="fa fa-bars"></i>
                     <span>Menu</span>
                 </a>
 
@@ -38,7 +39,7 @@
             <li  nav-id='modifier'  class="has-sub">
                 <a href="javascript:;">
                     <b class="caret pull-right"></b>
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-cogs"></i>
                     <span>Site Setup</span>
                 </a>
                 <ul class="sub-menu">
@@ -78,7 +79,6 @@
                     </li>
                     <li nav-id="">
                         <a href="/backend/config">
-                            <b class="caret pull-right"></b>
                             <span>Site Config</span>
                         </a>
                     </li>
