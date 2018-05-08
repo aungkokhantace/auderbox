@@ -6,6 +6,7 @@ use App\Core\ReturnMessage;
 use App\Core\User\UserRepository;
 use App\Core\Utility;
 use Illuminate\Support\Facades\DB;
+use App\Backend\Retailer\Retailer;
 
 /**
  * Author: Aung Ko Khant
@@ -15,21 +16,26 @@ use Illuminate\Support\Facades\DB;
 
 class RetailerProfileApiRepository implements RetailerProfileApiRepositoryInterface
 {
-    public function getUserById($id) {
+    public function getRetailerById($user_id) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
       try {
-        $user = User::find($id);
-        if(isset($user) && count($user)>0){
+        $retailer = Retailer::select('id', 'user_id', 'name_eng', 'name_mm', 'nrc', 'dob', 'phone', 'address', 'photo')
+                              ->where('user_id',$user_id)
+                              ->whereNull('deleted_at')
+                              ->where('status',1)
+                              ->first();
+
+        if(isset($retailer) && count($retailer)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
-          $returnedObj['userObj']               = $user;
+          $returnedObj['resultObj']             = $retailer;
           return $returnedObj;
         }
         else{
           //if user does not exist
-          $returnedObj['aceplusStatusMessage']  = "User does not exist!";
+          $returnedObj['aceplusStatusMessage']  = "Retailer does not exist!";
           return $returnedObj;
         }
 

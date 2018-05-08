@@ -40,22 +40,21 @@ class RetailerProfileApiController extends Controller
       $checkServerStatusArray = Check::checkCodes($inputAll);
 
       if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
-          $userApiRepo  = new UserApiRepository();
-
           $params             = $checkServerStatusArray['data'][0];
 
           if (isset($params->user_profile) && count($params->user_profile) > 0) {
             $user_id = $params->user_profile->id;
-            $result = $this->repo->getUserById($user_id);
+            $result = $this->repo->getRetailerById($user_id);
 
             if($result['aceplusStatusCode'] == ReturnMessage::OK){
                 $data = array();
                 $count = 0;
-                $data[0]["user_profile"] = $result['userObj'];
+                $data[0]["user_profile"] = $result['resultObj'];
 
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage'] = "Success!";
                 $returnedObj['data'] = $data;
+                
                 return \Response::json($returnedObj);
             }
             else{
