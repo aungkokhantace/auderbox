@@ -13,6 +13,7 @@ class AddPhoneNoToCoreUsersTable extends Migration
     public function up()
     {
         Schema::table('core_users', function (Blueprint $table) {
+            $table->string('phone_no')->after('user_name');
             $table->string('description')->change();
             $table->string('display_image')->change();
         });
@@ -26,6 +27,7 @@ class AddPhoneNoToCoreUsersTable extends Migration
     public function down()
     {
         Schema::table('core_users', function (Blueprint $table) {
+          $table->dropColumn('phone_no');
         });
     }
 }
