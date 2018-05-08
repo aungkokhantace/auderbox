@@ -6,7 +6,7 @@ use App\Core\ReturnMessage;
 use App\Core\User\UserRepository;
 use App\Core\Utility;
 use Illuminate\Support\Facades\DB;
-use App\Backend\Retailshop\RetailShop;
+use App\Backend\Retailshop\Retailshop;
 
 /**
  * Author: Aung Ko Khant
