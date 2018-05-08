@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Input;
 use App\Core\ReturnMessage;
 use App\Api\Login\LoginApiRepository;
 use App\Api\User\UserApiRepository;
+use App\Api\RetailerProfile\RetailerProfileApiRepository;
 
 class LoginApiController extends Controller
 {
@@ -66,6 +67,7 @@ class LoginApiController extends Controller
       if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
           $loginApiRepo = new LoginApiRepository();
           $userApiRepo  = new UserApiRepository();
+          $retailerProfileApiRepo = new RetailerProfileApiRepository();
 
           $login_attempt = $checkServerStatusArray['data'][0]->login_info;
 
@@ -97,10 +99,22 @@ class LoginApiController extends Controller
                 $force_password_change = true;
               }
 
+              $user_id = $user->id;
+              
+              $retailer_result = $retailerProfileApiRepo->getRetailerByUserId($user_id);
+
+              if($retailer_result['aceplusStatusCode'] == ReturnMessage::OK){
+                $retailerObj = $retailer_result['resultObj'];
+              }
+              else{
+                $retailerObj = null;
+              }
+
               //login request is successful and return login user id
               $returnedObj['aceplusStatusCode']       = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']    = "Success!";
               $returnedObj['user_id']                 = $user->id;
+              $returnedObj['retailer']                = $retailerObj;
               $returnedObj['force_password_change']   = $force_password_change;
 
               return \Response::json($returnedObj);

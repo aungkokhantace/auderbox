@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRetailersTable extends Migration
+class CreateRetailshopsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,21 +12,20 @@ class CreateRetailersTable extends Migration
      */
     public function up()
     {
-        Schema::create('retailers', function (Blueprint $table) {
+        Schema::create('retailshops', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('retailer_id');
+            $table->integer('state_id');
+            $table->integer('township_id');
             $table->string('name_eng',45);
             $table->string('name_mm',45);
-            $table->string('nrc',45);
-            $table->date('dob');
+            $table->string('registration_no',45);
             $table->string('phone',45);
             $table->string('email',45);
             $table->text('address');
-            $table->text('photo');
-            $table->text('nrc_front_photo');
-            $table->text('nrc_back_photo');
-            $table->integer('state_id');
-            $table->integer('township_id');
+            $table->string('latitude',45);
+            $table->string('longitude',45);
+            $table->integer('retail_shop_type_id');
             $table->text('remark');
             $table->tinyInteger('status')->default(1);
 
@@ -46,6 +45,6 @@ class CreateRetailersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('retailers');
+        Schema::drop('retailshops');
     }
 }

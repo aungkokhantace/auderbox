@@ -1,12 +1,12 @@
 <?php
-namespace App\Api\RetailerProfile;
+namespace App\Api\ShopList;
 use App\User;
 use App\Api\User\UserApiRepositoryInterface;
 use App\Core\ReturnMessage;
 use App\Core\User\UserRepository;
 use App\Core\Utility;
 use Illuminate\Support\Facades\DB;
-use App\Backend\Retailer\Retailer;
+use App\Backend\Retailshop\RetailShop;
 
 /**
  * Author: Aung Ko Khant
@@ -14,28 +14,29 @@ use App\Backend\Retailer\Retailer;
  * Time: 11:41 AM
  */
 
-class RetailerProfileApiRepository implements RetailerProfileApiRepositoryInterface
+class ShopListApiRepository implements ShopListApiRepositoryInterface
 {
-    public function getRetailerByUserId($user_id) {
+    public function getShopsByRetailerId($retailer_id) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
       try {
-        $retailer = Retailer::select('id as retailer_id', 'user_id', 'name_eng', 'name_mm', 'nrc', 'dob', 'phone', 'address', 'photo')
-                              ->where('user_id',$user_id)
+        $retail_shops = Retailshop::select('id', 'retailer_id', 'name_eng', 'name_mm', 'phone', 'address', 'registration_no')
+                              ->where('retailer_id',$retailer_id)
                               ->whereNull('deleted_at')
                               ->where('status',1)
-                              ->first();
+                              ->get();
 
-        if(isset($retailer) && count($retailer)>0){
+
+        if(isset($retail_shops) && count($retail_shops)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
-          $returnedObj['resultObj']             = $retailer;
+          $returnedObj['resultObjs']            = $retail_shops;
           return $returnedObj;
         }
         else{
-          //if user does not exist
-          $returnedObj['aceplusStatusMessage']  = "Retailer does not exist!";
+          //if retailshops do not exist
+          $returnedObj['aceplusStatusMessage']  = "Retailshops do not exist!";
           return $returnedObj;
         }
 

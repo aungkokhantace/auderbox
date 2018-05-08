@@ -7,5 +7,5 @@ namespace App\Api\RetailerProfile;
  */
 interface RetailerProfileApiRepositoryInterface
 {
-    public function getRetailerById($user_id);
+    public function getRetailerByUserId($user_id);
 }

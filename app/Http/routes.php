@@ -80,4 +80,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //retailer profile api
         Route::post('retailer_profile', array('as'=>'retailer_profile','uses'=>'Api\RetailerProfileApiController@getRetailerProfile'));
+
+        //shop list api
+        Route::post('download_shop_list', array('as'=>'download_shop_list','uses'=>'Api\ShopListApiController@getShopList'));
     });

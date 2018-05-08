@@ -23,17 +23,18 @@ use Illuminate\Support\Facades\Input;
 use App\Core\ReturnMessage;
 use App\Api\Login\LoginApiRepository;
 use App\Api\User\UserApiRepository;
-use App\Api\RetailerProfile\RetailerProfileApiRepositoryInterface;
-use App\Api\RetailerProfile\RetailerProfileApiRepository;
+use App\Api\ShopList\ShopListApiRepositoryInterface;
+use App\Api\ShopList\ShopListApiRepository;
 
-class RetailerProfileApiController extends Controller
+class ShopListApiController extends Controller
 {
-    public function __construct(RetailerProfileApiRepositoryInterface $repo)
+    public function __construct(ShopListApiRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
 
-    public function getRetailerProfile(){
+    //do login via api
+    public function getShopList(){
       $temp                   = Input::All();
       $inputAll               = json_decode($temp['param_data']);
       $checkServerStatusArray = Check::checkCodes($inputAll);
@@ -41,14 +42,15 @@ class RetailerProfileApiController extends Controller
       if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
           $params             = $checkServerStatusArray['data'][0];
 
-          if (isset($params->user_profile) && count($params->user_profile) > 0) {
-            $user_id = $params->user_profile->id;
-            $result = $this->repo->getRetailerByUserId($user_id);
-            
+          if (isset($params->retailshops) && count($params->retailshops) > 0) {
+            $retailer_id = $params->retailshops->retailer_id;
+
+            $result = $this->repo->getShopsByRetailerId($retailer_id);
+
             if($result['aceplusStatusCode'] == ReturnMessage::OK){
                 $data = array();
                 $count = 0;
-                $data[0]["user_profile"] = $result['resultObj'];
+                $data[0]["retailshops"] = $result['resultObjs'];
 
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage'] = "Success!";

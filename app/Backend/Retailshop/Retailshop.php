@@ -2,32 +2,31 @@
 /**
  * Author: Aung Ko Khant
  * Date: 2018-05-08
- * Time: 10:54 AM
+ * Time: 04:27 PM
  */
 
-namespace App\Backend\Retailer;
+namespace App\Backend\Retailshop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Retailer extends Model
+class Retailshop extends Model
 {
-    protected $table = 'retailers';
+    protected $table = 'retailshops';
 
     protected $fillable = [
         'id',
-        'user_id',
+        'retailer_id',
+        'state_id',
+        'township_id',
         'name_eng',
         'name_mm',
-        'nrc',
-        'dob',
+        'registration_no',
         'phone',
         'email',
         'address',
-        'photo',
-        'nrc_front_photo',
-        'nrc_back_photo',
-        'state_id',
-        'township_id',
+        'latitude',
+        'longitude',
+        'retail_shop_type_id',
         'remark',
         'status',
         'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
