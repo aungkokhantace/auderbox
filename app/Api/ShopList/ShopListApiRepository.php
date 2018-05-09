@@ -46,4 +46,9 @@ class ShopListApiRepository implements ShopListApiRepositoryInterface
           return $returnedObj;
       }
     }
+
+    public function getShopById($id){
+      $retailshop = Retailshop::find($id);
+      return $retailshop;
+    }
 }

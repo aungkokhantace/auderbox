@@ -78,9 +78,12 @@ Route::group(['middleware' => 'web'], function () {
         //login api
         Route::post('login_api', array('as'=>'login_api','uses'=>'Api\LoginApiController@doLogin'));
 
-        //retailer profile api
+        //retailer profile download api
         Route::post('retailer_profile', array('as'=>'retailer_profile','uses'=>'Api\RetailerProfileApiController@getRetailerProfile'));
 
-        //shop list api
+        //shop list download api
         Route::post('download_shop_list', array('as'=>'download_shop_list','uses'=>'Api\ShopListApiController@getShopList'));
+
+        //product list download api
+        Route::post('download_product_list', array('as'=>'download_product_list','uses'=>'Api\ProductApiController@getProductList'));
     });

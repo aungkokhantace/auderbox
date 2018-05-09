@@ -8,4 +8,5 @@ namespace App\Api\ShopList;
 interface ShopListApiRepositoryInterface
 {
     public function getShopsByRetailerId($retailer_id);
+    public function getShopById($id);
 }

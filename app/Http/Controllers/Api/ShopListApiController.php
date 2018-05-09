@@ -33,7 +33,6 @@ class ShopListApiController extends Controller
         $this->repo = $repo;
     }
 
-    //do login via api
     public function getShopList(){
       $temp                   = Input::All();
       $inputAll               = json_decode($temp['param_data']);

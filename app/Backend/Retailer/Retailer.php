@@ -34,9 +34,5 @@ class Retailer extends Model
         ,
     ];
 
-    // public function township()
-    // {
-    //     return $this->belongsTo('App\Backend\Township\Township','township_id','id');
-    // }
 
 }
