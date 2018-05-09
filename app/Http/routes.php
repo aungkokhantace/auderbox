@@ -86,4 +86,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //product list download api
         Route::post('download_product_list', array('as'=>'download_product_list','uses'=>'Api\ProductApiController@getProductList'));
+
+        //product detail download api
+        Route::post('download_product_detail', array('as'=>'download_product_detail','uses'=>'Api\ProductApiController@getProductDetail'));
     });
