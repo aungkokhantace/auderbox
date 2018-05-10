@@ -54,7 +54,6 @@ $companyLogo = \App\Core\Check::companyLogo();
     <script src="/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
-    <script src="/assets/js/search.js"></script>
     <script src="/assets/js/jquery-2.1.3.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     {{--<script src="/assets/plugins/pace/pace.min.js"></script>--}}

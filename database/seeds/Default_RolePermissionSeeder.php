@@ -56,6 +56,9 @@ class Default_RolePermissionSeeder extends Seeder
             // Activity Log
             ['role_id'=>2, 'permission_id'=>35],
 
+            // API formats
+            ['role_id'=>2, 'permission_id'=>36],
+
             // Country
             ['role_id'=>2, 'permission_id'=>40],
             ['role_id'=>2, 'permission_id'=>41],

@@ -82,6 +82,12 @@
                             <span>Site Config</span>
                         </a>
                     </li>
+
+                    <li nav-id="">
+                        <a href="/backend/api_formats">
+                            <span>API Formats</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
@@ -93,3 +99,27 @@
     <!-- end sidebar scrollbar -->
 </div>
 <div class="sidebar-bg"></div>    <!-- end #sidebar -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //make sidebar active current tab when a page is selected
+        var path = window.location.pathname;
+        var submenu = '.sub-menu li';
+        var hassub = '.has-sub';
+
+        $(hassub).removeClass('active');
+        $(submenu).removeClass('active');
+
+        $(".sub-menu li a").each(function () {
+            var href = $(this).attr('href');
+            var child_href = href+'/';
+            //check for child hrefs also (eg. room and room/create)
+            if (path === href || path.includes(child_href)) {
+            // if (path.includes(href)) {
+                $(this).closest('li').addClass('active');
+                $(this).closest('.has-sub').addClass('active');
+                $(this).parents(".has-sub:eq(1)").toggleClass("active");
+            }
+        });
+    });
+</script>

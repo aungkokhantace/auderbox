@@ -61,6 +61,9 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('permission/edit/{id}', array('as'=>'backend/permission/edit','uses'=>'Core\PermissionController@edit'));
             Route::post('permission/update', array('as'=>'backend/permission/update','uses'=>'Core\PermissionController@update'));
             Route::post('permission/destroy', array('as'=>'backend/permission/destroy','uses'=>'Core\PermissionController@destroy'));
+
+            //API formats
+            Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));
         });
 
     });
