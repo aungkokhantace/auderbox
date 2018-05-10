@@ -15,6 +15,7 @@ class Retailer extends Model
 
     protected $casts = [
        'id' => 'integer',
+       'retailer_id' => 'integer',
        'user_id' => 'integer',
        'state_id' => 'integer',
        'township_id' => 'integer',
