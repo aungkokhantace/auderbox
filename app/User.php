@@ -15,12 +15,26 @@ class User extends Authenticatable
 
     protected $casts = [
        'id' => 'integer',
-       'id' => 'integer',
-       'status' => 'tinyinteger',
+       'role_id' => 'integer',
+       'status' => 'boolean',
+       'role_id' => 'integer',
+       'created_by' => 'integer',
+       'updated_by' => 'integer',
+       'deleted_by' => 'integer',
+       'created_at' => 'timestamp',
+       'updated_at' => 'timestamp',
+       'deleted_at' => 'timestamp'
    ];
 
     protected $fillable = [
-        'id','user_name','email','display_name','password','role_id','status','updated_at','created_at','deleted_at'
+        'id',
+        'user_name',
+        'email',
+        'display_name',
+        'password',
+        'role_id',
+        'status',
+        'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
     ];
 
     /**

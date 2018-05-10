@@ -151,6 +151,33 @@
           "phone": "0198752",
           "address": "No(11), In Sein Road, Hlaing, Yangon",
           "registration_no": "abc-445566"
+        },
+        {
+          "id": 3,
+          "retailer_id": 1,
+          "name_eng": "Pyae Sone (3)",
+          "name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1043)",
+          "phone": "0198752",
+          "address": "No(11), In Sein Road, Hlaing, Yangon",
+          "registration_no": "abc-445566"
+        },
+        {
+          "id": 4,
+          "retailer_id": 1,
+          "name_eng": "Pyae Sone (4)",
+          "name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1044)",
+          "phone": "0198752",
+          "address": "No(11), In Sein Road, Hlaing, Yangon",
+          "registration_no": "abc-445566"
+        },
+        {
+          "id": 5,
+          "retailer_id": 1,
+          "name_eng": "Pyae Sone (5)",
+          "name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1045)",
+          "phone": "0198752",
+          "address": "No(11), In Sein Road, Hlaing, Yangon",
+          "registration_no": "abc-445566"
         }
       ]
     }
@@ -187,91 +214,91 @@
   "aceplusStatusCode": 200,
   "aceplusStatusMessage": "Success!",
   "data": [
-  {
-    "products": [
-      {
-        "id": 1,
-        "product_category_id": "1",
-        "brand_owner_id": "1",
-        "name": "Coca Cola 1.5L",
-        "image": "/images/product_images/OB_Coca-Cola 1.5L_Dry_LR.jpg",
-        "sku": "coca-115",
-        "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in history",
-        "status": "1",
-        "created_by": "1",
-        "updated_by": "1",
-        "deleted_by": null,
-        "created_at": null,
-        "updated_at": null,
-        "deleted_at": null,
-        "price": "900.00",
-        "minimum_order_qty": 1,
-        "maximum_order_qty": 50,
-        "out_of_stock_flag": 0
-      },
-      {
-        "id": 3,
-        "product_category_id": "1",
-        "brand_owner_id": "1",
-        "name": "Coca Cola 300ml Bottle",
-        "image": "/images/product_images/OB_Coca-Cola 350mL_Dry_LR.jpg",
-        "sku": "coca-300b",
-        "remark": "Coca Cola 300ml bottle is the most popular and biggest selling soft drink in history",
-        "status": "1",
-        "created_by": "1",
-        "updated_by": "1",
-        "deleted_by": null,
-        "created_at": null,
-        "updated_at": null,
-        "deleted_at": null,
-        "price": "350.00",
-        "minimum_order_qty": 1,
-        "maximum_order_qty": 50,
-        "out_of_stock_flag": 1
-      },
-      {
-        "id": 4,
-        "product_category_id": "1",
-        "brand_owner_id": "1",
-        "name": "Coca Cola 300ml Can",
-        "image": "/images/product_images/OB_Coca-Cola_Zero_330mL_Dry_LR.jpg",
-        "sku": "coca-300c",
-        "remark": "Coca Cola 300ml can is the most popular and biggest selling soft drink in history",
-        "status": "1",
-        "created_by": "1",
-        "updated_by": "1",
-        "deleted_by": null,
-        "created_at": null,
-        "updated_at": null,
-        "deleted_at": null,
-        "price": "300.00",
-        "minimum_order_qty": 1,
-        "maximum_order_qty": 50,
-        "out_of_stock_flag": 0
-      },
-      {
-        "id": 5,
-        "product_category_id": "1",
-        "brand_owner_id": "1",
-        "name": "Max+ C",
-        "image": "/images/product_images/Max+C_Frontier_350mL_Dry_LR.jpg",
-        "sku": "coca-mc1",
-        "remark": "Coca Cola Max+ C is the most popular and biggest selling soft drink in history",
-        "status": "1",
-        "created_by": "1",
-        "updated_by": "1",
-        "deleted_by": null,
-        "created_at": null,
-        "updated_at": null,
-        "deleted_at": null,
-        "price": "300.00",
-        "minimum_order_qty": 1,
-        "maximum_order_qty": 50,
-        "out_of_stock_flag": 0
-      }
-    ]
-  }
-]
+    {
+      "products": [
+        {
+          "id": 1,
+          "product_category_id": 1,
+          "brand_owner_id": 1,
+          "name": "Coca Cola 1.5L",
+          "image": "\/images\/product_images\/OB_Coca-Cola 1.5L_Dry_LR.jpg",
+          "sku": "coca-115",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "900.00",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 3,
+          "product_category_id": 1,
+          "brand_owner_id": 1,
+          "name": "Coca Cola 300ml Bottle",
+          "image": "\/images\/product_images\/OB_Coca-Cola 350mL_Dry_LR.jpg",
+          "sku": "coca-300b",
+          "remark": "Coca Cola 300ml bottle is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 1
+        },
+        {
+          "id": 4,
+          "product_category_id": 1,
+          "brand_owner_id": 1,
+          "name": "Coca Cola 300ml Can",
+          "image": "\/images\/product_images\/OB_Coca-Cola_Zero_330mL_Dry_LR.jpg",
+          "sku": "coca-300c",
+          "remark": "Coca Cola 300ml can is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "300.00",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 5,
+          "product_category_id": 1,
+          "brand_owner_id": 1,
+          "name": "Max+ C",
+          "image": "\/images\/product_images\/Max+C_Frontier_350mL_Dry_LR.jpg",
+          "sku": "coca-mc1",
+          "remark": "Coca Cola Max+ C is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "300.00",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        }
+      ]
+    }
+  ]
 }
               </pre>
         </div>
@@ -307,12 +334,12 @@
     {
       "product_detail": {
         "id": 1,
-        "product_category_id": "1",
-        "brand_owner_id": "1",
+        "product_category_id": 1,
+        "brand_owner_id": 1,
         "name": "Coca Cola 1.5L",
-        "image": "/images/product_images/OB_Coca-Cola 1.5L_Dry_LR.jpg",
+        "image": "\/images\/product_images\/OB_Coca-Cola 1.5L_Dry_LR.jpg",
         "sku": "coca-115",
-        "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in history",
+        "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
         "status": "1",
         "created_by": "1",
         "updated_by": "1",

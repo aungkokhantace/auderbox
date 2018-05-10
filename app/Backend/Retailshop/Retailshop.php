@@ -19,7 +19,13 @@ class Retailshop extends Model
        'state_id' => 'integer',
        'township_id' => 'integer',
        'retail_shop_type_id' => 'integer',
-       'status' => 'tinyinteger',
+       'status' => 'boolean',
+       'created_by' => 'integer',
+       'updated_by' => 'integer',
+       'deleted_by' => 'integer',
+       'created_at' => 'timestamp',
+       'updated_at' => 'timestamp',
+       'deleted_at' => 'timestamp'
    ];
 
     protected $fillable = [
@@ -39,7 +45,6 @@ class Retailshop extends Model
         'remark',
         'status',
         'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
-        ,
     ];
 
     // public function township()

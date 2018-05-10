@@ -17,7 +17,13 @@ class Product extends Model
        'id' => 'integer',
        'product_category_id' => 'integer',
        'brand_owner_id' => 'integer',
-       'status' => 'tinyinteger',
+       'status' => 'boolean',
+       'created_by' => 'integer',
+       'updated_by' => 'integer',
+       'deleted_by' => 'integer',
+       'created_at' => 'timestamp',
+       'updated_at' => 'timestamp',
+       'deleted_at' => 'timestamp'
    ];
 
     protected $fillable = [

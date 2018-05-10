@@ -19,7 +19,13 @@ class Retailer extends Model
        'user_id' => 'integer',
        'state_id' => 'integer',
        'township_id' => 'integer',
-       'status' => 'tinyinteger',
+       'status' => 'boolean',
+       'created_by' => 'integer',
+       'updated_by' => 'integer',
+       'deleted_by' => 'integer',
+       'created_at' => 'timestamp',
+       'updated_at' => 'timestamp',
+       'deleted_at' => 'timestamp'
    ];
 
     protected $fillable = [
