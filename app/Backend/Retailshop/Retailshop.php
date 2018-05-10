@@ -13,6 +13,15 @@ class Retailshop extends Model
 {
     protected $table = 'retailshops';
 
+    protected $casts = [
+       'id' => 'integer',
+       'retailer_id' => 'integer',
+       'state_id' => 'integer',
+       'township_id' => 'integer',
+       'retail_shop_type_id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id',
         'retailer_id',

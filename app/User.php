@@ -12,6 +12,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $table="core_users";
+
+    protected $casts = [
+       'id' => 'integer',
+       'id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id','user_name','email','display_name','password','role_id','status','updated_at','created_at','deleted_at'
     ];

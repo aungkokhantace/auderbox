@@ -13,6 +13,15 @@ class ProductPrice extends Model
 {
     protected $table = 'product_price';
 
+    protected $casts = [
+       'id' => 'integer',
+       'price' => 'decimal',
+       'state_id' => 'integer',
+       'township_id' => 'integer',
+       'product_id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id',
         'price',

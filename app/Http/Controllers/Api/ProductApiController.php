@@ -162,15 +162,13 @@ class ProductApiController extends Controller
                       $returnedObj['aceplusStatusMessage'] = "Success!";
                       $returnedObj['data'] = $data;
 
-                      // return \Response::json($returnedObj);
-                      return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
+                      return \Response::json($returnedObj);
                   }
                   else{
                     $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
                     $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
                     $returnedObj['data'] = [];
-                    // return \Response::json($returnedObj);
-                    return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
+                    return \Response::json($returnedObj);
                   }
                 }
                 //API parameter is missing
@@ -178,21 +176,18 @@ class ProductApiController extends Controller
                   $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
                   $returnedObj['aceplusStatusMessage'] = "Missing API Parameters";
                   $returnedObj['data'] = [];
-                  // return \Response::json($returnedObj);
-                  return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
+                  return \Response::json($returnedObj);
                 }
             }
             catch (\Exception $e) {
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
                 $returnedObj['aceplusStatusMessage'] = $e->getMessage() . " ----- line " . $e->getLine() . " ----- " . $e->getFile();
                 $returnedObj['data'] = (object) array();
-                // return \Response::json($returnedObj);
-                return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
+                return \Response::json($returnedObj);
             }
         }
         else{
-            // return \Response::json($checkServerStatusArray);
-            return \Response::json($checkServerStatusArray)->setEncodingOptions(JSON_NUMERIC_CHECK);
+            return \Response::json($checkServerStatusArray);
         }
     }
 }

@@ -13,6 +13,13 @@ class Product extends Model
 {
     protected $table = 'products';
 
+    protected $casts = [
+       'id' => 'integer',
+       'product_category_id' => 'integer',
+       'brand_owner_id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id',
         'product_category_id',

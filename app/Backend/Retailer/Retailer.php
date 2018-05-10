@@ -13,6 +13,14 @@ class Retailer extends Model
 {
     protected $table = 'retailers';
 
+    protected $casts = [
+       'id' => 'integer',
+       'user_id' => 'integer',
+       'state_id' => 'integer',
+       'township_id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id',
         'user_id',

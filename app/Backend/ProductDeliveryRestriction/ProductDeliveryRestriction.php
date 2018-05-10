@@ -13,6 +13,14 @@ class ProductDeliveryRestriction extends Model
 {
     protected $table = 'product_delivery_restriction';
 
+    protected $casts = [
+       'id' => 'integer',
+       'product_id' => 'integer',
+       'state_id' => 'integer',
+       'township_id' => 'integer',
+       'status' => 'tinyinteger',
+   ];
+
     protected $fillable = [
         'id',
         'product_id',

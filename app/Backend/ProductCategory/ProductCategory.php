@@ -13,6 +13,11 @@ class ProductCategory extends Model
 {
     protected $table = 'product_category';
 
+    protected $casts = [
+       'id' => 'integer',
+       'status' => 'tinyinteger'
+   ];
+
     protected $fillable = [
         'id',
         'name',
