@@ -16,7 +16,7 @@ class User extends Authenticatable
     protected $casts = [
        'id' => 'integer',
        'role_id' => 'integer',
-       'status' => 'boolean',
+       'status' => 'integer',
        'role_id' => 'integer',
        'created_by' => 'integer',
        'updated_by' => 'integer',

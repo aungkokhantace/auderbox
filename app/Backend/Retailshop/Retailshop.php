@@ -19,7 +19,7 @@ class Retailshop extends Model
        'state_id' => 'integer',
        'township_id' => 'integer',
        'retail_shop_type_id' => 'integer',
-       'status' => 'boolean',
+       'status' => 'integer',
        'created_by' => 'integer',
        'updated_by' => 'integer',
        'deleted_by' => 'integer',

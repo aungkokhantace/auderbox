@@ -15,7 +15,7 @@ class ProductCategory extends Model
 
     protected $casts = [
        'id' => 'integer',
-       'status' => 'boolean',
+       'status' => 'integer',
        'created_by' => 'integer',
        'updated_by' => 'integer',
        'deleted_by' => 'integer',

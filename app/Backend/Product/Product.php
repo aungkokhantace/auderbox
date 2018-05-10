@@ -17,7 +17,7 @@ class Product extends Model
        'id' => 'integer',
        'product_category_id' => 'integer',
        'brand_owner_id' => 'integer',
-       'status' => 'boolean',
+       'status' => 'integer',
        'price' => 'float',
        'created_by' => 'integer',
        'updated_by' => 'integer',
