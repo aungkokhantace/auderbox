@@ -8,11 +8,11 @@
 
     <div class="row">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#login_api"><b>Login API</b></a></li>
-            <li><a data-toggle="tab" href="#retailer_profile_api"><b>Retailer Profile API</b></a></li>
-            <li><a data-toggle="tab" href="#retailshop_list_api"><b>Retailshop List Download API</b></a></li>
-            <li><a data-toggle="tab" href="#product_list_api"><b>Product List Download API</b></a></li>
-            <li><a data-toggle="tab" href="#product_detail_api"><b>Product Detail Download API</b></a></li>
+            <li class="active"><a data-toggle="tab" href="#login_api"><b>Login</b></a></li>
+            <li><a data-toggle="tab" href="#retailer_profile_api"><b>Retailer Profile</b></a></li>
+            <li><a data-toggle="tab" href="#retailshop_list_api"><b>Retailshop List</b></a></li>
+            <li><a data-toggle="tab" href="#product_list_api"><b>Product List</b></a></li>
+            <li><a data-toggle="tab" href="#product_detail_api"><b>Product Detail</b></a></li>
         </ul>
 
         <div class="tab-content">
