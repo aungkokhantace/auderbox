@@ -85,7 +85,8 @@ class LoginApiController extends Controller
             $returnedObj['aceplusStatusMessage'] = "Unauthorized request !";
             $returnedObj['data'] = (object) array();
 
-            return \Response::json($returnedObj);
+            // return \Response::json($returnedObj);
+            return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
           }
           else{
               //login is valid
@@ -100,7 +101,7 @@ class LoginApiController extends Controller
               }
 
               $user_id = $user->id;
-              
+
               $retailer_result = $retailerProfileApiRepo->getRetailerByUserId($user_id);
 
               if($retailer_result['aceplusStatusCode'] == ReturnMessage::OK){
@@ -117,11 +118,13 @@ class LoginApiController extends Controller
               $returnedObj['retailer']                = $retailerObj;
               $returnedObj['force_password_change']   = $force_password_change;
 
-              return \Response::json($returnedObj);
+              // return \Response::json($returnedObj);
+              return \Response::json($returnedObj)->setEncodingOptions(JSON_NUMERIC_CHECK);
           }
       }
       else{
-          return \Response::json($checkServerStatusArray);
+          // return \Response::json($checkServerStatusArray);
+          return \Response::json($checkServerStatusArray)->setEncodingOptions(JSON_NUMERIC_CHECK);
       }
     }
 
