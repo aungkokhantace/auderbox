@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
          $this->call(Default_CountriesSeeder::class);
          $this->call(Default_StateSeeder::class);
          $this->call(Default_TownshipSeeder::class);
+         $this->call(Default_AddressStateSeeder::class);
+         $this->call(Default_AddressDistrictSeeder::class);
+         $this->call(Default_AddressTownshipSeeder::class);
+         $this->call(Default_AddressTownSeeder::class);
+         $this->call(Default_AddressWardSeeder::class);
     }
 }
