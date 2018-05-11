@@ -14,10 +14,10 @@ class CreateAddressDistrictsTable extends Migration
     {
         Schema::create('address_districts', function (Blueprint $table) {
             $table->string('id');
+            $table->integer('country_id');
             $table->string('address_state_id');
             $table->string('name_eng',45);
             $table->string('name_mm',45);
-            $table->string('myainfo_sd_id',45);
             $table->text('remark');
 
             //common to all tables...
