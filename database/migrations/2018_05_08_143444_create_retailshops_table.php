@@ -15,8 +15,11 @@ class CreateRetailshopsTable extends Migration
         Schema::create('retailshops', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('retailer_id');
-            $table->integer('state_id');
-            $table->integer('township_id');
+            $table->integer('address_state_id');
+            $table->integer('address_district_id');
+            $table->integer('address_township_id');
+            $table->integer('address_town_id');
+            $table->integer('address_ward_id');
             $table->string('name_eng',45);
             $table->string('name_mm',45);
             $table->string('registration_no',45);

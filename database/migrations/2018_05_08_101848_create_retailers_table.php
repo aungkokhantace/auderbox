@@ -25,8 +25,11 @@ class CreateRetailersTable extends Migration
             $table->text('photo');
             $table->text('nrc_front_photo');
             $table->text('nrc_back_photo');
-            $table->integer('state_id');
-            $table->integer('township_id');
+            $table->integer('address_state_id');
+            $table->integer('address_district_id');
+            $table->integer('address_township_id');
+            $table->integer('address_town_id');
+            $table->integer('address_ward_id');
             $table->text('remark');
             $table->tinyInteger('status')->default(1);
 
