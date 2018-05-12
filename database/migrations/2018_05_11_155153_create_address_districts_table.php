@@ -18,7 +18,7 @@ class CreateAddressDistrictsTable extends Migration
             $table->string('address_state_id');
             $table->string('name_eng',45);
             $table->string('name_mm',45);
-            $table->text('remark');
+            $table->text('remark')->nullable();
 
             //common to all tables...
             $table->integer('created_by')->default(1);

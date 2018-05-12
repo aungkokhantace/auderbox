@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAddressTownsTable extends Migration
+class CreateProductUomTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,13 @@ class CreateAddressTownsTable extends Migration
      */
     public function up()
     {
-        Schema::create('address_towns', function (Blueprint $table) {
-            $table->string('id');
-            $table->integer('country_id');
-            $table->string('address_state_id');
-            $table->string('address_district_id');
-            $table->string('address_township_id');
+        Schema::create('product_uom_type', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name_eng',45);
             $table->string('name_mm',45);
+            $table->integer('total_quantity');
             $table->text('remark')->nullable();
+            $table->tinyInteger('status');
 
             //common to all tables...
             $table->integer('created_by')->default(1);
@@ -28,7 +26,6 @@ class CreateAddressTownsTable extends Migration
             $table->integer('deleted_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->primary('id');
         });
     }
 
@@ -39,6 +36,6 @@ class CreateAddressTownsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('address_towns');
+        Schema::drop('product_uom_type');
     }
 }
