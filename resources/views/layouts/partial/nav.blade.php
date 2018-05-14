@@ -23,7 +23,7 @@
 
             <li class="nav-header">AcePlus Backend</li>
 
-            <li nav-id="menu-manage" class="has-sub">
+            <!-- <li nav-id="menu-manage" class="has-sub">
                 <a href="javascript:;">
                     <b class="caret pull-right"></b>
                     <i class="fa fa-bars"></i>
@@ -34,7 +34,7 @@
                     <li nav-id="menu-entry"><a href="/menu/create">Entry</a></li>
                     <li nav-id="menu-list"><a href="/menu">List</a></li>
                 </ul>
-            </li>
+            </li> -->
 
             <li  nav-id='modifier'  class="has-sub">
                 <a href="javascript:;">

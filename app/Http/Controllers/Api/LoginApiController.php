@@ -74,9 +74,9 @@ class LoginApiController extends Controller
           $validation = Auth::guard('User')->attempt([
               'phone_no'=>$login_attempt->phone_no,
               'password'=>$login_attempt->password,
-              'role_id' =>5,
-              'status'  =>1,
-              'deleted_at'=>null
+              'role_id' =>5, //retailer role
+              'status'  =>1,  //status is active
+              'deleted_at'=>null //not deleted
           ]);
 
           if(!$validation){

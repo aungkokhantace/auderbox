@@ -5,20 +5,23 @@
  * Time: 11:43 AM
  */
 
-namespace App\Backend\Product;
+namespace App\Backend\ProductGroup;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ProductGroup extends Model
 {
-    protected $table = 'products';
+    protected $table = 'product_group';
 
     protected $casts = [
        'id' => 'integer',
-       'product_group_id' => 'integer',
-       'product_uom_type_id' => 'integer',
-       'image' => 'string',
+       'product_category_id' => 'integer',
+       'brand_owner_id' => 'integer',
+       'name' => 'string',
+       'description' => 'string',
+       'remark' => 'string',
        'status' => 'integer',
+       'product_volume_type_id' => 'integer',
        'created_by' => 'integer',
        'updated_by' => 'integer',
        'deleted_by' => 'integer',
@@ -29,12 +32,13 @@ class Product extends Model
 
     protected $fillable = [
         'id',
-        'product_group_id',
-        'product_uom_type_id',
-        'image',
-        'sku',
+        'product_category_id',
+        'brand_owner_id',
+        'name',
+        'description',
         'remark',
         'status',
+        'product_volume_type_id',
         'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
     ];
 
