@@ -158,7 +158,7 @@ class ProductApiController extends Controller
                   $retailshop_address_ward_id = $retailshop->address_ward_id;
 
                   //get product detail including price
-                  $result = $this->repo->getProductDetailByID($product_id,$retailshop_township_id);
+                  $result = $this->repo->getProductDetailByID($product_id,$retailshop_address_ward_id);
 
                   if($result['aceplusStatusCode'] == ReturnMessage::OK){
                       $data = array();

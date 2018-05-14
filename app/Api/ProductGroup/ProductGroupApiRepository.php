@@ -53,28 +53,4 @@ class ProductGroupApiRepository implements ProductGroupApiRepositoryInterface
           return $returnedObj;
       }
     }
-
-    public function getProductDetailByID($id, $township_id){
-      $returnedObj = array();
-      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
-
-      try{
-        $product = Product::select('products.*','product_price.price')
-                              ->leftJoin('product_price', 'products.id', '=', 'product_price.product_id')
-                              ->where('products.id',$id)
-                              ->where('product_price.township_id',$township_id) //price vary according to retail shop location
-                              ->whereNull('products.deleted_at')
-                              ->whereNull('product_price.deleted_at')
-                              ->first();
-
-        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
-        $returnedObj['aceplusStatusMessage'] = "Success!";
-        $returnedObj['resultObj'] = $product;
-        return $returnedObj;
-      }
-      catch(\Exception $e){
-          $returnedObj['aceplusStatusMessage'] = $e->getMessage();
-          return $returnedObj;
-      }
-    }
 }
