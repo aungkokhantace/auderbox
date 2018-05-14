@@ -7,5 +7,5 @@ namespace App\Api\ProductDeliveryRestriction;
  */
 interface ProductDeliveryRestrictionApiRepositoryInterface
 {
-    public function getRestrictedProductsByTownshipId($township_id);
+    public function getRestrictedProductsByWardId($ward_id);
 }

@@ -1,5 +1,5 @@
 <?php
-namespace App\Api\Product;
+namespace App\Api\ProductGroup;
 
 use App\Core\ReturnMessage;
 use App\Core\User\UserRepository;
@@ -9,6 +9,7 @@ use App\Backend\ProductCategory\ProductCategory;
 use App\Backend\Product\Product;
 use App\Backend\Retailshop\Retailshop;
 use App\Backend\ProductDeliveryRestriction\ProductDeliveryRestriction;
+use App\Backend\ProductGroup\ProductGroup;
 
 /**
  * Author: Aung Ko Khant
@@ -16,37 +17,33 @@ use App\Backend\ProductDeliveryRestriction\ProductDeliveryRestriction;
  * Time: 10:58 AM
  */
 
-class ProductApiRepository implements ProductApiRepositoryInterface
+class ProductGroupApiRepository implements ProductGroupApiRepositoryInterface
 {
-    public function getAvailableProducts($product_group_id_array,$retailshop_address_ward_id) {
+    //brand_owner_id is '0' if there is no filter for product group, and if there is filter, brand_owner_id value will be set
+    public function getProductGroupsByFilters($product_category_id,$brand_owner_id = 0, $restricted_product_group_id_array) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
       try {
-        $products = Product::select('products.*','product_price.price','product_group.name as name','product_uom_type.name_eng as product_uom_type_name_eng','product_uom_type.name_mm as product_uom_type_name_mm','product_volume_type.name as product_volume_type_name','product_uom_type.total_quantity as total_uom_quantity')
+        $query          = ProductGroup::query();
+        if(isset($brand_owner_id) && $brand_owner_id != null && $brand_owner_id !== 0){
+            $query      = $query->where('product_group.brand_owner_id', $brand_owner_id);
+        }
+        $query          = $query->where('product_group.product_category_id', $product_category_id);
+        $query          = $query->whereNotIn('product_group.id', $restricted_product_group_id_array);
+        $query          = $query->whereNull('product_group.deleted_at');
+        $query          = $query->where('product_group.status',1); //active product groups
+        $product_groups = $query->get();
 
-                              ->leftJoin('product_price', 'products.id', '=', 'product_price.product_id')
-                              ->leftJoin('product_group', 'products.product_group_id', '=', 'product_group.id')
-                              ->leftJoin('product_uom_type', 'products.product_uom_type_id', '=', 'product_uom_type.id')
-                              ->leftJoin('product_volume_type', 'product_group.product_volume_type_id', '=', 'product_volume_type.id')
-
-                              ->whereIn('products.product_group_id',$product_group_id_array)
-                              ->where('product_price.address_ward_id',$retailshop_address_ward_id) //price varies according to retail shop location
-                              ->whereNull('products.deleted_at')
-                              ->whereNull('product_price.deleted_at')
-                              ->where('products.status',1) //get active products
-                              ->where('product_price.status',1) //get active product price
-                              ->get();
-
-        if(isset($products) && count($products)>0){
+        if(isset($product_groups) && count($product_groups)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
-          $returnedObj['resultObjs']            = $products;
+          $returnedObj['resultObjs']            = $product_groups;
           return $returnedObj;
         }
         else{
-          //if products do not exist
-          $returnedObj['aceplusStatusMessage']  = "Products do not exist!";
+          //if product groups do not exist
+          $returnedObj['aceplusStatusMessage']  = "Product Groups do not exist!";
           return $returnedObj;
         }
 

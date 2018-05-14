@@ -15,9 +15,12 @@ class ProductDeliveryRestriction extends Model
 
     protected $casts = [
        'id' => 'integer',
-       'product_id' => 'integer',
-       'state_id' => 'integer',
-       'township_id' => 'integer',
+       'product_group_id' => 'integer',
+       'address_state_id' => 'string',
+       'address_district_id' => 'string',
+       'address_township_id' => 'string',
+       'address_town_id' => 'string',
+       'address_ward_id' => 'string',
        'status' => 'integer',
        'created_by' => 'integer',
        'updated_by' => 'integer',
@@ -29,9 +32,12 @@ class ProductDeliveryRestriction extends Model
 
     protected $fillable = [
         'id',
-        'product_id',
-        'state_id',
-        'township_id',
+        'product_group_id',
+        'address_state_id',
+        'address_district_id',
+        'address_township_id',
+        'address_town_id',
+        'address_ward_id',
         'status',
         'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
     ];

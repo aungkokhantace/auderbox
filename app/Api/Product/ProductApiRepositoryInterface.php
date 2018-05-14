@@ -7,6 +7,6 @@ namespace App\Api\Product;
  */
 interface ProductApiRepositoryInterface
 {
-    public function getAvailableProducts($product_category_id,$restricted_product_id_array,$retailshop_township_id);
+    public function getAvailableProducts($product_group_id_array,$retailshop_address_ward_id);
     public function getProductDetailByID($id, $township_id);
 }

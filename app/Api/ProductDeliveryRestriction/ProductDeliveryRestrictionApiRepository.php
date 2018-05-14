@@ -18,8 +18,8 @@ use App\Backend\ProductDeliveryRestriction\ProductDeliveryRestriction;
 
 class ProductDeliveryRestrictionApiRepository implements ProductDeliveryRestrictionApiRepositoryInterface
 {
-    public function getRestrictedProductsByTownshipId($township_id){
-      $restrictions = ProductDeliveryRestriction::where('township_id',$township_id)
+    public function getRestrictedProductsByWardId($ward_id){
+      $restrictions = ProductDeliveryRestriction::where('address_ward_id',$ward_id)
                                                           ->where('status',1)  //get active restrictions
                                                           ->whereNull('deleted_at')
                                                           ->get();
