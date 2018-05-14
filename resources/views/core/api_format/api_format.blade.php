@@ -500,6 +500,7 @@
     }
   ]
 }
+
               </pre>
 
               <hr>
@@ -512,11 +513,10 @@
     {
       "product_detail": {
         "id": 1,
-        "product_category_id": 1,
-        "brand_owner_id": 1,
-        "name": "Coca Cola 1.5L",
-        "image": "\/images\/product_images\/OB_Coca-Cola 1.5L_Dry_LR.jpg",
-        "sku": "coca-115",
+        "product_group_id": 1,
+        "product_uom_type_id": 1,
+        "image": "/images/product_images/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
+        "sku": "coca-0001",
         "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
         "status": 1,
         "created_by": 1,
@@ -525,7 +525,12 @@
         "created_at": null,
         "updated_at": null,
         "deleted_at": null,
-        "price": 900,
+        "price": "300.00",
+        "name": "Coca Cola",
+        "product_uom_type_name_eng": "unit",
+        "product_uom_type_name_mm": "လုံး",
+        "product_volume_type_name": "330 ml",
+        "total_uom_quantity": 1,
         "minimum_order_qty": 1,
         "maximum_order_qty": 50,
         "out_of_stock_flag": 0
