@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrandOwnerDeliveryDayTable extends Migration
+class CreateCarDriverTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,16 @@ class CreateBrandOwnerDeliveryDayTable extends Migration
      */
     public function up()
     {
-        Schema::create('brand_owner_delivery_day', function (Blueprint $table) {
+        Schema::create('car_driver', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('brand_owner_id');
-            $table->tinyInteger('monday');
-            $table->tinyInteger('tuesday');
-            $table->tinyInteger('wednesday');
-            $table->tinyInteger('thursday');
-            $table->tinyInteger('friday');
-            $table->tinyInteger('saturday');
-            $table->tinyInteger('sunday');
+            $table->string('name',45);
+            $table->text('description')->nullable();
+            $table->date('joined_date');
+            $table->date('dob');
+            $table->string('phone',45);
+            $table->text('address');
+            $table->tinyInteger('status')->default(1);
+            $table->text('remark')->nullable();
 
             //common to all tables...
             $table->integer('created_by')->default(1);
@@ -39,6 +39,6 @@ class CreateBrandOwnerDeliveryDayTable extends Migration
      */
     public function down()
     {
-        Schema::drop('brand_owner_delivery_day');
+        Schema::drop('car_driver');
     }
 }

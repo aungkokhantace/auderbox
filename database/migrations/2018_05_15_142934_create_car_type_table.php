@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrandOwnerBlackoutDayTable extends Migration
+class CreateCarTypeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,13 @@ class CreateBrandOwnerBlackoutDayTable extends Migration
      */
     public function up()
     {
-        Schema::create('brand_owner_blackout_day', function (Blueprint $table) {
+        Schema::create('car_type', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('brand_owner_id');
             $table->string('name',45);
-            $table->date('date');
-            $table->integer('type'); //1=> "public holiday", 2=>"customize"
+            $table->text('description')->nullable();
+            $table->string('brand',45);
             $table->text('remark')->nullable();
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
 
             //common to all tables...
             $table->integer('created_by')->default(1);
@@ -37,6 +36,6 @@ class CreateBrandOwnerBlackoutDayTable extends Migration
      */
     public function down()
     {
-        Schema::drop('brand_owner_blackout_day');
+        Schema::drop('car_type');
     }
 }
