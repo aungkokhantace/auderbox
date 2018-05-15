@@ -13,6 +13,7 @@
             <li><a data-toggle="tab" href="#retailshop_list_api"><b>Retailshop List</b></a></li>
             <li><a data-toggle="tab" href="#product_list_api"><b>Product List</b></a></li>
             <li><a data-toggle="tab" href="#product_detail_api"><b>Product Detail</b></a></li>
+            <li><a data-toggle="tab" href="#delivery_date_api"><b>Delivery Date</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -500,7 +501,6 @@
     }
   ]
 }
-
               </pre>
 
               <hr>
@@ -541,6 +541,38 @@
               </pre>
         </div>
         <!-- end product detail api content -->
+
+        <!-- start delivery date api content -->
+        <div id="delivery_date_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_delivery_date</b></p>
+            <hr>
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "delivery_date": {
+        "brand_owner_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success!",
+  "data": "2018-05-15"
+}
+              </pre>
+        </div>
+        <!-- end delivery date api content -->
       </div>
     </div>
 </div>

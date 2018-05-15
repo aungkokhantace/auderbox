@@ -92,4 +92,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //product detail download api
         Route::post('download_product_detail', array('as'=>'download_product_detail','uses'=>'Api\ProductApiController@getProductDetail'));
+
+        //delivery date download api
+        Route::post('download_delivery_date', array('as'=>'download_delivery_date','uses'=>'Api\DeliveryDateApiController@getDeliveryDate'));
     });
