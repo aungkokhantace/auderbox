@@ -96,6 +96,9 @@ Route::group(['middleware' => 'web'], function () {
         //delivery date download api
         Route::post('download_delivery_date', array('as'=>'download_delivery_date','uses'=>'Api\DeliveryDateApiController@getDeliveryDate'));
 
-        //invoice upload download api
+        //invoice upload api
         Route::post('upload_invoice', array('as'=>'upload_invoice','uses'=>'Api\InvoiceApiController@upload'));
+
+        //invoice list download api
+        Route::post('download_invoice_list', array('as'=>'download_invoice_list','uses'=>'Api\InvoiceApiController@getInvoiceList'));
     });
