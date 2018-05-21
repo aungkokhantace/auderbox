@@ -71,15 +71,35 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             return $returnedObj;
           }
 
-          foreach($invoice->invoice_detail as $invDetail){
-            $detailObj                      = new InvoiceDetail();
-            $detailObj->id                  = uniqid('', true);
-            $detailObj->invoice_id          = $invDetail->
-          }
-
-
         }
         DB::commit();
+
+        if(isset($delivery_date) && count($delivery_date)>0){
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "Request is successful!";
+          $returnedObj['resultObj']             = $delivery_date;
+          return $returnedObj;
+        }
+        else{
+          //if date does not exist
+          $returnedObj['aceplusStatusMessage']  = "Delivery Date does not exist!";
+          return $returnedObj;
+        }
+
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+          return $returnedObj;
+      }
+    }
+
+    public function getInvoiceList($retailer_id,$filter) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      // $returnedObj['aceplusStatusMessage']  = "Request failed";
+
+      try {
+        
 
         if(isset($delivery_date) && count($delivery_date)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;

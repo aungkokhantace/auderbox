@@ -9,4 +9,5 @@ namespace App\Api\Invoice;
 interface InvoiceApiRepositoryInterface
 {
     public function uploadInvoice($invoices);
+    public function getInvoiceList($retailer_id,$filter);
 }
