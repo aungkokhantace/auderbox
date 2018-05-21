@@ -255,6 +255,7 @@
           "product_uom_type_name_eng": "unit",
           "product_uom_type_name_mm": "လုံး",
           "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
           "total_uom_quantity": 1,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -279,6 +280,7 @@
           "product_uom_type_name_eng": "pack",
           "product_uom_type_name_mm": "ကတ္",
           "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
           "total_uom_quantity": 6,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -303,6 +305,7 @@
           "product_uom_type_name_eng": "ီdozen",
           "product_uom_type_name_mm": "ဒါဇင္",
           "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
           "total_uom_quantity": 12,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -327,6 +330,7 @@
           "product_uom_type_name_eng": "carton",
           "product_uom_type_name_mm": "ကာတြန္",
           "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
           "total_uom_quantity": 24,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -351,6 +355,7 @@
           "product_uom_type_name_eng": "box",
           "product_uom_type_name_mm": "ေသတၱာ",
           "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
           "total_uom_quantity": 50,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -375,6 +380,7 @@
           "product_uom_type_name_eng": "unit",
           "product_uom_type_name_mm": "လုံး",
           "product_volume_type_name": "350 ml",
+          "product_container_type_name": "Plastic Bottle",
           "total_uom_quantity": 1,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -399,6 +405,7 @@
           "product_uom_type_name_eng": "pack",
           "product_uom_type_name_mm": "ကတ္",
           "product_volume_type_name": "350 ml",
+          "product_container_type_name": "Plastic Bottle",
           "total_uom_quantity": 6,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -423,6 +430,7 @@
           "product_uom_type_name_eng": "ီdozen",
           "product_uom_type_name_mm": "ဒါဇင္",
           "product_volume_type_name": "350 ml",
+          "product_container_type_name": "Plastic Bottle",
           "total_uom_quantity": 12,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -447,6 +455,7 @@
           "product_uom_type_name_eng": "carton",
           "product_uom_type_name_mm": "ကာတြန္",
           "product_volume_type_name": "350 ml",
+          "product_container_type_name": "Plastic Bottle",
           "total_uom_quantity": 24,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -471,6 +480,132 @@
           "product_uom_type_name_eng": "box",
           "product_uom_type_name_mm": "ေသတၱာ",
           "product_volume_type_name": "350 ml",
+          "product_container_type_name": "Plastic Bottle",
+          "total_uom_quantity": 50,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 11,
+          "product_group_id": 3,
+          "product_uom_type_id": 1,
+          "image": "/images/product_images/Schweppes_Soda_Water_330ml_Dry_LR.jpg",
+          "sku": "coca-0011",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "unit",
+          "product_uom_type_name_mm": "လုံး",
+          "product_volume_type_name": "1.5 l",
+          "product_container_type_name": "Aluminium Can",
+          "total_uom_quantity": 1,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 12,
+          "product_group_id": 3,
+          "product_uom_type_id": 2,
+          "image": "/images/product_images/Sprite_1.5L_Dry_LR.jpg",
+          "sku": "coca-0012",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "pack",
+          "product_uom_type_name_mm": "ကတ္",
+          "product_volume_type_name": "1.5 l",
+          "product_container_type_name": "Aluminium Can",
+          "total_uom_quantity": 6,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 13,
+          "product_group_id": 3,
+          "product_uom_type_id": 3,
+          "image": "/images/product_images/Sprite_330ml_Dry_LR.jpg",
+          "sku": "coca-0013",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "ီdozen",
+          "product_uom_type_name_mm": "ဒါဇင္",
+          "product_volume_type_name": "1.5 l",
+          "product_container_type_name": "Aluminium Can",
+          "total_uom_quantity": 12,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 14,
+          "product_group_id": 3,
+          "product_uom_type_id": 4,
+          "image": "/images/product_images/Max+_Frontier_Lime_600mL_Dry_LR.jpg",
+          "sku": "coca-0014",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "carton",
+          "product_uom_type_name_mm": "ကာတြန္",
+          "product_volume_type_name": "1.5 l",
+          "product_container_type_name": "Aluminium Can",
+          "total_uom_quantity": 24,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "out_of_stock_flag": 0
+        },
+        {
+          "id": 15,
+          "product_group_id": 3,
+          "product_uom_type_id": 5,
+          "image": "/images/product_images/MAX+_Frontier_ 330ml_Wet_LR.jpg",
+          "sku": "coca-0015",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": "350.00",
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "box",
+          "product_uom_type_name_mm": "ေသတၱာ",
+          "product_volume_type_name": "1.5 l",
+          "product_container_type_name": "Aluminium Can",
           "total_uom_quantity": 50,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
@@ -531,6 +666,7 @@
         "product_uom_type_name_eng": "unit",
         "product_uom_type_name_mm": "လုံး",
         "product_volume_type_name": "330 ml",
+        "product_container_type_name": "Glass Bottle",
         "total_uom_quantity": 1,
         "minimum_order_qty": 1,
         "maximum_order_qty": 50,
@@ -676,6 +812,38 @@
             </pre>
         </div>
         <!-- end invoice upload api content -->
+
+        <!-- start invoice list download api content -->
+        <div id="delivery_date_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_delivery_date</b></p>
+            <hr>
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "delivery_date": {
+        "brand_owner_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success!",
+  "data": "2018-05-15"
+}
+              </pre>
+        </div>
+        <!-- end invoice list api content -->
       </div>
     </div>
 </div>
