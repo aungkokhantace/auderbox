@@ -33,12 +33,6 @@ class InvoiceDetail extends Model
       'cancel_by' => 'integer',
       'cancel_date' => 'date',
       'status' => 'integer',
-      'created_by' => 'integer',
-      'updated_by' => 'integer',
-      'deleted_by' => 'integer',
-      'created_at' => 'timestamp',
-      'updated_at' => 'timestamp',
-      'deleted_at' => 'timestamp'
    ];
 
     protected $fillable = [
@@ -61,6 +55,5 @@ class InvoiceDetail extends Model
       'cancel_by',
       'cancel_date',
       'status',
-      'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
     ];
 }
