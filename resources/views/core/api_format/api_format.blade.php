@@ -15,6 +15,7 @@
             <li><a data-toggle="tab" href="#product_detail_api"><b>Product Detail</b></a></li>
             <li><a data-toggle="tab" href="#delivery_date_api"><b>Delivery Date</b></a></li>
             <li><a data-toggle="tab" href="#invoice_upload_api"><b>Invoice Upload</b></a></li>
+            <li><a data-toggle="tab" href="#invoice_list_download_api"><b>Invoice List</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -814,9 +815,9 @@
         <!-- end invoice upload api content -->
 
         <!-- start invoice list download api content -->
-        <div id="delivery_date_api" class="tab-pane fade in">
+        <div id="invoice_list_download_api" class="tab-pane fade in">
             <h3>URL</h3>
-            <p><b>http://localhost:8000/api/download_delivery_date</b></p>
+            <p><b>http://localhost:8000/api/download_invoice_list</b></p>
             <hr>
             <h3>Request</h3>
             <pre>
@@ -824,9 +825,9 @@
   "site_activation_key": "1234567",
   "data": [
     {
-      "delivery_date": {
-        "brand_owner_id": 1,
-        "retailshop_id": 1
+      "invoice_list": {
+        "retailer_id": 1,
+        "filter": "all"
       }
     }
   ]
@@ -839,7 +840,99 @@
 {
   "aceplusStatusCode": 200,
   "aceplusStatusMessage": "Success!",
-  "data": "2018-05-15"
+  "data": [
+    {
+      "invoices": [
+        {
+          "id": "inv20180521000001",
+          "status": 2,
+          "order_date": "2018-05-21",
+          "delivery_date": "2018-05-23",
+          "payment_date": "2018-05-23",
+          "retailer_id": 1,
+          "brand_owner_id": 1,
+          "retailshop_id": 1,
+          "tax_rate": 0,
+          "total_net_amt": 5000,
+          "total_discount_amt": 0,
+          "total_net_amt_w_disc": 5000,
+          "total_tax_amt": 0,
+          "total_payable_amt": 5000,
+          "remark": "",
+          "status_text": "Confirmed",
+          "retailshop_name_eng": "Pyae Sone (1)",
+          "retailshop_name_mm": "ျပည့္စုံ (၁)",
+          "retailshop_address": "အမွတ္(၅၀)၊ကန္လမ္း၊အမွတ္(၁၅)ရပ္ကြက္၊လႈိင္ၿမိဳ႕နယ္၊ရန္ကုန္ၿမိဳ႕။",
+          "confirm_by": "",
+          "confirm_date": "",
+          "cancel_by": "",
+          "cancel_date": "",
+          "created_by": 1,
+          "updated_by": "",
+          "deleted_by": "",
+          "created_at": "2018-05-16 13:25:03",
+          "updated_at": "",
+          "deleted_at": "",
+          "invoice_detail": [
+            {
+              "id": 1,
+              "invoice_id": "inv20180521000001",
+              "product_id": 1,
+              "product_group_id": 1,
+              "status": 2,
+              "uom_id": "1",
+              "uom": "pack",
+              "quantity": 6,
+              "unit_price": 350,
+              "net_amt": 2000,
+              "discount_amt": 0,
+              "net_amt_w_disc": 2000,
+              "tax_amt": 0,
+              "payable_amt": 2000,
+              "confirm_by": "",
+              "confirm_date": "",
+              "cancel_by": "",
+              "cancel_date": "",
+              "product_name": "Coca Cola",
+              "product_uom_type_name_eng": "unit",
+              "product_uom_type_name_mm": "လုံး",
+              "product_volume_type_name": "330 ml",
+              "product_container_type_name": "Glass Bottle",
+              "total_uom_quantity": 1,
+
+            },
+            {
+              "id": 2,
+              "invoice_id": "inv20180521000001",
+              "product_id": 2,
+              "product_group_id": 1,
+              "status": 2,
+              "uom_id": "1",
+              "uom": "pack",
+              "quantity": 6,
+              "unit_price": 350,
+              "net_amt": 2000,
+              "discount_amt": 0,
+              "net_amt_w_disc": 2000,
+              "tax_amt": 0,
+              "payable_amt": 2000,
+              "confirm_by": "",
+              "confirm_date": "",
+              "cancel_by": "",
+              "cancel_date": "",
+              "product_name": "Coca Cola",
+              "product_uom_type_name_eng": "unit",
+              "product_uom_type_name_mm": "လုံး",
+              "product_volume_type_name": "330 ml",
+              "product_container_type_name": "Glass Bottle",
+              "total_uom_quantity": 1,
+
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
               </pre>
         </div>
