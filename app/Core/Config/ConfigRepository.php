@@ -45,4 +45,11 @@ class ConfigRepository implements ConfigRepositoryInterface
         $configs = DB::select("SELECT * FROM $tbConfig WHERE code = 'SETTING_SITE_ACTIVATION_KEY'");
         return $configs;
     }
+
+    public function getInvoicePrefixId()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'INVOICE_ID_PREFIX'");
+        return $configs;
+    }
 }

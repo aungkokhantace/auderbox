@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Backend\Invoice\Invoice;
 use App\Backend\InvoiceDetail\InvoiceDetail;
 use App\Core\StatusConstance;
+use App\Core\Config\ConfigRepository;
 
 /**
  * Author: Khin Zar Ni Wint
@@ -17,7 +18,6 @@ use App\Core\StatusConstance;
 class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 {
     public function saveInvoice($invoice,$invoice_id){
-      // dd('save invoice',$invoice->order_date);
       $returnedObj = array();
         $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
@@ -38,6 +38,10 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $paramObj->total_tax_amt        = $invoice->total_tax_amt;
             $paramObj->total_payable_amt    = $invoice->total_payable_amt;
             $paramObj->remark               = $invoice->remark;
+            $paramObj->confirm_by           = NULL;
+            $paramObj->confirm_date         = NULL;
+            $paramObj->cancel_by            = NULL;
+            $paramObj->cancel_date          = NULL;
             $paramObj->created_by           = $invoice->created_by;
             $paramObj->updated_by           = $invoice->updated_by;
             $paramObj->deleted_by           = $invoice->deleted_by;
@@ -61,26 +65,29 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
         try {
 
-            $detailObj                      = new InvoiceDetail();
-            $detailObj->id                  = $detail_id;
-            $detailObj->invoice_id          = $invoice_id;
-            $detailObj->product_id          = $invDetail->product_id;
-            $detailObj->product_group_id    = $invDetail->product_group_id;
-            $detailObj->status              = StatusConstance::status_confirm_value;
-            $detailObj->uom_id              = $invDetail->uom_id;
-            $detailObj->uom                 = $invDetail->uom;
-            $detailObj->quantity            = $invDetail->quantity;
-            $detailObj->unit_price          = $invDetail->unit_price;
-            $detailObj->net_amt             = $invDetail->net_amt;
-            $detailObj->discount_amt        = $invDetail->discount_amt;
-            $detailObj->net_amt_w_disc      = $invDetail->net_amt_w_disc;
-            $detailObj->tax_amt             = $invDetail->tax_amt;
-            $detailObj->payable_amt         = $invDetail->payable_amt;
-            $detailObj->remark              = $invDetail->remark;
-            $detailObj->save();
+            DB::table('invoice_detail')->insert([
+              'id'                  => $detail_id,
+              'invoice_id'          => $invoice_id,
+              'product_id'          => $invDetail->product_id,
+              'product_group_id'    => $invDetail->product_group_id,
+              'status'              => StatusConstance::status_confirm_value,
+              'uom_id'              => $invDetail->uom_id,
+              'uom'                 => $invDetail->uom,
+              'quantity'            => $invDetail->quantity,
+              'unit_price'          => $invDetail->unit_price,
+              'net_amt'             => $invDetail->net_amt,
+              'discount_amt'        => $invDetail->discount_amt,
+              'net_amt_w_disc'      => $invDetail->net_amt_w_disc,
+              'tax_amt'             => $invDetail->tax_amt,
+              'payable_amt'         => $invDetail->payable_amt,
+              'remark'              => $invDetail->remark,
+              'confirm_by'          => NULL,
+              'confirm_date'        => NULL,
+              'cancel_by'           => NULL,
+              'cancel_date'         => NULL,
+            ]);
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
-            $returnedObj['id'] = $tempObj->id;
             return $returnedObj;
         }
         catch(\Exception $e){
@@ -90,15 +97,22 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
     }
 
     public function uploadInvoice($invoices) {
-      $returnedObj = array();
-      $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+      $returnedObj                          = array();
+      $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
       $returnedObj['aceplusStatusMessage']  = "Request is successful!";
 
       try {
+        $configRepo = new ConfigRepository();
         DB::beginTransaction();
         foreach($invoices as $invoice){
           // Save Invoice
-          $invoice_id                     = uniqid('', true);;
+          $id_prefix                      = $configRepo->getInvoicePrefixId()[0]->value;
+          $date_str                       = date('Ymd',strtotime("now"));
+          $prefix                         = $id_prefix.$date_str;
+          $table                          = (new Invoice())->getTable();
+          $col                            = 'id';
+          $offset                         = 1;
+          $invoice_id                     = Utility::generate_id($prefix,$table,$col,$offset);
           $invoiceRes                     = $this->saveInvoice($invoice,$invoice_id);
           if($invoiceRes['aceplusStatusCode'] != ReturnMessage::OK){
             DB::rollback();
@@ -111,6 +125,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $deleteInvoiceDetail              = InvoiceDetail::where('invoice_id',$invoice_id)->delete();
 
           foreach($invoice->invoice_detail as $invDetail){
+
             $detail_id                      = uniqid('', true);
             $detailRes                      = $this->saveInvoiceDetail($invDetail,$detail_id,$invoice_id);
             if($detailRes['aceplusStatusCode'] != ReturnMessage::OK){
@@ -128,7 +143,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
       catch(\Exception $e){
           DB::rollback();
           $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
-          $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
           return $returnedObj;
       }
     }
