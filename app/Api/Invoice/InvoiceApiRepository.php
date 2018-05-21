@@ -139,7 +139,8 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
       // $returnedObj['aceplusStatusMessage']  = "Request failed";
 
       try {
-
+        $invoice_headers = Invoice::whereNull('deleted_at')->get();
+        dd('invoice_headers',$invoice_headers);
 
         if(isset($delivery_date) && count($delivery_date)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;

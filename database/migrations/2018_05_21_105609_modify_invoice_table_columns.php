@@ -19,6 +19,7 @@ class ModifyInvoiceTableColumns extends Migration
 
         Schema::table('invoice_detail', function (Blueprint $table) {
           $table->string('id')->change();
+          $table->string('invoice_id')->change();
           $table->integer('uom_id')->after('product_group_id');
           $table->text('remark')->after('payable_amt');
         });
