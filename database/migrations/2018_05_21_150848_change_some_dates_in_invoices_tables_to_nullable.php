@@ -13,6 +13,9 @@ class ChangeSomeDatesInInvoicesTablesToNullable extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
+          $table->date('order_date')->nullable()->change();
+          $table->date('delivery_date')->nullable()->change();
+          $table->date('payment_date')->nullable()->change();
           $table->integer('confirm_by')->nullable()->change();
           $table->dateTime('confirm_date')->nullable()->change();
           $table->integer('cancel_by')->nullable()->change();
