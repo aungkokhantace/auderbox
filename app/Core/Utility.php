@@ -80,7 +80,24 @@ class Utility
 
             $syncTable->version = $version++;
             $syncTable->save();
-
         }
+    }
+
+    public static function generate_id($prefix,$table,$col,$offset){
+        $idStringArray  = DB::select("SELECT `$col` as id FROM `$table` WHERE id LIKE '$prefix%'");
+        $unique         = str_pad(1, 6, "0", STR_PAD_LEFT);
+        // dd(max(['INV20180521000001','INV20180521000002','INV20180521000003','INV20180521000011','INV20180521000012','INV20180521000013','INV20180521000100','INV20180521000101','INV20180521000300','INV20180521001000']));
+        if(count($idStringArray) > 0){
+          $temp_arr = [];
+          foreach($idStringArray as $idString){
+            array_push($temp_arr,$idString->id);
+          }
+          $max_str_id   = max($temp_arr);
+          $length       = strrpos($max_str_id,'0')+1;
+          $split_str    = str_split($max_str_id,$length);
+          $number       = $split_str[1]+1;
+          $unique       = str_pad($number, 6, "0", STR_PAD_LEFT);
+        }
+        return sprintf("%s%s",$prefix,$unique);
     }
 }
