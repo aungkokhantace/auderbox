@@ -74,7 +74,7 @@ class InvoiceApiController extends Controller
           $filter       = $params->invoice_list->filter;
 
           $result = $this->repo->getInvoiceList($retailer_id,$filter);
-          dd('result',$result);
+          
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']  = "Success!";

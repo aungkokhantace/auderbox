@@ -23,7 +23,7 @@ class Invoice extends Model
       'retailshop_id' => 'integer',
       'tax_rate' => 'double',
       'total_net_amt' => 'double',
-      'total_discount_amt' => 'string',
+      'total_discount_amt' => 'double',
       'total_net_amt_w_disc' => 'double',
       'total_tax_amt' => 'double',
       'total_payable_amt' => 'double',
