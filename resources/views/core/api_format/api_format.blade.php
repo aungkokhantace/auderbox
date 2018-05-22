@@ -720,83 +720,79 @@
             <h3>Request</h3>
             <pre>
 {
-  "site_activation_key": "1234567",
-  "data": [
-    {
-      "invoices": [
-        {
-          "id": 1,
-          "invoice_no": "inv0001",
-          "status": 1,
-          "order_date": "2018-05-16",
-          "delivery_date": "2018-05-18",
-          "payment_date": "2018-05-18",
-          "retailer_id": 1,
-          "brand_owner_id": 1,
-          "retailshop_id": 1,
-          "tax_rate": 10,
-          "total_net_amt": 5000,
-          "total_discount_amt": 500,
-          "total_net_amt_w_disc": 4500,
-          "total_tax_amt": 450,
-          "total_payable_amt": 4950,
-          "remark": "invoice remark",
-          "confirm_by": 1,
-          "confirm_date": "2018-05-16",
-          "cancel_by": "",
-          "cancel_date": "",
-          "created_by": 1,
-          "updated_by": 1,
-          "deleted_by": "",
-          "created_at": "2018-05-16 13:25:03",
-          "updated_at": "2018-05-16 13:25:03",
-          "deleted_at": "",
-          "invoice_detail": [
-            {
-              "id": 1,
-              "invoice_id": 1,
-              "product_id": 1,
-              "product_group_id": 1,
-              "status": 1,
-              "uom": "pack",
-              "quantity": 6,
-              "unit_price": 350,
-              "net_amt": 2000,
-              "discount_amt": 250,
-              "net_amt_w_disc": 1750,
-              "tax_amt": 175,
-              "payable_amt": 1925,
-              "confirm_by": 1,
-              "confirm_date": "2018-05-16",
-              "cancel_by": "",
-              "cancel_date": "",
-
-            },
-            {
-              "id": 2,
-              "invoice_id": 1,
-              "product_id": 2,
-              "product_group_id": 1,
-              "status": 1,
-              "uom": "pack",
-              "quantity": 6,
-              "unit_price": 350,
-              "net_amt": 2000,
-              "discount_amt": 250,
-              "net_amt_w_disc": 1750,
-              "tax_amt": 175,
-              "payable_amt": 1925,
-              "confirm_by": 1,
-              "confirm_date": "2018-05-16",
-              "cancel_by": "",
-              "cancel_date": "",
-
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"site_activation_key": "1234567",
+	"data": [{
+		"invoices": [{
+			"id": "INV20180522000001",
+			"status": 1,
+			"order_date": "2018-05-16",
+			"delivery_date": "2018-05-18",
+			"payment_date": "2018-05-18",
+			"retailer_id": 1,
+			"brand_owner_id": 1,
+			"retailshop_id": 1,
+			"tax_rate": 10,
+			"total_net_amt": 5000,
+			"total_discount_amt": 500,
+			"total_net_amt_w_disc": 4500,
+			"total_tax_amt": 450,
+			"total_payable_amt": 4950,
+			"remark": "invoice remark",
+			"confirm_by": 1,
+			"confirm_date": "2018-05-16",
+			"cancel_by": "",
+			"cancel_date": "",
+			"created_by": 1,
+			"updated_by": 1,
+			"deleted_by": "",
+			"created_at": "2018-05-16 13:25:03",
+			"updated_at": "2018-05-16 13:25:03",
+			"deleted_at": "",
+			"invoice_detail": [{
+					"id": "5abdfdfsdfd",
+					"invoice_id": "INV20180522000001",
+					"product_id": 1,
+					"product_group_id": 1,
+					"status": 1,
+					"uom_id": 1,
+					"uom": "pack",
+					"quantity": 6,
+					"unit_price": 350,
+					"net_amt": 2000,
+					"discount_amt": 250,
+					"net_amt_w_disc": 1750,
+					"tax_amt": 175,
+					"payable_amt": 1925,
+					"confirm_by": 1,
+					"confirm_date": "2018-05-16",
+					"cancel_by": "",
+					"cancel_date": "",
+					"remark": "test test"
+				},
+				{
+					"id": 2,
+					"invoice_id": 1,
+					"product_id": 2,
+					"product_group_id": 1,
+					"status": 1,
+					"uom_id": 1,
+					"uom": "pack",
+					"quantity": 6,
+					"unit_price": 350,
+					"net_amt": 2000,
+					"discount_amt": 250,
+					"net_amt_w_disc": 1750,
+					"tax_amt": 175,
+					"payable_amt": 1925,
+					"confirm_by": 1,
+					"confirm_date": "2018-05-16",
+					"cancel_by": "",
+					"cancel_date": "",
+					"remark": "test test"
+				}
+			]
+		}]
+	}]
 }
             </pre>
 
