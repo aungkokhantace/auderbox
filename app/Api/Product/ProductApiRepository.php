@@ -100,10 +100,14 @@ class ProductApiRepository implements ProductApiRepositoryInterface
                               ->where('product_volume_type.status',1)
 
                               ->first();
-
-        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
-        $returnedObj['aceplusStatusMessage'] = "Success!";
-        $returnedObj['resultObj'] = $product;
+        if(isset($product) && count($product) > 0){
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage'] = "Success!";
+          $returnedObj['resultObj'] = $product;
+        }
+        else{
+          $returnedObj['aceplusStatusMessage'] = "Product does not exist!";
+        }
         return $returnedObj;
       }
       catch(\Exception $e){

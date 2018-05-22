@@ -164,9 +164,11 @@ class ProductApiController extends Controller
                       $data = array();
                       //add minimum_order_qty, maximum_order_qty, out_of_stock_flag
                       //all by default now
-                      $result['resultObj']->minimum_order_qty = 1;
-                      $result['resultObj']->maximum_order_qty = 50;
-                      $result['resultObj']->out_of_stock_flag = 0;
+                      if(isset($result['resultObj']) && count($result['resultObj']) > 0){
+                        $result['resultObj']->minimum_order_qty = 1;
+                        $result['resultObj']->maximum_order_qty = 50;
+                        $result['resultObj']->out_of_stock_flag = 0;
+                      }
 
                       // create std object
                       $data[0] = new \stdClass();
