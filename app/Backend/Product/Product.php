@@ -19,6 +19,7 @@ class Product extends Model
        'product_uom_type_id' => 'integer',
        'image' => 'string',
        'status' => 'integer',
+       'price' => 'double',
        'created_by' => 'integer',
        'updated_by' => 'integer',
        'deleted_by' => 'integer',

@@ -157,23 +157,27 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         $query = Invoice::query();
         $query = $query->whereNull('deleted_at');
 
-        //for 1 month  filter
-        if(isset($filter) && $filter !== "all" && $filter == 1){
-          $query = $query->whereMonth('order_date', '=' ,Carbon::now()->subMonth()->month);
-        }
-        //for 3 months filter
-        if(isset($filter) && $filter !== "all" && $filter == 3){
-          $query = $query->whereMonth('order_date', '=' ,Carbon::now()->subMonth(3)->month);
+        // for month filter
+        // month_filter may be 1 (previous month) or 3 (previous 3 months) or all
+        if(isset($filter) && $filter !== "all"){
+          $query = $query->whereMonth('order_date', '=' ,Carbon::now()->subMonth($filter)->month);
         }
 
-        $invoice_headers = $query->get();
-        dd('invoice_headers',$invoice_headers);
+        $invoices = $query->get();
 
+        foreach($invoices as $invoice_header){
+          dd('header_obj',$invoice_header);
+          $invoice_detail_query = InvoiceDetail::query();
+          $invoice_detail_query = $invoice_detail_query->where('invoice_id','=',$invoice_header->id); //match with invoice header id
+          $invoice_details      = $invoice_detail_query->get();
 
-        if(isset($delivery_date) && count($delivery_date)>0){
+          $invoice_header->invoice_detail = $invoice_details;
+        }
+        // dd('inv',$invoices);
+        if(isset($invoices) && count($invoices)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
-          $returnedObj['resultObj']             = $delivery_date;
+          $returnedObj['invoices']             = $invoices;
           return $returnedObj;
         }
         else{
