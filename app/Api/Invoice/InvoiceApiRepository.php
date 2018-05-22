@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Backend\Invoice\Invoice;
 use App\Backend\InvoiceDetail\InvoiceDetail;
 use App\Core\StatusConstance;
+use Carbon\Carbon;
 
 /**
  * Author: Khin Zar Ni Wint
@@ -136,11 +137,23 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
     public function getInvoiceList($retailer_id,$filter) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
-      // $returnedObj['aceplusStatusMessage']  = "Request failed";
 
       try {
-        $invoice_headers = Invoice::whereNull('deleted_at')->get();
+        $query = Invoice::query();
+        $query = $query->whereNull('deleted_at');
+
+        //for 1 month  filter
+        if(isset($filter) && $filter !== "all" && $filter == 1){
+          $query = $query->whereMonth('order_date', '=' ,Carbon::now()->subMonth()->month);
+        }
+        //for 3 months filter
+        if(isset($filter) && $filter !== "all" && $filter == 3){
+          $query = $query->whereMonth('order_date', '=' ,Carbon::now()->subMonth(3)->month);
+        }
+
+        $invoice_headers = $query->get();
         dd('invoice_headers',$invoice_headers);
+
 
         if(isset($delivery_date) && count($delivery_date)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
