@@ -44,12 +44,13 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $paramObj->confirm_date         = NULL;
             $paramObj->cancel_by            = NULL;
             $paramObj->cancel_date          = NULL;
-            $paramObj->created_by           = $invoice->created_by;
-            $paramObj->updated_by           = $invoice->updated_by;
-            $paramObj->deleted_by           = $invoice->deleted_by;
-            $paramObj->created_at           = $invoice->created_at;
-            $paramObj->updated_at           = $invoice->updated_at;
-            $paramObj->deleted_at           = $invoice->deleted_at;
+            $paramObj->created_by           = (isset($invoice->created_by) && $invoice->created_by != "") ? $invoice->created_by:null;
+            $paramObj->updated_by           = (isset($invoice->updated_by) && $invoice->updated_by != "") ? $invoice->updated_by:null;
+            $paramObj->deleted_by           = (isset($invoice->deleted_by) && $invoice->deleted_by != "") ? $invoice->deleted_by:null;
+            $paramObj->created_at           = (isset($invoice->created_at) && $invoice->created_at != "") ? $invoice->created_at:null;
+            $paramObj->updated_at           = (isset($invoice->updated_at) && $invoice->updated_at != "") ? $invoice->updated_at:null;
+            $paramObj->deleted_at           = (isset($invoice->deleted_at) && $invoice->deleted_at != "") ? $invoice->deleted_at:null;
+
             $paramObj->save();
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
