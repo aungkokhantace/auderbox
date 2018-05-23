@@ -157,18 +157,24 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
       try {
         $query = Invoice::query();
+        /*
+        // get retailshop info too
         $query = $query->select('invoices.*',
                                 'retailshops.name_eng as retailshop_name_eng',
                                 'retailshops.name_mm as retailshop_name_mm',
                                 'retailshops.address as retailshop_address');
+        */
+
+        //get only invoice info (not retailshop info)
+        $query = $query->select('invoices.*');
 
         $query = $query->leftJoin('retailers', 'retailers.id', '=', 'invoices.retailer_id');
         $query = $query->leftJoin('brand_owners', 'brand_owners.id', '=', 'invoices.brand_owner_id');
         $query = $query->leftJoin('retailshops', 'retailshops.id', '=', 'invoices.retailshop_id');
 
 
-        // month_filter may be 1 (previous month) or 3 (previous 3 months) or all
-        if(isset($filter) && $filter !== "all"){
+        // month_filter may be 1 (previous month) or 3 (previous 3 months) or 0 (all invoices)
+        if(isset($filter) && $filter !== 0){
           $query = $query->whereMonth('invoices.order_date', '=' ,Carbon::now()->subMonth($filter)->month);
         }
 
@@ -184,6 +190,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         $query = $query->where('retailshops.status',1);
 
         $invoices = $query->get();
+
 
         foreach($invoices as $invoice_header){
           //get status text according to status (integer)
@@ -206,6 +213,8 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
 
+          /*
+          // start invoice_detail data
           //get invoice detail info
           $invoice_detail_query = InvoiceDetail::query();
 
@@ -250,6 +259,8 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           }
 
           $invoice_header->invoice_detail = $invoice_details;
+          */
+          //end invoice_detail data
         }
 
         if(isset($invoices) && count($invoices)>0){
