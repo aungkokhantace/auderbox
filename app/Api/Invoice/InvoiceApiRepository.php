@@ -151,6 +151,128 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
       }
     }
 
+    public function getInvoiceDetail($invoice_id) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try {
+        $query = Invoice::query();
+
+        // get retailshop info too
+        $query = $query->select('invoices.id as id',
+                                'invoices.order_date as order_date',
+                                'invoices.delivery_date as delivery_date',
+                                'retailshops.name_eng as retailshop_name_eng',
+                                'retailshops.name_mm as retailshop_name_mm',
+                                'retailshops.address as retailshop_address');
+
+
+        $query = $query->leftJoin('retailers', 'retailers.id', '=', 'invoices.retailer_id');
+        $query = $query->leftJoin('brand_owners', 'brand_owners.id', '=', 'invoices.brand_owner_id');
+        $query = $query->leftJoin('retailshops', 'retailshops.id', '=', 'invoices.retailshop_id');
+
+        //get records that are not deleted
+        $query = $query->whereNull('invoices.deleted_at');
+        $query = $query->whereNull('retailers.deleted_at');
+        $query = $query->whereNull('brand_owners.deleted_at');
+        $query = $query->whereNull('retailshops.deleted_at');
+
+        //get status = active records
+        $query = $query->where('retailers.status',1);
+        $query = $query->where('brand_owners.status',1);
+        $query = $query->where('retailshops.status',1);
+
+        $query = $query->where('invoices.id',$invoice_id);
+
+        $invoice = $query->first();
+
+        //get status text according to status (integer)
+        if($invoice->status == StatusConstance::status_pending_value){
+          $invoice->status_text = StatusConstance::status_pending_description;
+        }
+        else if($invoice->status == StatusConstance::status_confirm_value){
+          $invoice->status_text = StatusConstance::status_confirm_description;
+        }
+        else if($invoice->status == StatusConstance::status_deliver_value){
+          $invoice->status_text = StatusConstance::status_deliver_description;
+        }
+        else if($invoice->status == StatusConstance::status_retailer_cancel_value){
+          $invoice->status_text = StatusConstance::status_retailer_cancel_description;
+        }
+        else if($invoice->status == StatusConstance::status_brand_owner_cancel_value){
+          $invoice->status_text = StatusConstance::status_brand_owner_cancel_description;
+        }
+        else{
+          $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
+        }
+
+
+        // start invoice_detail data
+        //get invoice detail info
+        $invoice_detail_query = InvoiceDetail::query();
+
+        $invoice_detail_query = $invoice_detail_query->select('invoice_detail.*',
+                                                              'product_group.name as product_name',
+                                                              'product_uom_type.name_eng as product_uom_type_name_eng',
+                                                              'product_uom_type.name_mm as product_uom_type_name_mm',
+                                                              'product_uom_type.total_quantity as total_uom_quantity',
+                                                              'product_volume_type.name as product_volume_type_name',
+                                                              'product_container_type.name as product_container_type_name');
+
+        $invoice_detail_query = $invoice_detail_query->leftJoin('products', 'products.id', '=', 'invoice_detail.product_id');
+        $invoice_detail_query = $invoice_detail_query->leftJoin('product_group', 'product_group.id', '=', 'products.product_group_id');
+        $invoice_detail_query = $invoice_detail_query->leftJoin('product_uom_type', 'product_uom_type.id', '=', 'products.product_uom_type_id');
+        $invoice_detail_query = $invoice_detail_query->leftJoin('product_volume_type', 'product_volume_type.id', '=', 'product_group.product_volume_type_id');
+        $invoice_detail_query = $invoice_detail_query->leftJoin('product_container_type', 'product_container_type.id', '=', 'product_group.product_container_type_id');
+
+        $invoice_detail_query = $invoice_detail_query->where('invoice_id','=',$invoice->id); //match with invoice header id
+        $invoice_details      = $invoice_detail_query->get();
+
+        //loop through each invoice detail to get status_text of each invoice_detail
+        foreach($invoice_details as $invoice_detail){
+          //get status text according to status (integer)
+          if($invoice_detail->status == StatusConstance::status_pending_value){
+            $invoice_detail->status_text = StatusConstance::status_pending_description;
+          }
+          else if($invoice_detail->status == StatusConstance::status_confirm_value){
+            $invoice_detail->status_text = StatusConstance::status_confirm_description;
+          }
+          else if($invoice_detail->status == StatusConstance::status_deliver_value){
+            $invoice_detail->status_text = StatusConstance::status_deliver_description;
+          }
+          else if($invoice_detail->status == StatusConstance::status_retailer_cancel_value){
+            $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
+          }
+          else if($invoice_detail->status == StatusConstance::status_brand_owner_cancel_value){
+            $invoice_detail->status_text = StatusConstance::status_brand_owner_cancel_description;
+          }
+          else{
+            $invoice_detail->status_text = StatusConstance::status_auderbox_cancel_description;
+          }
+        }
+
+        $invoice->invoice_detail = $invoice_details;
+        //end invoice_detail data
+
+        if(isset($invoice) && count($invoice)>0){
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "Request is successful!";
+          $returnedObj['invoices']              = $invoice;
+          return $returnedObj;
+        }
+        else{
+          //if obj does not exist
+          $returnedObj['aceplusStatusMessage']  = "Invoice does not exist!";
+          return $returnedObj;
+        }
+
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+          return $returnedObj;
+      }
+    }
+
     public function getInvoiceList($retailer_id,$filter) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;

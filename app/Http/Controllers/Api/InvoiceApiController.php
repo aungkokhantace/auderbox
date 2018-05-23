@@ -98,4 +98,43 @@ class InvoiceApiController extends Controller
         return \Response::json($checkServerStatusArray);
     }
   }
+
+  public function getInvoiceDetail(){
+    $temp                   = Input::All();
+    $inputAll               = json_decode($temp['param_data']);
+    $checkServerStatusArray = Check::checkCodes($inputAll);
+
+    if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+        $params             = $checkServerStatusArray['data'][0];
+
+        $returnedObj['data']= [];
+        if (isset($params->invoice_detail) && count($params->invoice_detail) > 0) {
+          $invoice_id  = $params->invoice_detail->invoice_id;
+
+          $result = $this->repo->getInvoiceDetail($invoice_id);
+          
+          if($result['aceplusStatusCode'] == ReturnMessage::OK){
+              $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+              $returnedObj['aceplusStatusMessage']  = "Success!";
+              $returnedObj['data']                  = $result['invoices'];
+              return \Response::json($returnedObj);
+          }
+          else{
+            $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+            $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+            return \Response::json($returnedObj);
+          }
+        }
+        //API parameter is missing
+        else{
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+          $returnedObj['aceplusStatusMessage'] = "Missing API Parameters";
+          $returnedObj['data'] = [];
+          return \Response::json($returnedObj);
+        }
+    }
+    else{
+        return \Response::json($checkServerStatusArray);
+    }
+  }
 }

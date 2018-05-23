@@ -16,6 +16,7 @@
             <li><a data-toggle="tab" href="#delivery_date_api"><b>Delivery Date</b></a></li>
             <li><a data-toggle="tab" href="#invoice_upload_api"><b>Invoice Upload</b></a></li>
             <li><a data-toggle="tab" href="#invoice_list_download_api"><b>Invoice List</b></a></li>
+            <li><a data-toggle="tab" href="#invoice_detail_download_api"><b>Invoice Detail</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -903,6 +904,103 @@
               </pre>
         </div>
         <!-- end invoice list api content -->
+
+        <!-- start invoice detail download api content -->
+        <div id="invoice_detail_download_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_invoice_detail</b></p>
+            <hr>
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "invoice_detail": {
+        "invoice_id": "INV20180521000001"
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "data": {
+    "id": "INV20180521000001",
+    "order_date": "2018-05-16 00:00:00",
+    "delivery_date": "2018-05-18 00:00:00",
+    "retailshop_name_eng": "Pyae Sone (1)",
+    "retailshop_name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1041)",
+    "retailshop_address": "No(59), Kan Lann, Hlaing, Yangon",
+    "status_text": "Auderbox Cancelled",
+    "invoice_detail": [
+      {
+        "id": "5b02d249ccba69.52102058",
+        "invoice_id": "INV20180521000001",
+        "product_id": 1,
+        "product_group_id": 1,
+        "uom_id": 1,
+        "status": 2,
+        "uom": "pack",
+        "quantity": 6,
+        "unit_price": 350,
+        "net_amt": 2000,
+        "discount_amt": 250,
+        "net_amt_w_disc": 1750,
+        "tax_amt": 175,
+        "payable_amt": 1925,
+        "remark": "test test",
+        "confirm_by": null,
+        "confirm_date": null,
+        "cancel_by": null,
+        "cancel_date": null,
+        "product_name": "Coca Cola",
+        "product_uom_type_name_eng": "unit",
+        "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
+        "total_uom_quantity": 1,
+        "product_volume_type_name": "330 ml",
+        "product_container_type_name": "Glass Bottle",
+        "status_text": "Confirmed"
+      },
+      {
+        "id": "5b02d249cce253.89040335",
+        "invoice_id": "INV20180521000001",
+        "product_id": 2,
+        "product_group_id": 1,
+        "uom_id": 1,
+        "status": 2,
+        "uom": "pack",
+        "quantity": 6,
+        "unit_price": 350,
+        "net_amt": 2000,
+        "discount_amt": 250,
+        "net_amt_w_disc": 1750,
+        "tax_amt": 175,
+        "payable_amt": 1925,
+        "remark": "test test",
+        "confirm_by": null,
+        "confirm_date": null,
+        "cancel_by": null,
+        "cancel_date": null,
+        "product_name": "Coca Cola",
+        "product_uom_type_name_eng": "pack",
+        "product_uom_type_name_mm": "\u1000\u1010\u1039",
+        "total_uom_quantity": 6,
+        "product_volume_type_name": "330 ml",
+        "product_container_type_name": "Glass Bottle",
+        "status_text": "Confirmed"
+      }
+    ]
+  },
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success!"
+}
+              </pre>
+        </div>
+        <!-- end invoice detail api content -->
       </div>
     </div>
 </div>

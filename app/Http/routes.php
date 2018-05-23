@@ -101,4 +101,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //invoice list download api
         Route::post('download_invoice_list', array('as'=>'download_invoice_list','uses'=>'Api\InvoiceApiController@getInvoiceList'));
+
+        //invoice detail download api
+        Route::post('download_invoice_detail', array('as'=>'download_invoice_detail','uses'=>'Api\InvoiceApiController@getInvoiceDetail'));
     });
