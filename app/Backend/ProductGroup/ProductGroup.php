@@ -25,9 +25,9 @@ class ProductGroup extends Model
        'created_by' => 'integer',
        'updated_by' => 'integer',
        'deleted_by' => 'integer',
-       'created_at' => 'timestamp',
-       'updated_at' => 'timestamp',
-       'deleted_at' => 'timestamp'
+       'created_at' => 'datetime',
+       'updated_at' => 'datetime',
+       'deleted_at' => 'datetime'
    ];
 
     protected $fillable = [
