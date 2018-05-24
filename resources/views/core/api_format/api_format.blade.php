@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Dashboard')
+@section('title','API Formats')
 @section('content')
 
 <!-- begin #content -->

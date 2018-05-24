@@ -162,6 +162,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         $query = $query->select('invoices.id as id',
                                 'invoices.order_date as order_date',
                                 'invoices.delivery_date as delivery_date',
+                                'invoices.total_payable_amt as total_payable_amt',
                                 'retailshops.name_eng as retailshop_name_eng',
                                 'retailshops.name_mm as retailshop_name_mm',
                                 'retailshops.address as retailshop_address');
@@ -206,6 +207,11 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
         }
 
+        // //start changing date objects to string
+        // $invoice->order_date = $invoice->order_date->toDateString();
+        // $invoice->delivery_date = $invoice->delivery_date->toDateString();
+        // $invoice->payment_date = $invoice->payment_date->toDateString();
+        // //end changing date objects to string
 
         // start invoice_detail data
         //get invoice detail info
@@ -334,6 +340,13 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           else{
             $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
+
+          // //start changing date objects to string
+          // $invoice_header->order_date = $invoice_header->order_date->toDateString();
+          // $invoice_header->delivery_date = $invoice_header->delivery_date->toDateString();
+          // $invoice_header->payment_date = $invoice_header->payment_date->toDateString();
+          // //end changing date objects to string
+
 
           /*
           // start invoice_detail data

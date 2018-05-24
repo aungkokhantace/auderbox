@@ -81,6 +81,12 @@ class Default_PermissionSeeder extends Seeder
           ['id'=>64,'module'=>'Township','name'=>'Update','description'=>'Township Update','url'=>'backend/township/update'],
           ['id'=>65,'module'=>'Township','name'=>'Destroy','description'=>'Township Destroy','url'=>'backend/township/destroy'],
 
+          //Reports
+          //Invoice Report
+          ['id'=>70,'module'=>'Invoice Report','name'=>'List','description'=>'Invoice Report List','url'=>'backend/invoice_report'],
+          ['id'=>71,'module'=>'Invoice Report','name'=>'Search','description'=>'Invoice Report Search','url'=>'backend/invoice_report/search'],
+          ['id'=>72,'module'=>'Invoice Report','name'=>'Detail','description'=>'Invoice Detail Report','url'=>'backend/invoice_report/detail'],
+
         );
 
         DB::table('core_permissions')->insert($permissions);

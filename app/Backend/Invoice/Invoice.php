@@ -15,9 +15,9 @@ class Invoice extends Model
 
     protected $casts = [
       'id' => 'string',
-      'order_date' => 'date',
-      'delivery_date' => 'date',
-      'payment_date' => 'date',
+      'order_date' => 'string',
+      'delivery_date' => 'string',
+      'payment_date' => 'string',
       'retailer_id' => 'integer',
       'brand_owner_id' => 'integer',
       'retailshop_id' => 'integer',

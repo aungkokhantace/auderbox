@@ -62,6 +62,12 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('permission/update', array('as'=>'backend/permission/update','uses'=>'Core\PermissionController@update'));
             Route::post('permission/destroy', array('as'=>'backend/permission/destroy','uses'=>'Core\PermissionController@destroy'));
 
+            //Reports
+            //Invoice Report
+            Route::get('invoice_report', array('as'=>'backend/invoice_report','uses'=>'Backend\InvoiceReportController@index'));
+            Route::get('invoice_report/search/{from_date?}/{to_date?}/{status?}', array('as'=>'backend/invoice_report/search','uses'=>'Backend\InvoiceReportController@search'));
+            Route::get('invoice_report/detail/{id}', array('as'=>'backend/invoice_report/detail','uses'=>'Backend\InvoiceReportController@invoiceDetail'));
+
             //API formats
             Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));
         });
@@ -69,7 +75,6 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     });
-
 
 });
 

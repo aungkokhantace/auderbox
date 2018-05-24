@@ -7,6 +7,7 @@
  */
 
 use Illuminate\Database\Seeder;
+use App\Backend\CorePermissionRole\CorePermissionRole;
 
 class Default_RolePermissionSeeder extends Seeder
 {
@@ -17,7 +18,8 @@ class Default_RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('core_permission_role')->delete();
+        // DB::table('core_permission_role')->delete();
+        CorePermissionRole::query()->truncate();
 
         $roles = array(
           //start super-admin (role_id = 2) permissions
@@ -82,6 +84,11 @@ class Default_RolePermissionSeeder extends Seeder
             ['role_id'=>2, 'permission_id'=>63],
             ['role_id'=>2, 'permission_id'=>64],
             ['role_id'=>2, 'permission_id'=>65],
+
+            // Invoice Report
+            ['role_id'=>2, 'permission_id'=>70],
+            ['role_id'=>2, 'permission_id'=>71],
+            ['role_id'=>2, 'permission_id'=>72],
           //end super-admin permissions
 
           //start system-admin (role_id = 3) permissions
@@ -143,6 +150,11 @@ class Default_RolePermissionSeeder extends Seeder
             ['role_id'=>3, 'permission_id'=>63],
             ['role_id'=>3, 'permission_id'=>64],
             ['role_id'=>3, 'permission_id'=>65],
+
+            // Invoice Report
+            ['role_id'=>3, 'permission_id'=>70],
+            ['role_id'=>3, 'permission_id'=>71],
+            ['role_id'=>3, 'permission_id'=>72],
           //end system-admin permissions
 
           //start office-staff (role_id = 4) permissions

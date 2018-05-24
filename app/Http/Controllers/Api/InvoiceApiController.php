@@ -112,7 +112,7 @@ class InvoiceApiController extends Controller
           $invoice_id  = $params->invoice_detail->invoice_id;
 
           $result = $this->repo->getInvoiceDetail($invoice_id);
-          
+
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']  = "Success!";

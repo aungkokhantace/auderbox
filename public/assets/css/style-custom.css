@@ -134,3 +134,40 @@ background: #d38563 !important;
 .pull-right {
   float: right !important;
 }
+
+/*start 404 page template css*/
+#fof{display:block; width:100%; padding:150px 0; line-height:1.6em; text-align:center;}
+#fof .hgroup{display:block; width:80%; margin:0 auto; padding:0;}
+#fof .hgroup h1, #fof .hgroup h2{margin:0 0 0 40px; padding:0; float:left; text-transform:uppercase;}
+#fof .hgroup h1{margin-top:-90px; font-size:200px;}
+#fof .hgroup h2{font-size:60px;}
+#fof .hgroup h2 span{display:block; font-size:30px;}
+#fof p{margin:25px 0 0 0; padding:0; font-size:16px;}
+#fof p:first-child{margin-top:0;}
+/*end 404 page template css*/
+
+/* change backend color to auderbox theme color */
+.sidebar {
+  background-color: #979797 !important;
+}
+th {
+  background-color: #F37075 !important;
+}
+li .active{
+  background-color: #F37075 !important;
+}
+ul .sub-menu{
+  background-color: #F37075 !important;
+}
+.sidebar-minify-btn{
+  background-color: #F37075 !important;
+}
+.page-header{
+  color: #F37075 !important;
+}
+/* change backend color to auderbox theme color */
+
+/* for horizontal scroll bar when listing table don’t fit on page */
+.content{
+overflow:auto;
+}
