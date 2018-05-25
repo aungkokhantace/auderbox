@@ -83,6 +83,7 @@ class Utility
         }
     }
 
+    /*
     public static function generate_id($prefix,$table,$col,$offset){
         $idStringArray  = DB::select("SELECT `$col` as id FROM `$table` WHERE id LIKE '$prefix%'");
         $unique         = str_pad(1, 6, "0", STR_PAD_LEFT);
@@ -99,5 +100,21 @@ class Utility
           $unique       = str_pad($number, 6, "0", STR_PAD_LEFT);
         }
         return sprintf("%s%s",$prefix,$unique);
+    }
+    */
+
+    //with $pad_length
+    public static function generate_id($prefix,$table,$col,$offset, $pad_length = 6)
+    {
+        $max = DB::select("SELECT MAX(`$col`) as id FROM `$table` WHERE id LIKE '$prefix%'");
+        $newId = 1;
+        if($max[0] != null && $max[0]->id != null) {
+            $oldId = $max[0]->id;
+            $numberPart = str_replace($prefix,"",$oldId);
+            $value = intval($numberPart);
+            $newId = $value + $offset;
+        }
+        $runningNo = str_pad($newId, $pad_length, 0, STR_PAD_LEFT);
+        return sprintf("%s%s",$prefix,$runningNo);
     }
 }
