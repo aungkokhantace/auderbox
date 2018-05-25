@@ -268,6 +268,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         }
         else{
           //if obj does not exist
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Invoice does not exist!";
           return $returnedObj;
         }
@@ -406,6 +407,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         }
         else{
           //if obj does not exist
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Invoice does not exist!";
           return $returnedObj;
         }

@@ -930,8 +930,9 @@
 {
   "data": {
     "id": "INV20180521000001",
-    "order_date": "2018-05-16 00:00:00",
-    "delivery_date": "2018-05-18 00:00:00",
+    "order_date": "2018-05-16",
+    "delivery_date": "2018-05-18",
+    "total_payable_amt": 4950,
     "retailshop_name_eng": "Pyae Sone (1)",
     "retailshop_name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1041)",
     "retailshop_address": "No(59), Kan Lann, Hlaing, Yangon",
