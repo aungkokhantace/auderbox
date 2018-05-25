@@ -402,7 +402,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         if(isset($invoices) && count($invoices)>0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
-          $returnedObj['invoices']             = $invoices;
+          $returnedObj['invoices']              = $invoices;
           return $returnedObj;
         }
         else{

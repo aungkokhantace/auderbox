@@ -56,11 +56,9 @@ class InvoiceReportController extends Controller
           // $invoice_header->payment_date_string = $invoice_header->payment_date->toDateString();
           // //end changing date objects to string
         }
-
-
-        return view('report.invoice_report.index')
-            ->with('invoices',$invoices);
       }
+      return view('report.invoice_report.index')
+      ->with('invoices',$invoices);
     }
     else{
       return redirect('backend/unauthorize');
@@ -124,7 +122,7 @@ class InvoiceReportController extends Controller
         }
 
       }
-        // dd('omvpoces',$invoices);
+      
       return view('report.invoice_report.index')
                 ->with('invoices',$invoices)
                 ->with('from_date', $from_date)
