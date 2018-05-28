@@ -49,7 +49,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           if(isset($formatted_to_date) && count($formatted_to_date) > 0){
             $query = $query->where('invoices.order_date','<=',$formatted_to_date);
           }
-          if(isset($status) && $status !== 0){
+          if(isset($status) && $status !== 0 && $status !== "all"){
             $query = $query->where('invoices.status','=',$status);
           }
 

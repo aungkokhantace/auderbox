@@ -95,6 +95,8 @@ class InvoiceReportController extends Controller
 
       if(isset($invoices) && count($invoices) > 0){
         foreach($invoices as $invoice_header){
+          /*
+          //all statuses
           //get status text according to status (integer)
           if($invoice_header->status == StatusConstance::status_pending_value){
             $invoice_header->status_text = StatusConstance::status_pending_description;
@@ -114,6 +116,17 @@ class InvoiceReportController extends Controller
           else{
             $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
+          */
+
+          //for pilot version
+          if($invoice_header->status == StatusConstance::status_confirm_value){
+            $invoice_header->status_text = StatusConstance::status_confirm_description;
+          }
+          else{
+            $invoice_header->status_text = StatusConstance::status_deliver_description;
+          }
+          //for pilot version
+
           //end status text
 
           // //start changing date objects to string
