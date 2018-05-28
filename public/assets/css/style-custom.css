@@ -147,6 +147,7 @@ background: #d38563 !important;
 /*end 404 page template css*/
 
 /* change backend color to auderbox theme color */
+/* auderbox theme color code => #F37075 */
 .sidebar {
   background-color: #979797 !important;
 }
@@ -170,4 +171,10 @@ ul .sub-menu{
 /* for horizontal scroll bar when listing table don’t fit on page */
 .content{
 overflow:auto;
+}
+
+/* for linked page header in reports */
+.linked_page_header {
+  text-decoration: none;
+  color: inherit !important;
 }

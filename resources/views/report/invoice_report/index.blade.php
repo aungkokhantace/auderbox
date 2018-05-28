@@ -4,7 +4,7 @@
 
 <!-- begin #content -->
 <div id="content" class="content">
-    <h1 class="page-header">Invoice Report</h1>
+    <h1 class="page-header"><a href="/backend/invoice_report" style="text-decoration:none" class="linked_page_header">Invoice Report</a></h1>
     <div class="row">
       <!-- start from date -->
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
@@ -73,6 +73,7 @@
                         <th>Retailshop Name (Eng)</th>
                         <th>Invoice Date</th>
                         <th>Delivered Date</th>
+                        <th>Total Amount</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -82,6 +83,7 @@
                         <th class="search-col" con-id="retailshop_name_eng">Retailshop Name (Eng)</th>
                         <th class="search-col" con-id="invoice_date">Invoice Date</th>
                         <th class="search-col" con-id="delivered_date">Delivered Date</th>
+                        <th class="search-col" con-id="total_amount">Total Amount</th>
                         <th class="search-col" con-id="status">Status</th>
                     </tr>
                     </tfoot>
@@ -92,6 +94,7 @@
                             <td>{{$invoice->retailshop_name_eng}}</td>
                             <td>{{$invoice->order_date}}</td>
                             <td>{{$invoice->delivery_date}}</td>
+                            <td>{{number_format($invoice->total_payable_amt,2)}}</td>
                             <td>{{$invoice->status_text}}</td>
                         </tr>
                         @endforeach

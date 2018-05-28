@@ -22,8 +22,17 @@
       </div>
 
       <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Total Amount</h4></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{number_format($invoice->total_payable_amt,2)}}</h4></div>
+      </div>
+
+      <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Address</h4></div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailshop_address}}</h4></div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h5><a href="/backend/invoice_report"><i class="fa fa-angle-double-left"></i> Back to Invoice List</h5></a></div>
       </div>
 
     <div class="row">
@@ -40,7 +49,7 @@
                         <th>Qty</th>
                         <th>Order Date</th>
                         <th>Delivered Date</th>
-                        <th>Price</th>
+                        <th>Amount</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -53,7 +62,7 @@
                         <th class="search-col" con-id="qty">Qty</th>
                         <th class="search-col" con-id="order_date">Order Date</th>
                         <th class="search-col" con-id="delivered_date">Delivered Date</th>
-                        <th class="search-col" con-id="price">Price</th>
+                        <th class="search-col" con-id="amount">Amount</th>
                         <th class="search-col" con-id="status">Status</th>
                     </tr>
                     </tfoot>
@@ -68,7 +77,7 @@
                           <td>{{$invoice_detail->quantity}}</td>
                           <td>{{$invoice->order_date}}</td>
                           <td>{{$invoice->delivery_date}}</td>
-                          <td>{{$invoice_detail->payable_amt}}</td>
+                          <td>{{number_format($invoice_detail->payable_amt,2)}}</td>
                           <td>{{$invoice_detail->status_text}}</td>
                       </tr>
                       <?php $number_count++; ?>

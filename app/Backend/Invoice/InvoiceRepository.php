@@ -79,11 +79,19 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         //start query to get invoice header
         $query = Invoice::query();
 
+        // // get retailshop info too
+        // $query = $query->select('invoices.id as id',
+        //                         'invoices.order_date as order_date',
+        //                         'invoices.delivery_date as delivery_date',
+        //                         'invoices.payment_date as payment_date',
+        //                         'retailshops.name_eng as retailshop_name_eng',
+        //                         'retailshops.name_mm as retailshop_name_mm',
+        //                         'retailers.name_eng as retailer_name_eng',
+        //                         'retailers.name_mm as retailer_name_mm',
+        //                         'retailshops.address as retailshop_address');
+
         // get retailshop info too
-        $query = $query->select('invoices.id as id',
-                                'invoices.order_date as order_date',
-                                'invoices.delivery_date as delivery_date',
-                                'invoices.payment_date as payment_date',
+        $query = $query->select('invoices.*',
                                 'retailshops.name_eng as retailshop_name_eng',
                                 'retailshops.name_mm as retailshop_name_mm',
                                 'retailers.name_eng as retailer_name_eng',

@@ -50,6 +50,15 @@ class InvoiceReportController extends Controller
             $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           */
+
+          //for pilot version
+          if($invoice_header->status == StatusConstance::status_confirm_value){
+            $invoice_header->status_text = StatusConstance::status_confirm_description;
+          }
+          else if($invoice_header->status == StatusConstance::status_deliver_value){
+            $invoice_header->status_text = StatusConstance::status_deliver_description;
+          }
+          //for pilot version
           //end status text
 
           // //start changing date objects to string
@@ -59,6 +68,7 @@ class InvoiceReportController extends Controller
           // //end changing date objects to string
         }
       }
+
       return view('report.invoice_report.index')
       ->with('invoices',$invoices);
     }
