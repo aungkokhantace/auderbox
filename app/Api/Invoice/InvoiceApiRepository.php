@@ -163,10 +163,15 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         $query = Invoice::query();
 
         // get retailshop info too
-        $query = $query->select('invoices.id as id',
-                                'invoices.order_date as order_date',
-                                'invoices.delivery_date as delivery_date',
-                                'invoices.total_payable_amt as total_payable_amt',
+        // $query = $query->select('invoices.id as id',
+        //                         'invoices.order_date as order_date',
+        //                         'invoices.delivery_date as delivery_date',
+        //                         'invoices.total_payable_amt as total_payable_amt',
+        //                         'retailshops.name_eng as retailshop_name_eng',
+        //                         'retailshops.name_mm as retailshop_name_mm',
+        //                         'retailshops.address as retailshop_address');
+
+        $query = $query->select('invoices.*',
                                 'retailshops.name_eng as retailshop_name_eng',
                                 'retailshops.name_mm as retailshop_name_mm',
                                 'retailshops.address as retailshop_address');

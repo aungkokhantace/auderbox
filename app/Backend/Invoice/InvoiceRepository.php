@@ -111,6 +111,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         $invoice = $query->first();
         //end query to get invoice header
 
+        /*
+        //all status
         //get status text according to status (integer)
         if($invoice->status == StatusConstance::status_pending_value){
           $invoice->status_text = StatusConstance::status_pending_description;
@@ -130,6 +132,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         else{
           $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
         }
+        */
+
+        //for pilot version
+        if($invoice->status == StatusConstance::status_confirm_value){
+          $invoice->status_text = StatusConstance::status_confirm_description;
+        }
+        else {
+          $invoice->status_text = StatusConstance::status_deliver_description;
+        }
+        //for pilot version
 
         // start invoice_detail data
         //get invoice detail info
@@ -157,6 +169,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
         //loop through each invoice detail to get status_text of each invoice_detail
         foreach($invoice_details as $invoice_detail){
+          /*
+          //all status
           //get status text according to status (integer)
           if($invoice_detail->status == StatusConstance::status_pending_value){
             $invoice_detail->status_text = StatusConstance::status_pending_description;
@@ -176,6 +190,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           else{
             $invoice_detail->status_text = StatusConstance::status_auderbox_cancel_description;
           }
+          */
+
+          //for pilot version
+          $invoice_detail->status_text = StatusConstance::status_confirm_description;
+          if($invoice_detail->status == StatusConstance::status_confirm_value){
+          }
+          else {
+            $invoice_detail->status_text = StatusConstance::status_deliver_description;
+          }
+          //for pilot version
         }
 
         $invoice->invoice_details = $invoice_details;
