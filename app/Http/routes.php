@@ -4,7 +4,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::group(['middleware' => 'frontendorbackend'], function () {
 
     //Frontend
-    Route::get('/', 'Frontend\HomeController@index');
+    // Route::get('/', 'Frontend\HomeController@index');
+    //redirect to backend login directly
+    Route::get('/', array('as'=>'backend/','uses'=>'Auth\AuthController@showFirstLogin'));
 
     //Backend
     Route::group(['prefix' => 'backend'], function () {

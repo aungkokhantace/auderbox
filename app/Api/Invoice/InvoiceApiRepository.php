@@ -191,6 +191,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
         $invoice = $query->first();
 
+        /*
         //get status text according to status (integer)
         if($invoice->status == StatusConstance::status_pending_value){
           $invoice->status_text = StatusConstance::status_pending_description;
@@ -210,6 +211,16 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         else{
           $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
         }
+        */
+
+        //for pilot version
+        if($invoice->status == StatusConstance::status_confirm_value){
+          $invoice->status_text = StatusConstance::status_confirm_description;
+        }
+        else {
+          $invoice->status_text = StatusConstance::status_deliver_description;
+        }
+        //for pilot version
 
         // //start changing date objects to string
         // $invoice->order_date = $invoice->order_date->toDateString();
@@ -240,6 +251,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
         //loop through each invoice detail to get status_text of each invoice_detail
         foreach($invoice_details as $invoice_detail){
+          /*
           //get status text according to status (integer)
           if($invoice_detail->status == StatusConstance::status_pending_value){
             $invoice_detail->status_text = StatusConstance::status_pending_description;
@@ -259,6 +271,16 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           else{
             $invoice_detail->status_text = StatusConstance::status_auderbox_cancel_description;
           }
+          */
+
+          //for pilot version
+          if($invoice_detail->status == StatusConstance::status_confirm_value){
+            $invoice_detail->status_text = StatusConstance::status_confirm_description;
+          }
+          else{
+            $invoice_detail->status_text = StatusConstance::status_deliver_description;
+          }
+          //for pilot version
         }
 
         $invoice->invoice_detail = $invoice_details;
@@ -308,7 +330,8 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
         // month_filter may be 1 (previous month) or 3 (previous 3 months) or 0 (all invoices)
         if(isset($filter) && $filter !== 0){
-          $query = $query->whereMonth('invoices.order_date', '=' ,Carbon::now()->subMonth($filter)->month);
+          // $query = $query->whereMonth('invoices.order_date', '=' ,Carbon::now()->subMonth($filter)->month);
+          $query = $query->where('invoices.order_date', '>' ,Carbon::now()->subDays($filter));
         }
 
         //get records that are not deleted
@@ -327,6 +350,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
         foreach($invoices as $invoice_header){
           //get status text according to status (integer)
+          /*
           if($invoice_header->status == StatusConstance::status_pending_value){
             $invoice_header->status_text = StatusConstance::status_pending_description;
           }
@@ -345,6 +369,16 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           else{
             $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
+          */
+
+          //for pilot
+          if($invoice_header->status == StatusConstance::status_confirm_value){
+            $invoice_header->status_text = StatusConstance::status_confirm_description;
+          }
+          else{
+            $invoice_header->status_text = StatusConstance::status_deliver_description;
+          }
+          //for pilot
 
           // //start changing date objects to string
           // $invoice_header->order_date = $invoice_header->order_date->toDateString();

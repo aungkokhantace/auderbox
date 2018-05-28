@@ -42,22 +42,13 @@
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         <select class="form-control" id="status" name="status">
-          @if(isset($status))
           <option value="all">All</option>
-          <option value="{{App\Core\StatusConstance::status_pending_value}}" @if($status == App\Core\StatusConstance::status_pending_value) selected @endif> {{App\Core\StatusConstance::status_pending_description}}</option>
+          @if(isset($status))
           <option value="{{App\Core\StatusConstance::status_confirm_value}}" @if($status == App\Core\StatusConstance::status_confirm_value) selected @endif>{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}" @if($status == App\Core\StatusConstance::status_deliver_value) selected @endif>{{App\Core\StatusConstance::status_deliver_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_retailer_cancel_value}}" @if($status == App\Core\StatusConstance::status_retailer_cancel_value) selected @endif>{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_brand_owner_cancel_value}}" @if($status == App\Core\StatusConstance::status_brand_owner_cancel_value) selected @endif>{{App\Core\StatusConstance::status_brand_owner_cancel_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_auderbox_cancel_value}}" @if($status == App\Core\StatusConstance::status_auderbox_cancel_value) selected @endif>{{App\Core\StatusConstance::status_auderbox_cancel_description}}</option>
           @else
-          <option value="all">All</option>
-          <option value="{{App\Core\StatusConstance::status_pending_value}}">{{App\Core\StatusConstance::status_pending_description}}</option>
           <option value="{{App\Core\StatusConstance::status_confirm_value}}">{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}">{{App\Core\StatusConstance::status_deliver_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_retailer_cancel_value}}">{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_brand_owner_cancel_value}}">{{App\Core\StatusConstance::status_brand_owner_cancel_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_auderbox_cancel_value}}">{{App\Core\StatusConstance::status_auderbox_cancel_description}}</option>
           @endif
         </select>
       </div>
