@@ -806,11 +806,12 @@
             <h3>Response</h3>
             <pre>
 {
-  "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Success!",
   "data": [
 
-  ]
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success!",
+  "invoice_id": "INV20180528000012"
 }
             </pre>
         </div>

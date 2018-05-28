@@ -29,7 +29,7 @@ class InvoiceApiController extends Controller
     if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
         $params             = $checkServerStatusArray['data'][0];
 
-        $returnedObj['data']= [];
+        $returnedObj['data'] = [];
         if (isset($params->invoices) && count($params->invoices) > 0) {
 
           $result = $this->repo->uploadInvoice($params->invoices);
