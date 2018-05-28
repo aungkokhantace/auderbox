@@ -117,7 +117,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $offset                         = 1;
           $pad_length                     = $configRepo->getInvoiceIdPadLength()[0]->value; //number of digits without prefix and date
           // $invoice_id                     = Utility::generate_id($prefix,$table,$col,$offset);
-          $invoice_id                     = Utility::generate_id($prefix,$table,$col,$offset);
+          $invoice_id                     = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
           $invoiceRes                     = $this->saveInvoice($invoice,$invoice_id);
           if($invoiceRes['aceplusStatusCode'] != ReturnMessage::OK){
             DB::rollback();
@@ -144,7 +144,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         }
 
         DB::commit();
-
+        $returnedObj['invoice_id'] = $invoice_id;
         return $returnedObj;
       }
       catch(\Exception $e){

@@ -84,6 +84,7 @@ class Utility
     }
 
     /*
+    //without pad_length
     public static function generate_id($prefix,$table,$col,$offset){
         $idStringArray  = DB::select("SELECT `$col` as id FROM `$table` WHERE id LIKE '$prefix%'");
         $unique         = str_pad(1, 6, "0", STR_PAD_LEFT);

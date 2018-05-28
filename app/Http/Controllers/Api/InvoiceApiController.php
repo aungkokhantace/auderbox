@@ -35,8 +35,11 @@ class InvoiceApiController extends Controller
           $result = $this->repo->uploadInvoice($params->invoices);
 
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
-              $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+              $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
               $returnedObj['aceplusStatusMessage'] = "Success!";
+              if(isset($result['invoice_id']) && $result['invoice_id'] !== null && $result['invoice_id'] !== ""){
+                $returnedObj['invoice_id'] = $result['invoice_id'];
+              }
               return \Response::json($returnedObj);
           }
           else{
@@ -114,7 +117,7 @@ class InvoiceApiController extends Controller
           $invoice_id  = $params->invoice_detail->invoice_id;
 
           $result = $this->repo->getInvoiceDetail($invoice_id);
-          
+
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']  = "Success!";
