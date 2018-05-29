@@ -88,6 +88,12 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
               'confirm_date'        => NULL,
               'cancel_by'           => NULL,
               'cancel_date'         => NULL,
+              'created_by'          => (isset($invDetail->created_by) && $invDetail->created_by != "") ? $invDetail->created_by:null,
+              'updated_by'          => (isset($invDetail->updated_by) && $invDetail->updated_by != "") ? $invDetail->updated_by:null,
+              'deleted_by'          => (isset($invDetail->deleted_by) && $invDetail->deleted_by != "") ? $invDetail->deleted_by:null,
+              'created_at'          => (isset($invDetail->created_at) && $invDetail->created_at != "") ? $invDetail->created_at:null,
+              'updated_at'          => (isset($invDetail->updated_at) && $invDetail->updated_at != "") ? $invDetail->updated_at:null,
+              'deleted_at'          => (isset($invDetail->deleted_at) && $invDetail->deleted_at != "") ? $invDetail->deleted_at:null,
             ]);
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
