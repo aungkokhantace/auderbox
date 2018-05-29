@@ -96,6 +96,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                                 'retailshops.name_mm as retailshop_name_mm',
                                 'retailers.name_eng as retailer_name_eng',
                                 'retailers.name_mm as retailer_name_mm',
+                                'retailers.phone as retailer_phone',
                                 'retailshops.address as retailshop_address');
 
 

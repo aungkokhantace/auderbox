@@ -72,7 +72,7 @@
                         <th>Invoice Number</th>
                         <th>Retailshop Name (Eng)</th>
                         <th>Invoice Date</th>
-                        <th>Delivered Date</th>
+                        <th>Delivery Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
                     </tr>
@@ -82,7 +82,7 @@
                         <th class="search-col" con-id="invoice_number">Invoice Number</th>
                         <th class="search-col" con-id="retailshop_name_eng">Retailshop Name (Eng)</th>
                         <th class="search-col" con-id="invoice_date">Invoice Date</th>
-                        <th class="search-col" con-id="delivered_date">Delivered Date</th>
+                        <th class="search-col" con-id="delivery_date">Delivery Date</th>
                         <th class="search-col" con-id="total_amount">Total Amount</th>
                         <th class="search-col" con-id="status">Status</th>
                     </tr>

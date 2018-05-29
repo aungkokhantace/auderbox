@@ -17,6 +17,11 @@
       </div>
 
       <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Retailer Phone</h4></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailer_phone}}</h4></div>
+      </div>
+
+      <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Retailshop Name</h4></div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailshop_name_eng}}</h4></div>
       </div>
@@ -48,7 +53,7 @@
                         <th>SKU</th>
                         <th>Qty</th>
                         <th>Order Date</th>
-                        <th>Delivered Date</th>
+                        <th>Delivery Date</th>
                         <th>Amount</th>
                         <th>Status</th>
                     </tr>
@@ -61,7 +66,7 @@
                         <th class="search-col" con-id="sku">SKU</th>
                         <th class="search-col" con-id="qty">Qty</th>
                         <th class="search-col" con-id="order_date">Order Date</th>
-                        <th class="search-col" con-id="delivered_date">Delivered Date</th>
+                        <th class="search-col" con-id="delivery_date">Delivery Date</th>
                         <th class="search-col" con-id="amount">Amount</th>
                         <th class="search-col" con-id="status">Status</th>
                     </tr>
