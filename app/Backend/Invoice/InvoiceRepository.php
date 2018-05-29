@@ -10,6 +10,9 @@ use App\Core\StatusConstance;
 use App\Core\Config\ConfigRepository;
 use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
+use Auth;
+use App\Log\LogCustom;
+
 
 /**
  * Author: Aung Ko Khant
@@ -34,10 +37,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           $query = $query->select('invoices.*',
                                   'retailshops.name_eng as retailshop_name_eng',
                                   'retailshops.name_mm as retailshop_name_mm');
-
-
-          // //get only invoice info (not retailshop info)
-          // $query = $query->select('invoices.*');
 
           $query = $query->leftJoin('retailers', 'retailers.id', '=', 'invoices.retailer_id');
           $query = $query->leftJoin('brand_owners', 'brand_owners.id', '=', 'invoices.brand_owner_id');
@@ -78,17 +77,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       try {
         //start query to get invoice header
         $query = Invoice::query();
-
-        // // get retailshop info too
-        // $query = $query->select('invoices.id as id',
-        //                         'invoices.order_date as order_date',
-        //                         'invoices.delivery_date as delivery_date',
-        //                         'invoices.payment_date as payment_date',
-        //                         'retailshops.name_eng as retailshop_name_eng',
-        //                         'retailshops.name_mm as retailshop_name_mm',
-        //                         'retailers.name_eng as retailer_name_eng',
-        //                         'retailers.name_mm as retailer_name_mm',
-        //                         'retailshops.address as retailshop_address');
 
         // get retailshop info too
         $query = $query->select('invoices.*',
@@ -218,6 +206,113 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       }
       catch(\Exception $e){
           return $e->getMessage();
+      }
+    }
+
+    public function update($paramObj){
+      if (Auth::guard('User')->check()) {
+        $returnedObj = array();
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+        $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+        try {
+            DB::beginTransaction();
+            $tempObj = Utility::addUpdatedBy($paramObj);
+
+            if($tempObj->save()){
+                //create info log
+                $date = $tempObj->updated_at;
+                $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' updated invoice_id = '.$tempObj->id . PHP_EOL;
+                LogCustom::create($date,$message);
+
+                //update invoice_detail status
+                $invoice_id = $paramObj->id;
+                $invoice_details = $this->getInvoiceDetailsByInvoiceId($invoice_id);
+
+                foreach($invoice_details as $invoice_detail){
+                    $invoice_detail->status = StatusConstance::status_deliver_value;
+                    $invoice_detail_result = $this->updateInvoiceDetail($invoice_detail);
+
+                    if($invoice_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+                      $returnedObj['aceplusStatusMessage'] = "Error in updating invoice_detail";
+                      DB::rollBack();
+                      return $returnedObj;
+                    }
+                }
+
+                //all updates are successful
+                DB::commit();
+
+                $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+                $returnedObj['aceplusStatusMessage'] = "Invoice and invoice detail updated";
+                return $returnedObj;
+
+
+            }
+            else{
+                DB::rollBack();
+                return $returnedObj;
+            }
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+
+            //create error log
+            $date    = date("Y-m-d H:i:s");
+            $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' updated an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+            LogCustom::create($date,$message);
+
+            $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+            return $returnedObj;
+        }
+      }
+      return redirect('/');
+    }
+
+    public function getObjByID($id){
+        $result = Invoice::find($id);
+        return $result;
+    }
+
+    public function getInvoiceDetailsByInvoiceId($invoice_id){
+      $invoice_details = InvoiceDetail::get()
+                                      ->where('invoice_id',$invoice_id);
+      return $invoice_details;
+    }
+
+    public function updateInvoiceDetail($paramDetailObj){
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+      try {
+        DB::beginTransaction();
+
+        $tempObj = Utility::addUpdatedBy($paramDetailObj);
+        $tempObj->save();
+
+        DB::commit();
+
+        //create info log
+        $date = $tempObj->updated_at;
+        $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' updated invoice_detail_id = '.$tempObj->id . PHP_EOL;
+        LogCustom::create($date,$message);
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail updated";
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        DB::rollBack();
+        //create error log
+        $date    = date("Y-m-d H:i:s");
+        $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' created a route and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+        LogCustom::create($date,$message);
+
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+        return $returnedObj;
       }
     }
 }

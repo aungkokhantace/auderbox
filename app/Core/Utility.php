@@ -118,4 +118,9 @@ class Utility
         $runningNo = str_pad($newId, $pad_length, 0, STR_PAD_LEFT);
         return sprintf("%s%s",$prefix,$runningNo);
     }
+
+    public static function getCurrentUserID(){
+        $id = Auth::guard('User')->user()->id;
+        return $id;
+    }
 }

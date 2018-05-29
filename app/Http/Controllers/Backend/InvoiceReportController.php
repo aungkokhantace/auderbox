@@ -12,6 +12,8 @@ use App\Backend\Invoice\Invoice;
 use App\Backend\Invoice\InvoiceRepositoryInterface;
 use App\Core\ReturnMessage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
+use App\Core\FormatGenerator;
 
 class InvoiceReportController extends Controller
 {
@@ -60,12 +62,6 @@ class InvoiceReportController extends Controller
           }
           //for pilot version
           //end status text
-
-          // //start changing date objects to string
-          // $invoice_header->order_date_string = $invoice_header->order_date->toDateString();
-          // $invoice_header->delivery_date_string = $invoice_header->delivery_date->toDateString();
-          // $invoice_header->payment_date_string = $invoice_header->payment_date->toDateString();
-          // //end changing date objects to string
         }
       }
 
@@ -81,15 +77,6 @@ class InvoiceReportController extends Controller
     if (Auth::guard('User')->check()) {
       //get invoice details
       $invoice = $this->repo->getInvoiceDetail($invoice_id);
-      // if(isset($invoice) && count($invoice) > 0){
-      //   //start changing date objects to string
-      //   $invoice->order_date_string = $invoice->order_date->toDateString();
-      //   $invoice->delivery_date_string = $invoice->delivery_date->toDateString();
-      //   $invoice->payment_date_string = $invoice->payment_date->toDateString();
-      //   //end changing date objects to string
-      // }
-
-      // dd('invoice',$invoice);
       return view('report.invoice_report.invoice_detail')
           ->with('invoice',$invoice);
     }
@@ -136,14 +123,7 @@ class InvoiceReportController extends Controller
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
           //for pilot version
-
           //end status text
-
-          // //start changing date objects to string
-          // $invoice_header->order_date_string = $invoice_header->order_date->toDateString();
-          // $invoice_header->delivery_date_string = $invoice_header->delivery_date->toDateString();
-          // $invoice_header->payment_date_string = $invoice_header->payment_date->toDateString();
-          // //end changing date objects to string
         }
 
       }
@@ -156,6 +136,24 @@ class InvoiceReportController extends Controller
     }
     else{
       return redirect('backend/unauthorize');
+    }
+  }
+
+  public function deliverInvoice(){
+    $invoice_id = Input::get('delivered_invoice_id');
+    $paramObj = $this->repo->getObjByID($invoice_id);
+
+    //change to delivered status
+    $paramObj->status = StatusConstance::status_deliver_value;
+
+    $result = $this->repo->update($paramObj);
+    
+    if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
+      return redirect()->action('Backend\InvoiceReportController@index')
+          ->withMessage(FormatGenerator::message('Success', 'Invoice delivered ...'));
+    } else {
+      return redirect()->action('Backend\InvoiceReportController@index')
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice is not delivered ...'));
     }
   }
 }

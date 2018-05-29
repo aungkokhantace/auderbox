@@ -43,3 +43,26 @@ function report_search_by_date_and_status(module) {
     }
     window.location = form_action;
 }
+
+function deliver_invoice(invoice_id) {
+
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55 ",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $("#frm_invoice_delivery_" + invoice_id).submit();
+            } else {
+                return;
+            }
+        });
+
+}
