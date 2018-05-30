@@ -37,7 +37,7 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h5><a href="/backend/invoice_report"><i class="fa fa-angle-double-left"></i> Back to Invoice List</h5></a></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h3><a href="/backend/invoice_report"><i class="fa fa-angle-double-left"></i> Back to Invoice List</h3></a></div>
       </div>
 
     <div class="row">

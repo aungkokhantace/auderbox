@@ -27,10 +27,12 @@ class StatusConstance {
     const status_auderbox_cancel_description = "Auderbox Cancelled";
   */
 
+  //start invoice statuses
   const status_confirm_value = 2;
   const status_confirm_description = "Ordered";
 
   const status_deliver_value = 3;
   const status_deliver_description = "Delivered";
+  //end invoice statuses
 
 }

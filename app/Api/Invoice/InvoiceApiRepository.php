@@ -6,10 +6,12 @@ use App\Core\Utility;
 use Illuminate\Support\Facades\DB;
 use App\Backend\Invoice\Invoice;
 use App\Backend\InvoiceDetail\InvoiceDetail;
+use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
 use App\Core\StatusConstance;
 use App\Core\Config\ConfigRepository;
 use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
+use App\Core\CoreConstance;
 
 /**
  * Author: Khin Zar Ni Wint
@@ -20,7 +22,7 @@ use App\Backend\Retailshop\Retailshop;
 class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 {
     public function saveInvoice($invoice,$invoice_id){
-      $returnedObj = array();
+        $returnedObj = array();
         $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
         try {
@@ -136,17 +138,51 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $deleteInvoiceDetail              = InvoiceDetail::where('invoice_id',$invoice_id)->delete();
 
           foreach($invoice->invoice_detail as $invDetail){
+            // $detail_id                      = uniqid('', true);
+            //start generating invoice_detail_id
+            $invoice_detail_table           = (new InvoiceDetail())->getTable();
+            $invoice_detail_col             = 'id';
+            $invoie_detail_offset           = 1;
+            $invoice_detail_pad_length      = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+            $detail_id                      = Utility::generate_id($invoice_id,$invoice_detail_table,$invoice_detail_col,$invoie_detail_offset,$invoice_detail_pad_length);
+            //end generating invoice_detail_id
 
-            $detail_id                      = uniqid('', true);
             $detailRes                      = $this->saveInvoiceDetail($invDetail,$detail_id,$invoice_id);
+
             if($detailRes['aceplusStatusCode'] != ReturnMessage::OK){
               DB::rollback();
               $returnedObj['aceplusStatusCode']     = $detailRes['aceplusStatusCode'];
               $returnedObj['aceplusStatusMessage']  = $detailRes['aceplusStatusMessage'];
               return $returnedObj;
             }
-          }
 
+            //start invoice_detail_history
+            //start generating invoice_detail_history_id
+            $invoice_detail_history_table      = (new InvoiceDetailHistory())->getTable();
+            $invoice_detail_history_col        = 'id';
+            $invoie_detail_history_offset      = 1;
+            $invoice_detail_history_pad_length = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+            $detail_history_id                 = Utility::generate_id($detail_id,$invoice_detail_history_table,$invoice_detail_history_col,$invoie_detail_history_offset,$invoice_detail_history_pad_length);
+            //end generating invoice_detail_history_id
+
+            $invDetailHistoryObj = new InvoiceDetailHistory();
+            $invDetailHistoryObj->id = $detail_history_id;
+            $invDetailHistoryObj->invoice_detail_id = $detail_id;
+            $invDetailHistoryObj->qty = $invDetail->quantity;
+            $invDetailHistoryObj->date = date('Y-m-d H:i:s');
+            $invDetailHistoryObj->type = CoreConstance::invoice_detatil_order_value; //invoice_history_type is "order"
+            $invDetailHistoryObj->status = 1; //default is active
+
+            $detailHistoryRes = $this->saveInvoiceDetailHistory($invDetailHistoryObj);
+
+            if($detailHistoryRes['aceplusStatusCode'] != ReturnMessage::OK){
+              DB::rollback();
+              $returnedObj['aceplusStatusCode']     = $detailHistoryRes['aceplusStatusCode'];
+              $returnedObj['aceplusStatusMessage']  = $detailHistoryRes['aceplusStatusMessage'];
+              return $returnedObj;
+            }
+            //end invoice_detail_history
+          }
         }
 
         DB::commit();
@@ -396,12 +432,6 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           }
           //for pilot
 
-          // //start changing date objects to string
-          // $invoice_header->order_date = $invoice_header->order_date->toDateString();
-          // $invoice_header->delivery_date = $invoice_header->delivery_date->toDateString();
-          // $invoice_header->payment_date = $invoice_header->payment_date->toDateString();
-          // //end changing date objects to string
-
 
           /*
           // start invoice_detail data
@@ -471,5 +501,25 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $returnedObj['aceplusStatusMessage'] = $e->getMessage();
           return $returnedObj;
       }
+    }
+
+    public function saveInvoiceDetailHistory($paramObj)
+    {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      try{
+        $tempObj = Utility::addCreatedBy($paramObj);
+        $tempObj->save();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail history is successfully saved!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+      }
+
     }
 }

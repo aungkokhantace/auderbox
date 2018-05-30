@@ -80,7 +80,7 @@
                         <th>Delivery Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>Change Status</th>
                     </tr>
                     </thead>
                     <tfoot>

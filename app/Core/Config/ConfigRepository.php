@@ -59,4 +59,18 @@ class ConfigRepository implements ConfigRepositoryInterface
         $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'INOVICE_ID_PAD_LENGTH'");
         return $configs;
     }
+
+    public function getInvoiceDetailIdPadLength()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'INOVICE_DETAIL_ID_PAD_LENGTH'");
+        return $configs;
+    }
+
+    public function getInvoiceDetailHistoryIdPadLength()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'INOVICE_DETAIL_HISTORY_ID_PAD_LENGTH'");
+        return $configs;
+    }
 }

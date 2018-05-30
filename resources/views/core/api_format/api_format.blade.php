@@ -753,7 +753,7 @@
           "deleted_at": "",
           "invoice_detail": [
             {
-              "id": "5abdfdfsdfd",
+              "id": "INV20180522000001001",
               "invoice_id": "INV20180522000001",
               "product_id": 1,
               "product_group_id": 1,
@@ -780,7 +780,7 @@
               "deleted_at": ""
             },
             {
-              "id": 2,
+              "id": "INV20180522000001002",
               "invoice_id": 1,
               "product_id": 2,
               "product_group_id": 1,

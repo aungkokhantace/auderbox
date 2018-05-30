@@ -55,5 +55,6 @@ class InvoiceDetail extends Model
       'cancel_by',
       'cancel_date',
       'status',
+      'created_by','updated_by','deleted_by','created_at','updated_at','deleted_at'
     ];
 }
