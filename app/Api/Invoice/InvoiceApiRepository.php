@@ -345,6 +345,11 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $query = $query->where('invoices.order_date', '>' ,Carbon::now()->subDays($filter));
         }
 
+        if(isset($retailer_id) && $retailer_id !== 0){
+          // $query = $query->whereMonth('invoices.order_date', '=' ,Carbon::now()->subMonth($filter)->month);
+          $query = $query->where('invoices.retailer_id' ,$retailer_id);
+        }
+
         //get records that are not deleted
         $query = $query->whereNull('invoices.deleted_at');
         $query = $query->whereNull('retailers.deleted_at');
