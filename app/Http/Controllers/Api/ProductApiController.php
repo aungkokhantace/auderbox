@@ -61,7 +61,7 @@ class ProductApiController extends Controller
                 // get products that are restricted in the retailshop's township
                 //raw query result
                 $raw_restricted_product_groups = $productDeliveryRestrictionRepo->getRestrictedProductsByWardId($retailshop_address_ward_id);
-                // dd('raw',$raw_restricted_product_groups);
+                
                 //push to array
                 foreach($raw_restricted_product_groups as $restricted_product_group){
                     array_push($restricted_product_group_id_array, $restricted_product_group->product_group_id);

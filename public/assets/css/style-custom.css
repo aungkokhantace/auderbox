@@ -178,3 +178,8 @@ overflow:auto;
   text-decoration: none;
   color: inherit !important;
 }
+
+.btn-in-header{
+  margin: 20px 0 0px;
+  padding-bottom: 10px;
+}

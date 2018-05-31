@@ -4,7 +4,14 @@
 
 <!-- begin #content -->
 <div id="content" class="content">
-    <h1 class="page-header">Invoice Details</h1>
+    <div class="row">
+      <div class="col-md-10">
+        <h1 class="page-header">Invoice Details</h1>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="form-control btn-danger btn-in-header" onclick="redirect_to_invoice_report();"><i class="fa fa-angle-double-left"></i> Back to invoice list</button>
+      </div>
+    </div>
 
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Invoice Number</h4></div>
@@ -34,10 +41,6 @@
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Address</h4></div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailshop_address}}</h4></div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h3><a href="/backend/invoice_report"><i class="fa fa-angle-double-left"></i> Back to Invoice List</h3></a></div>
       </div>
 
     <div class="row">

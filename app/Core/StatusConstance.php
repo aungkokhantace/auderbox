@@ -8,6 +8,7 @@
 
 class StatusConstance {
   /*
+    //start invoice statuses for full version
     const status_pending_value = 1;
     const status_pending_description = "Pending";
 
@@ -25,14 +26,18 @@ class StatusConstance {
 
     const status_auderbox_cancel_value = 6;
     const status_auderbox_cancel_description = "Auderbox Cancelled";
+    //end invoice statuses for full version
   */
 
-  //start invoice statuses
+  //start invoice statuses for pilot version
   const status_confirm_value = 2;
   const status_confirm_description = "Ordered";
 
   const status_deliver_value = 3;
   const status_deliver_description = "Delivered";
-  //end invoice statuses
+
+  const status_retailer_cancel_value = 4;
+  const status_retailer_cancel_description = "Canceled";
+  //end invoice statuses for pilot version
 
 }

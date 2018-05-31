@@ -70,6 +70,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('invoice_report/search/{from_date?}/{to_date?}/{status?}', array('as'=>'backend/invoice_report/search','uses'=>'Backend\InvoiceReportController@search'));
             Route::get('invoice_report/detail/{id}', array('as'=>'backend/invoice_report/detail','uses'=>'Backend\InvoiceReportController@invoiceDetail'));
             Route::post('invoice_report/deliver_invoice', array('as'=>'backend/invoice_report/deliver_invoice','uses'=>'Backend\InvoiceReportController@deliverInvoice'));
+            Route::post('invoice_report/cancel_invoice', array('as'=>'backend/invoice_report/cancel_invoice','uses'=>'Backend\InvoiceReportController@cancelInvoice'));
 
             //API formats
             Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));

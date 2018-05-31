@@ -80,7 +80,7 @@
                         <th>Delivery Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
-                        <th>Change Status</th>
+                        <th colspan="2">Change Status</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -91,6 +91,7 @@
                         <th class="search-col" con-id="delivery_date">Delivery Date</th>
                         <th class="search-col" con-id="total_amount">Total Amount</th>
                         <th class="search-col" con-id="status">Status</th>
+                        <th></th>
                         <th></th>
                     </tr>
                     </tfoot>
@@ -105,13 +106,24 @@
                             <td>{{$invoice->status_text}}</td>
                             <td>
                               @if($invoice->status == App\Core\StatusConstance::status_confirm_value)
-                                    <form id="frm_invoice_delivery_{{$invoice->id}}" method="post" action="/backend/invoice_report/deliver_invoice">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" id="delivered_invoice_id" name="delivered_invoice_id" value="{{$invoice->id}}">
-                                        <button type="button" onclick="deliver_invoice('{{$invoice->id}}');" class="btn btn-danger">
-                                            DELIVERED
-                                        </button>
-                                    </form>
+                                <form id="frm_invoice_delivery_{{$invoice->id}}" method="post" action="/backend/invoice_report/deliver_invoice">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="delivered_invoice_id" name="delivered_invoice_id" value="{{$invoice->id}}">
+                                    <button type="button" onclick="deliver_invoice('{{$invoice->id}}');" class="btn btn-success">
+                                        DELIVERED
+                                    </button>
+                                </form>
+                              @endif
+                            </td>
+                            <td>
+                              @if($invoice->status == App\Core\StatusConstance::status_confirm_value)
+                                <form id="frm_invoice_cancel_{{$invoice->id}}" method="post" action="/backend/invoice_report/cancel_invoice">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="canceled_invoice_id" name="canceled_invoice_id" value="{{$invoice->id}}">
+                                    <button type="button" onclick="cancel_invoice('{{$invoice->id}}');" class="btn btn-danger">
+                                        CANCEL
+                                    </button>
+                                </form>
                               @endif
                             </td>
                         </tr>

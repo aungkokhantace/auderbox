@@ -6,12 +6,14 @@ use App\Core\Utility;
 use Illuminate\Support\Facades\DB;
 use App\Backend\Invoice\Invoice;
 use App\Backend\InvoiceDetail\InvoiceDetail;
+use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
 use App\Core\StatusConstance;
 use App\Core\Config\ConfigRepository;
 use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
 use Auth;
 use App\Log\LogCustom;
+use App\Core\CoreConstance;
 
 
 /**
@@ -135,8 +137,11 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         if($invoice->status == StatusConstance::status_confirm_value){
           $invoice->status_text = StatusConstance::status_confirm_description;
         }
-        else {
+        else if($invoice->status == StatusConstance::status_deliver_value) {
           $invoice->status_text = StatusConstance::status_deliver_description;
+        }
+        else if($invoice->status == StatusConstance::status_retailer_cancel_value){
+          $invoice->status_text = StatusConstance::status_retailer_cancel_description;
         }
         //for pilot version
 
@@ -190,11 +195,14 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           */
 
           //for pilot version
-          $invoice_detail->status_text = StatusConstance::status_confirm_description;
           if($invoice_detail->status == StatusConstance::status_confirm_value){
+            $invoice_detail->status_text = StatusConstance::status_confirm_description;
           }
-          else {
+          else if($invoice_detail->status == StatusConstance::status_deliver_value){
             $invoice_detail->status_text = StatusConstance::status_deliver_description;
+          }
+          else if($invoice->status == StatusConstance::status_retailer_cancel_value){
+            $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
           }
           //for pilot version
         }
@@ -209,7 +217,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       }
     }
 
-    public function update($paramObj){
+    public function deliver($paramObj){
       if (Auth::guard('User')->check()) {
         $returnedObj = array();
         $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
@@ -223,19 +231,22 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             if($tempObj->save()){
                 //create info log
                 $date = $tempObj->updated_at;
-                $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' updated invoice_id = '.$tempObj->id . PHP_EOL;
+                $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' delivered invoice_id = '.$tempObj->id . PHP_EOL;
                 LogCustom::create($date,$message);
 
                 //update invoice_detail status
                 $invoice_id = $paramObj->id;
                 $invoice_details = $this->getInvoiceDetailsByInvoiceId($invoice_id);
 
+                //deliver each invoice detail
                 foreach($invoice_details as $invoice_detail){
+                    //set status to delivered
                     $invoice_detail->status = StatusConstance::status_deliver_value;
-                    $invoice_detail_result = $this->updateInvoiceDetail($invoice_detail);
+
+                    $invoice_detail_result = $this->deliverInvoiceDetail($invoice_detail);
 
                     if($invoice_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
-                      $returnedObj['aceplusStatusMessage'] = "Error in updating invoice_detail";
+                      $returnedObj['aceplusStatusMessage'] = "Error in delivering invoice_detail";
                       DB::rollBack();
                       return $returnedObj;
                     }
@@ -245,7 +256,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 DB::commit();
 
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
-                $returnedObj['aceplusStatusMessage'] = "Invoice and invoice detail updated";
+                $returnedObj['aceplusStatusMessage'] = "Invoice and invoice detail delivered";
                 return $returnedObj;
 
 
@@ -260,7 +271,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
             //create error log
             $date    = date("Y-m-d H:i:s");
-            $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' updated an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+            $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' delivered an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
             LogCustom::create($date,$message);
 
             $returnedObj['aceplusStatusMessage'] = $e->getMessage();
@@ -281,7 +292,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       return $invoice_details;
     }
 
-    public function updateInvoiceDetail($paramDetailObj){
+    public function deliverInvoiceDetail($paramDetailObj){
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
 
@@ -297,22 +308,172 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
         //create info log
         $date = $tempObj->updated_at;
-        $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' updated invoice_detail_id = '.$tempObj->id . PHP_EOL;
+        $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' delivered invoice_detail_id = '.$tempObj->id . PHP_EOL;
         LogCustom::create($date,$message);
 
         $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
-        $returnedObj['aceplusStatusMessage'] = "Invoice detail updated";
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail delivered";
         return $returnedObj;
       }
       catch(\Exception $e){
         DB::rollBack();
         //create error log
         $date    = date("Y-m-d H:i:s");
-        $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' created a route and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+        $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' delivered an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
         LogCustom::create($date,$message);
 
         $returnedObj['aceplusStatusMessage'] = $e->getMessage();
         return $returnedObj;
       }
+    }
+
+    public function cancel($paramObj){
+      if (Auth::guard('User')->check()) {
+        $returnedObj = array();
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+        $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+        try {
+            $configRepo = new ConfigRepository();
+
+            DB::beginTransaction();
+            $tempObj = Utility::addUpdatedBy($paramObj);
+
+            if($tempObj->save()){
+                //create info log
+                $date = $tempObj->updated_at;
+                $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' canceled whole invoice_id = '.$tempObj->id . PHP_EOL;
+                LogCustom::create($date,$message);
+
+                //update invoice_detail status
+                $invoice_id = $paramObj->id;
+                $invoice_details = $this->getInvoiceDetailsByInvoiceId($invoice_id);
+
+                //cancel each invoice detail
+                foreach($invoice_details as $invoice_detail){
+                    //set status to cancel
+                    $invoice_detail->status = StatusConstance::status_retailer_cancel_value;
+
+                    $invoice_detail_result = $this->cancelInvoiceDetail($invoice_detail);
+
+                    if($invoice_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+                      $returnedObj['aceplusStatusMessage'] = "Error in canceling invoice_detail";
+                      DB::rollBack();
+                      return $returnedObj;
+                    }
+
+                    $detail_id = $invoice_detail->id;
+                    //invoice_detail cancel is successful
+                    //start invoice_detail_history
+                    //start generating invoice_detail_history_id
+                    $invoice_detail_history_table      = (new InvoiceDetailHistory())->getTable();
+                    $invoice_detail_history_col        = 'id';
+                    $invoie_detail_history_offset      = 1;
+                    $invoice_detail_history_pad_length = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+                    $detail_history_id                 = Utility::generate_id($detail_id,$invoice_detail_history_table,$invoice_detail_history_col,$invoie_detail_history_offset,$invoice_detail_history_pad_length);
+                    //end generating invoice_detail_history_id
+
+                    $invDetailHistoryObj = new InvoiceDetailHistory();
+                    $invDetailHistoryObj->id = $detail_history_id;
+                    $invDetailHistoryObj->invoice_detail_id = $detail_id;
+                    $invDetailHistoryObj->qty = -1 * abs($invoice_detail->quantity); //negative value, because of cancel action
+                    $invDetailHistoryObj->date = date('Y-m-d H:i:s');
+                    $invDetailHistoryObj->type = CoreConstance::invoice_detatil_order_value; //invoice_history_type is "order"
+                    $invDetailHistoryObj->status = 1; //default is active
+
+                    $detailHistoryRes = $this->saveInvoiceDetailHistory($invDetailHistoryObj);
+
+                    if($detailHistoryRes['aceplusStatusCode'] != ReturnMessage::OK){
+                      DB::rollback();
+                      $returnedObj['aceplusStatusCode']     = $detailHistoryRes['aceplusStatusCode'];
+                      $returnedObj['aceplusStatusMessage']  = $detailHistoryRes['aceplusStatusMessage'];
+                      return $returnedObj;
+                    }
+                    //end invoice_detail_history
+                }
+
+                //all updates are successful
+                DB::commit();
+
+                $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+                $returnedObj['aceplusStatusMessage'] = "Invoice and invoice detail canceled";
+                return $returnedObj;
+
+
+            }
+            else{
+                DB::rollBack();
+                return $returnedObj;
+            }
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+
+            //create error log
+            $date    = date("Y-m-d H:i:s");
+            $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' canceled an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+            LogCustom::create($date,$message);
+
+            $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+            return $returnedObj;
+        }
+      }
+      return redirect('/');
+    }
+
+    public function cancelInvoiceDetail($paramDetailObj){
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+      try {
+        DB::beginTransaction();
+
+        $tempObj = Utility::addUpdatedBy($paramDetailObj);
+        $tempObj->save();
+
+        DB::commit();
+
+        //create info log
+        $date = $tempObj->updated_at;
+        $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' canceled invoice_detail_id = '.$tempObj->id . PHP_EOL;
+        LogCustom::create($date,$message);
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail canceled";
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        DB::rollBack();
+        //create error log
+        $date    = date("Y-m-d H:i:s");
+        $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' canceled an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+        LogCustom::create($date,$message);
+
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+        return $returnedObj;
+      }
+    }
+
+    public function saveInvoiceDetailHistory($paramObj)
+    {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      try{
+        $tempObj = Utility::addCreatedBy($paramObj);
+        $tempObj->save();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail history is successfully saved!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+      }
+
     }
 }
