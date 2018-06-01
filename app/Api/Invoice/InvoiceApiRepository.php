@@ -29,9 +29,9 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $paramObj                       = new Invoice();
             $paramObj->id                   = $invoice_id;
             $paramObj->status               = StatusConstance::status_confirm_value;
-            $paramObj->order_date           = $invoice->order_date;
-            $paramObj->delivery_date        = $invoice->delivery_date;
-            $paramObj->payment_date         = $invoice->payment_date;
+            $paramObj->order_date           = date('Y-m-d',strtotime($invoice->order_date));
+            $paramObj->delivery_date        = date('Y-m-d',strtotime($invoice->delivery_date));
+            $paramObj->payment_date         = date('Y-m-d',strtotime($invoice->payment_date));
             $paramObj->retailer_id          = $invoice->retailer_id;
             $paramObj->brand_owner_id       = $invoice->brand_owner_id;
             $paramObj->retailshop_id        = $invoice->retailshop_id;
@@ -49,9 +49,9 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $paramObj->created_by           = (isset($invoice->created_by) && $invoice->created_by != "") ? $invoice->created_by:null;
             $paramObj->updated_by           = (isset($invoice->updated_by) && $invoice->updated_by != "") ? $invoice->updated_by:null;
             $paramObj->deleted_by           = (isset($invoice->deleted_by) && $invoice->deleted_by != "") ? $invoice->deleted_by:null;
-            $paramObj->created_at           = (isset($invoice->created_at) && $invoice->created_at != "") ? $invoice->created_at:null;
-            $paramObj->updated_at           = (isset($invoice->updated_at) && $invoice->updated_at != "") ? $invoice->updated_at:null;
-            $paramObj->deleted_at           = (isset($invoice->deleted_at) && $invoice->deleted_at != "") ? $invoice->deleted_at:null;
+            $paramObj->created_at           = (isset($invoice->created_at) && $invoice->created_at != "") ? date('Y-m-d',strtotime($invoice->created_at)):null;
+            $paramObj->updated_at           = (isset($invoice->updated_at) && $invoice->updated_at != "") ? date('Y-m-d',strtotime($invoice->updated_at)):null;
+            $paramObj->deleted_at           = (isset($invoice->deleted_at) && $invoice->deleted_at != "") ? date('Y-m-d',strtotime($invoice->deleted_at)):null;
 
             $paramObj->save();
 
@@ -264,9 +264,13 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         if($invoice->status == StatusConstance::status_confirm_value){
           $invoice->status_text = StatusConstance::status_confirm_description;
         }
-        else {
+        else if($invoice->status == StatusConstance::status_deliver_value){
           $invoice->status_text = StatusConstance::status_deliver_description;
         }
+        else{
+          $invoice->status_text = StatusConstance::status_retailer_cancel_description;
+        }
+        //for pilot
         //for pilot version
 
         //change date format to d-m-Y
@@ -331,8 +335,11 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           if($invoice_detail->status == StatusConstance::status_confirm_value){
             $invoice_detail->status_text = StatusConstance::status_confirm_description;
           }
-          else{
+          else if($invoice_detail->status == StatusConstance::status_deliver_value){
             $invoice_detail->status_text = StatusConstance::status_deliver_description;
+          }
+          else{
+            $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
           }
           //for pilot version
         }
@@ -434,8 +441,11 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           if($invoice_header->status == StatusConstance::status_confirm_value){
             $invoice_header->status_text = StatusConstance::status_confirm_description;
           }
-          else{
+          else if($invoice_header->status == StatusConstance::status_deliver_value){
             $invoice_header->status_text = StatusConstance::status_deliver_description;
+          }
+          else{
+            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
           }
           //for pilot
           //change date format to d-m-Y

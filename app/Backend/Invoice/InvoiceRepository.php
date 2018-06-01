@@ -354,6 +354,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 foreach($invoice_details as $invoice_detail){
                     //set status to cancel
                     $invoice_detail->status = StatusConstance::status_retailer_cancel_value;
+                    $invoice_detail->cancel_by = $tempObj->cancel_by;
+                    $invoice_detail->cancel_date = $tempObj->cancel_date;
 
                     $invoice_detail_result = $this->cancelInvoiceDetail($invoice_detail);
 

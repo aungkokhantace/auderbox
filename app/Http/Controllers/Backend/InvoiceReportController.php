@@ -14,6 +14,7 @@ use App\Core\ReturnMessage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use App\Core\FormatGenerator;
+use App\Core\Utility;
 
 class InvoiceReportController extends Controller
 {
@@ -123,8 +124,11 @@ class InvoiceReportController extends Controller
           if($invoice_header->status == StatusConstance::status_confirm_value){
             $invoice_header->status_text = StatusConstance::status_confirm_description;
           }
-          else{
+          else if($invoice_header->status == StatusConstance::status_deliver_value){
             $invoice_header->status_text = StatusConstance::status_deliver_description;
+          }
+          else{
+            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
           }
           //for pilot version
           //end status text
@@ -165,11 +169,15 @@ class InvoiceReportController extends Controller
     $invoice_id = Input::get('canceled_invoice_id');
     $paramObj = $this->repo->getObjByID($invoice_id);
 
+    $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
     //change to cancel status
     $paramObj->status = StatusConstance::status_retailer_cancel_value;
+    $paramObj->cancel_by = $currentUser;
+    $paramObj->cancel_date = date('Y-m-d H:i:s');
 
     $result = $this->repo->cancel($paramObj);
-    
+
     if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
       return redirect()->action('Backend\InvoiceReportController@index')
           ->withMessage(FormatGenerator::message('Success', 'Invoice canceled ...'));

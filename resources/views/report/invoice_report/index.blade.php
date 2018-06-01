@@ -51,9 +51,11 @@
           @if(isset($status))
           <option value="{{App\Core\StatusConstance::status_confirm_value}}" @if($status == App\Core\StatusConstance::status_confirm_value) selected @endif>{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}" @if($status == App\Core\StatusConstance::status_deliver_value) selected @endif>{{App\Core\StatusConstance::status_deliver_description}}</option>
+          <option value="{{App\Core\StatusConstance::status_deliver_value}}" @if($status == App\Core\StatusConstance::status_retailer_cancel_value) selected @endif>{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
           @else
           <option value="{{App\Core\StatusConstance::status_confirm_value}}">{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}">{{App\Core\StatusConstance::status_deliver_description}}</option>
+          <option value="{{App\Core\StatusConstance::status_retailer_cancel_value}}">{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
           @endif
         </select>
       </div>
@@ -138,6 +140,27 @@
 @section('page_script')
     <script type="text/javascript">
     $(document).ready(function(){
+      //start datepickers
+      $('#datepicker_from').datepicker({
+          format: 'dd-mm-yyyy',
+          autoclose: true,
+          defaultDate: "+1w",
+          changeMonth: true,
+          numberOfMonths: 1,
+          allowInputToggle: true,
+      });
+
+      $('#datepicker_to').datepicker({
+          format: 'dd-mm-yyyy',
+          autoclose: true,
+          defaultDate: "+1w",
+          changeMonth: true,
+          numberOfMonths: 1,
+          allowInputToggle: true,
+
+      });
+      //end datepickers
+      
       //start data table
       $('#list-table tfoot th.search-col').each( function () {
           var title = $('#list-table thead th').eq( $(this).index() ).text();
@@ -168,27 +191,6 @@
 
       });
       //end datatable
-
-      //start datepickers
-      $('#datepicker_from').datepicker({
-          format: 'dd-mm-yyyy',
-          autoclose: true,
-          defaultDate: "+1w",
-          changeMonth: true,
-          numberOfMonths: 1,
-          allowInputToggle: true,
-      });
-
-      $('#datepicker_to').datepicker({
-          format: 'dd-mm-yyyy',
-          autoclose: true,
-          defaultDate: "+1w",
-          changeMonth: true,
-          numberOfMonths: 1,
-          allowInputToggle: true,
-
-      });
-      //end datepickers
     })
     </script>
 
