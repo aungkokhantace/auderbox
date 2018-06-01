@@ -269,6 +269,13 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         }
         //for pilot version
 
+        //change date format to d-m-Y
+        $invoice->order_date = date('d-m-Y',strtotime($invoice->order_date));
+        $invoice->delivery_date = date('d-m-Y',strtotime($invoice->delivery_date));
+        $invoice->payment_date = date('d-m-Y',strtotime($invoice->payment_date));
+        $invoice->confirm_date = date('d-m-Y',strtotime($invoice->confirm_date));
+        $invoice->cancel_date = date('d-m-Y',strtotime($invoice->cancel_date));
+
         // //start changing date objects to string
         // $invoice->order_date = $invoice->order_date->toDateString();
         // $invoice->delivery_date = $invoice->delivery_date->toDateString();
@@ -431,7 +438,12 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
           //for pilot
-
+          //change date format to d-m-Y
+          $invoice_header->order_date = date('d-m-Y',strtotime($invoice_header->order_date));
+          $invoice_header->delivery_date = date('d-m-Y',strtotime($invoice_header->delivery_date));
+          $invoice_header->payment_date = date('d-m-Y',strtotime($invoice_header->payment_date));
+          $invoice_header->confirm_date = date('d-m-Y',strtotime($invoice_header->confirm_date));
+          $invoice_header->cancel_date = date('d-m-Y',strtotime($invoice_header->cancel_date));
 
           /*
           // start invoice_detail data

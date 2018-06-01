@@ -28,6 +28,9 @@ class RetailerProfileApiRepository implements RetailerProfileApiRepositoryInterf
                               ->first();
 
         if(isset($retailer) && count($retailer)>0){
+          //change date format to d-m-Y
+          $retailer->dob = date('d-m-Y',strtotime($retailer->dob));
+
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Request is successful!";
           $returnedObj['resultObj']             = $retailer;

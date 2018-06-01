@@ -42,6 +42,9 @@ class DeliveryDateApiController extends Controller
             if($result['aceplusStatusCode'] == ReturnMessage::OK){
                 $delivery_date = $result['resultObj'];
 
+                //change date format to d-m-Y
+                $delivery_date = date('d-m-Y',strtotime($delivery_date));
+                
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage'] = "Success!";
                 $returnedObj['data'] = $delivery_date;
