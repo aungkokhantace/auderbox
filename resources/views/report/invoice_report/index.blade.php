@@ -51,7 +51,7 @@
           @if(isset($status))
           <option value="{{App\Core\StatusConstance::status_confirm_value}}" @if($status == App\Core\StatusConstance::status_confirm_value) selected @endif>{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}" @if($status == App\Core\StatusConstance::status_deliver_value) selected @endif>{{App\Core\StatusConstance::status_deliver_description}}</option>
-          <option value="{{App\Core\StatusConstance::status_deliver_value}}" @if($status == App\Core\StatusConstance::status_retailer_cancel_value) selected @endif>{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
+          <option value="{{App\Core\StatusConstance::status_retailer_cancel_value}}" @if($status == App\Core\StatusConstance::status_retailer_cancel_value) selected @endif>{{App\Core\StatusConstance::status_retailer_cancel_description}}</option>
           @else
           <option value="{{App\Core\StatusConstance::status_confirm_value}}">{{App\Core\StatusConstance::status_confirm_description}}</option>
           <option value="{{App\Core\StatusConstance::status_deliver_value}}">{{App\Core\StatusConstance::status_deliver_description}}</option>
@@ -60,13 +60,19 @@
         </select>
       </div>
       <!-- end status -->
-
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8"></div>
       <!-- start search button -->
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
           <button type="button" onclick="report_search_by_date_and_status('invoice_report')" class="form-control btn-danger">Search</button>
       </div>
       <!-- end search button -->
+
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <button type="button" onclick="invoice_report_csv_export();" class="form-control btn-danger">Export CSV</button>
+      </div>
     </div>
 
     <div class="row">

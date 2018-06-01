@@ -131,3 +131,33 @@ function partial_cancel_invoice(invoice_id) {
 function redirect_to_invoice_report() {
   window.location = "/backend/invoice_report";
 }
+
+function invoice_report_csv_export() {
+    var from_date = $("#from_date").val();
+    var to_date = $("#to_date").val();
+    var status = $("#status").val();
+    
+    if(from_date == "" && to_date == ""){
+        var form_action = "/backend/invoice_report/export_csv/";
+    }
+    else if(from_date == "" && to_date != "") {
+        sweetAlert("Oops...", "Please Choose the date !");
+        return;
+    }
+    else if(from_date != "" && to_date == "") {
+        sweetAlert("Oops...", "Please Choose the date !");
+        return;
+    }
+    else{
+        var dateComparison = check_date(from_date, to_date);
+
+        if(dateComparison){
+            var form_action = "/backend/invoice_report/export_csv/"+ from_date + "/" + to_date + "/" + status;
+        }
+        else{
+            sweetAlert("Oops...", "Please Choose the valid date !");
+            return;
+        }
+    }
+    window.location = form_action;
+}

@@ -73,6 +73,7 @@ Route::group(['middleware' => 'web'], function () {
             Route::post('invoice_report/cancel_invoice', array('as'=>'backend/invoice_report/cancel_invoice','uses'=>'Backend\InvoiceReportController@cancelInvoice'));
             Route::post('invoice_report/partial_deliver_invoice', array('as'=>'backend/invoice_report/partial_deliver_invoice','uses'=>'Backend\InvoiceReportController@partialDeliverInvoice'));
             Route::post('invoice_report/partial_cancel_invoice', array('as'=>'backend/invoice_report/partial_cancel_invoice','uses'=>'Backend\InvoiceReportController@partialCancelInvoice'));
+            Route::get('invoice_report/export_csv/{from_date?}/{to_date?}/{status?}', array('as'=>'backend/invoice_report/export_csv','uses'=>'Backend\InvoiceReportController@exportCSV'));
 
             //API formats
             Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));
