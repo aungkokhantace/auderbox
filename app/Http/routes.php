@@ -71,6 +71,8 @@ Route::group(['middleware' => 'web'], function () {
             Route::get('invoice_report/detail/{id}', array('as'=>'backend/invoice_report/detail','uses'=>'Backend\InvoiceReportController@invoiceDetail'));
             Route::post('invoice_report/deliver_invoice', array('as'=>'backend/invoice_report/deliver_invoice','uses'=>'Backend\InvoiceReportController@deliverInvoice'));
             Route::post('invoice_report/cancel_invoice', array('as'=>'backend/invoice_report/cancel_invoice','uses'=>'Backend\InvoiceReportController@cancelInvoice'));
+            Route::post('invoice_report/partial_deliver_invoice', array('as'=>'backend/invoice_report/partial_deliver_invoice','uses'=>'Backend\InvoiceReportController@partialDeliverInvoice'));
+            Route::post('invoice_report/partial_cancel_invoice', array('as'=>'backend/invoice_report/partial_cancel_invoice','uses'=>'Backend\InvoiceReportController@partialCancelInvoice'));
 
             //API formats
             Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));

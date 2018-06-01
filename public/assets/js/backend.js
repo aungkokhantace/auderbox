@@ -86,6 +86,48 @@ function cancel_invoice(invoice_id) {
         });
 }
 
+function partial_deliver_invoice(invoice_id) {
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55 ",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $("#frm_invoice_partial_delivery_" + invoice_id).submit();
+            } else {
+                return;
+            }
+        });
+}
+
+function partial_cancel_invoice(invoice_id) {
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55 ",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $("#frm_invoice_partial_cancel_" + invoice_id).submit();
+            } else {
+                return;
+            }
+        });
+}
+
 function redirect_to_invoice_report() {
   window.location = "/backend/invoice_report";
 }

@@ -186,4 +186,81 @@ class InvoiceReportController extends Controller
           ->withMessage(FormatGenerator::message('Fail', 'Invoice is not canceled ...'));
     }
   }
+
+  public function partialDeliverInvoice(){
+    $invoice_detail_id = Input::get('partial_delivered_invoice_detail_id');
+
+    $paramObj = $this->repo->getInvoiceDetailByID($invoice_detail_id);
+
+    //to redirect to detail list page
+    $invoice_id = $paramObj->invoice_id;
+
+    //change to delivered status
+    $paramObj->status = StatusConstance::status_deliver_value;
+
+    $result = $this->repo->deliverInvoiceDetail($paramObj);
+
+    if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Success', 'Invoice detail is delivered ...'));
+    } else {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is not delivered ...'));
+    }
+  }
+
+  public function partialCancelInvoice(){
+    $invoice_detail_id = Input::get('partial_canceled_invoice_detail_id');
+
+    $paramObj = $this->repo->getInvoiceDetailByID($invoice_detail_id);
+
+    $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+    //to redirect to detail list page
+    $invoice_id = $paramObj->invoice_id;
+
+    //change to canceled status
+    $paramObj->status = StatusConstance::status_retailer_cancel_value;
+    $paramObj->cancel_by = $currentUser;
+    $paramObj->cancel_date = date('Y-m-d H:i:s');
+
+    $result = $this->repo->cancelInvoiceDetail($paramObj);
+
+    if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
+      //if invoice_detail cancellation is successful
+      //check if all invoice details are canceled, if yes, update header status to canceled
+      $all_details_canceled_flag = $this->repo->checkAllInvoiceDetailsAreCanceledOrNot($invoice_id);
+
+
+      //start canceling header
+      if(isset($all_details_canceled_flag) && $all_details_canceled_flag == true){
+          $paramHeaderObj = $this->repo->getObjByID($invoice_id);
+
+          $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+          //change to cancel status
+          $paramHeaderObj->status = StatusConstance::status_retailer_cancel_value;
+          $paramHeaderObj->cancel_by = $currentUser;
+          $paramHeaderObj->cancel_date = date('Y-m-d H:i:s');
+
+          $header_result = $this->repo->cancel($paramHeaderObj);
+
+          //if canceling header is successful too, redirect to invoice detail page
+          if ($header_result['aceplusStatusCode'] == ReturnMessage::OK) {
+            return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+                ->withMessage(FormatGenerator::message('Success', 'Invoice detail (also invoice) is canceled ...'));
+          } else {
+            return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+                ->withMessage(FormatGenerator::message('Fail', 'Invoice detail (also invoice) is not canceled ...'));
+          }
+      }
+      //end canceling header
+
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Success', 'Invoice detail is canceled ...'));
+    } else {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is not canceled ...'));
+    }
+  }
 }

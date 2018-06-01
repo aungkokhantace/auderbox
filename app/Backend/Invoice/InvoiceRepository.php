@@ -201,7 +201,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           else if($invoice_detail->status == StatusConstance::status_deliver_value){
             $invoice_detail->status_text = StatusConstance::status_deliver_description;
           }
-          else if($invoice->status == StatusConstance::status_retailer_cancel_value){
+          else if($invoice_detail->status == StatusConstance::status_retailer_cancel_value){
             $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
           }
           //for pilot version
@@ -477,5 +477,30 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           return $returnedObj;
       }
 
+    }
+
+    public function getInvoiceDetailByID($id){
+        $result = InvoiceDetail::find($id);
+        return $result;
+    }
+
+    public function checkAllInvoiceDetailsAreCanceledOrNot($invoice_id){
+      $all_canceled_flag = true;
+      $cancel_status_array = [StatusConstance::status_retailer_cancel_value,
+                              StatusConstance::status_brand_owner_cancel_value,
+                              StatusConstance::status_auderbox_cancel_value];
+
+      $invoice_details = InvoiceDetail::where('invoice_id',$invoice_id)
+                                      // ->whereIn('status',$cancel_status_array)
+                                      ->whereNull('deleted_at')
+                                      ->get();
+
+      foreach($invoice_details as $invoice_detail){
+        if(!(in_array($invoice_detail->status,$cancel_status_array))) {
+          $all_canceled_flag = false;
+        }
+      }
+
+      return $all_canceled_flag;
     }
 }

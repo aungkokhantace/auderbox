@@ -59,11 +59,12 @@
                         <th>Delivery Date</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <th colspan="2">Change Status</th>
+                        <!-- <th colspan="2">Change Status</th> -->
+                        <th>Change Status</th>
                     </tr>
                     </thead>
                     <tfoot>
-                    <tr>
+                    <!-- <tr>
                         <th class="search-col" con-id="no">No.</th>
                         <th class="search-col" con-id="brand_owner">Brand Owner</th>
                         <th class="search-col" con-id="product">Product</th>
@@ -75,7 +76,7 @@
                         <th class="search-col" con-id="status">Status</th>
                         <th></th>
                         <th></th>
-                    </tr>
+                    </tr> -->
                     </tfoot>
                     <tbody>
                       <?php $number_count = 1;?>
@@ -90,23 +91,23 @@
                           <td>{{$invoice->delivery_date}}</td>
                           <td>{{number_format($invoice_detail->payable_amt,2)}}</td>
                           <td>{{$invoice_detail->status_text}}</td>
-                          <td>
+                          <!-- <td>
                             @if($invoice_detail->status == App\Core\StatusConstance::status_confirm_value)
-                              <form id="frm_invoice_partial_delivery_{{$invoice->id}}" method="post" action="/backend/invoice_report/deliver_invoice">
+                              <form id="frm_invoice_partial_delivery_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/partial_deliver_invoice">
                                   {{ csrf_field() }}
-                                  <input type="hidden" id="delivered_invoice_id" name="delivered_invoice_id" value="{{$invoice->id}}">
-                                  <button type="button" onclick="deliver_invoice('{{$invoice->id}}');" class="btn btn-success">
+                                  <input type="hidden" id="partial_delivered_invoice_detail_id" name="partial_delivered_invoice_detail_id" value="{{$invoice_detail->id}}">
+                                  <button type="button" onclick="partial_deliver_invoice('{{$invoice_detail->id}}');" class="btn btn-success">
                                       DELIVERED
                                   </button>
                               </form>
                             @endif
-                          </td>
+                          </td> -->
                           <td>
                             @if($invoice_detail->status == App\Core\StatusConstance::status_confirm_value)
-                              <form id="frm_invoice_partial_cancel_{{$invoice->id}}" method="post" action="/backend/invoice_report/cancel_invoice">
+                              <form id="frm_invoice_partial_cancel_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/partial_cancel_invoice">
                                   {{ csrf_field() }}
-                                  <input type="hidden" id="canceled_invoice_id" name="canceled_invoice_id" value="{{$invoice->id}}">
-                                  <button type="button" onclick="cancel_invoice('{{$invoice->id}}');" class="btn btn-danger">
+                                  <input type="hidden" id="partial_canceled_invoice_detail_id" name="partial_canceled_invoice_detail_id" value="{{$invoice_detail->id}}">
+                                  <button type="button" onclick="partial_cancel_invoice('{{$invoice_detail->id}}');" class="btn btn-danger">
                                       CANCEL
                                   </button>
                               </form>

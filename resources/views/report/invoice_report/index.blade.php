@@ -86,7 +86,7 @@
                     </tr>
                     </thead>
                     <tfoot>
-                    <tr>
+                    <!-- <tr>
                         <th class="search-col" con-id="invoice_number">Invoice Number</th>
                         <th class="search-col" con-id="retailshop_name_eng">Retailshop Name (Eng)</th>
                         <th class="search-col" con-id="invoice_date">Invoice Date</th>
@@ -95,7 +95,7 @@
                         <th class="search-col" con-id="status">Status</th>
                         <th></th>
                         <th></th>
-                    </tr>
+                    </tr> -->
                     </tfoot>
                     <tbody>
                         @foreach($invoices as $invoice)
@@ -160,7 +160,7 @@
 
       });
       //end datepickers
-      
+
       //start data table
       $('#list-table tfoot th.search-col').each( function () {
           var title = $('#list-table thead th').eq( $(this).index() ).text();

@@ -91,6 +91,8 @@ class Default_RolePermissionSeeder extends Seeder
             ['role_id'=>2, 'permission_id'=>72],
             ['role_id'=>2, 'permission_id'=>73],
             ['role_id'=>2, 'permission_id'=>74],
+            ['role_id'=>2, 'permission_id'=>75],
+            ['role_id'=>2, 'permission_id'=>76],
           //end super-admin permissions
 
           //start system-admin (role_id = 3) permissions
@@ -159,6 +161,8 @@ class Default_RolePermissionSeeder extends Seeder
             ['role_id'=>3, 'permission_id'=>72],
             ['role_id'=>3, 'permission_id'=>73],
             ['role_id'=>3, 'permission_id'=>74],
+            ['role_id'=>3, 'permission_id'=>75],
+            ['role_id'=>3, 'permission_id'=>76],
           //end system-admin permissions
 
           //start office-staff (role_id = 4) permissions
