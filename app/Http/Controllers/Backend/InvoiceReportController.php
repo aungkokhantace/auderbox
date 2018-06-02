@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Input;
 use App\Core\FormatGenerator;
 use App\Core\Utility;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Core\Config\ConfigRepository;
+use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
+use App\Core\CoreConstance;
 
 class InvoiceReportController extends Controller
 {
@@ -82,7 +85,7 @@ class InvoiceReportController extends Controller
     if (Auth::guard('User')->check()) {
       //get invoice details
       $invoice = $this->repo->getInvoiceDetail($invoice_id);
-
+      
       return view('report.invoice_report.invoice_detail')
           ->with('invoice',$invoice);
     }
@@ -234,17 +237,19 @@ class InvoiceReportController extends Controller
 
       //start updating header price
       $canceled_detail_net_amount = $paramObj->net_amt;
+      $canceled_detail_net_amount_w_disc = $paramObj->net_amt_w_disc;
       $canceled_detail_payable_amount = $paramObj->payable_amt;
 
       //reduce cancel detail amounts
       $paramHeaderObj->total_net_amt = $paramHeaderObj->total_net_amt - $canceled_detail_net_amount;
+      $paramHeaderObj->total_net_amt_w_disc = $paramHeaderObj->total_net_amt_w_disc - $canceled_detail_net_amount_w_disc;
       $paramHeaderObj->total_payable_amt = $paramHeaderObj->total_payable_amt - $canceled_detail_payable_amount;
 
       $update_header_price_result = $this->repo->updateHeaderPrice($paramHeaderObj);
 
       if ($update_header_price_result['aceplusStatusCode'] !== ReturnMessage::OK) {
         return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
-            ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is canceled but invoice header price is not updateds...'));
+            ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is canceled but invoice header price is not updated...'));
       }
       //end updating header price
 
@@ -272,6 +277,34 @@ class InvoiceReportController extends Controller
           }
       }
       //end canceling header
+
+      //start invoice_detail_history
+      $configRepo = new ConfigRepository();
+      //start generating invoice_detail_history_id
+      $invoice_detail_history_table      = (new InvoiceDetailHistory())->getTable();
+      $invoice_detail_history_col        = 'id';
+      $invoie_detail_history_offset      = 1;
+      $invoice_detail_history_pad_length = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+      $detail_history_id                 = Utility::generate_id($invoice_detail_id,$invoice_detail_history_table,$invoice_detail_history_col,$invoie_detail_history_offset,$invoice_detail_history_pad_length);
+      //end generating invoice_detail_history_id
+
+      $invDetailHistoryObj = new InvoiceDetailHistory();
+      $invDetailHistoryObj->id = $detail_history_id;
+      $invDetailHistoryObj->invoice_detail_id = $invoice_detail_id;
+      $invDetailHistoryObj->qty = -1 * abs($paramObj->quantity); //negative value, because of cancel action
+      $invDetailHistoryObj->date = date('Y-m-d H:i:s');
+      $invDetailHistoryObj->type = CoreConstance::invoice_detail_order_value; //invoice_history_type is "order"
+      $invDetailHistoryObj->status = 1; //default is active
+
+      $detailHistoryRes = $this->repo->saveInvoiceDetailHistory($invDetailHistoryObj);
+
+      if($detailHistoryRes['aceplusStatusCode'] != ReturnMessage::OK){
+        DB::rollback();
+        $returnedObj['aceplusStatusCode']     = $detailHistoryRes['aceplusStatusCode'];
+        $returnedObj['aceplusStatusMessage']  = $detailHistoryRes['aceplusStatusMessage'];
+        return $returnedObj;
+      }
+      //end invoice_detail_history
 
       return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
           ->withMessage(FormatGenerator::message('Success', 'Invoice detail is canceled ...'));
@@ -328,8 +361,8 @@ class InvoiceReportController extends Controller
           //end status text
         }
       }
-
-      Excel::create('InvoiceReport', function($excel)use($invoices) {
+      $today_date = date('d-m-Y');
+      Excel::create($today_date.'_InvoiceReport', function($excel)use($invoices) {
               $excel->sheet('InvoiceReport', function($sheet)use($invoices) {
                   $displayArray = array();
                   foreach($invoices as $invoice){
@@ -337,7 +370,7 @@ class InvoiceReportController extends Controller
                       $displayArray[$invoice->id]["Retailshop Name (Eng)"] = $invoice->retailshop_name_eng;
                       $displayArray[$invoice->id]["Order Date"] = $invoice->order_date;
                       $displayArray[$invoice->id]["Delivery Date"] = $invoice->delivery_date;
-                      $displayArray[$invoice->id]["Total Amount"] = $invoice->total_payable_amt;
+                      $displayArray[$invoice->id]["Total Amount"] = number_format($invoice->total_payable_amt,2);
                       $displayArray[$invoice->id]["Status"] = $invoice->status_text;
                   }
 
@@ -360,6 +393,144 @@ class InvoiceReportController extends Controller
     }
     else{
       return redirect('backend/unauthorize');
+    }
+  }
+
+  public function changeDetailQuantity() {
+    $quantity_change_invoice_detail_id = Input::get('quantity_change_invoice_detail_id');
+    $reduced_quantity = Input::get('reduced_qty');
+
+    $configRepo = new ConfigRepository();
+
+    $paramDetailObj = $this->repo->getInvoiceDetailByID($quantity_change_invoice_detail_id);
+
+    //to redirect to detail list page
+    $invoice_id = $paramDetailObj->invoice_id;
+
+    //get tax amount
+    $tax_amount = $configRepo->getTaxAmount();
+
+    //subtract reduced_qty from original qty
+    $new_quantity = $paramDetailObj->quantity - $reduced_quantity;
+
+    //record old invoice detail amounts
+    $old_detail_net_amt         = $paramDetailObj->net_amt;
+    $old_detail_net_amt_w_disc  = $paramDetailObj->net_amt_w_disc;
+    $old_detail_payable_amt     = $paramDetailObj->payable_amt;
+
+    if($new_quantity == 0){
+      //set new invoice detail amounts to zero
+      $new_detail_net_amt        = 0.0;
+      $new_detail_discount_amt   = $paramDetailObj->discount_amt; //same for pilot version (there is no discount)
+      $new_detail_net_amt_w_disc = 0.0;
+      $new_detail_payable_amt    = 0.0;
+    }
+    else{
+      //recalculate new invoice detail amounts
+      $new_detail_net_amt         = $paramDetailObj->unit_price * $new_quantity;
+      $new_detail_discount_amt    = $paramDetailObj->discount_amt; //same for pilot version (there is no discount)
+      $new_detail_net_amt_w_disc  = $new_detail_net_amt - $new_detail_discount_amt;
+      $new_detail_payable_amt     = $new_detail_net_amt_w_disc + $tax_amount;
+    }
+
+    //calculate canceled detail amounts
+    $canceled_detail_net_amt        = $old_detail_net_amt - $new_detail_net_amt;
+    $canceled_detail_net_amt_w_disc = $old_detail_net_amt_w_disc - $new_detail_net_amt_w_disc;
+    $canceled_detail_payable_amt    = $old_detail_payable_amt - $new_detail_payable_amt;
+
+
+    //update invoice detail obj with new qty and amounts
+    if($new_quantity == 0) {
+      $paramDetailObj->status       = StatusConstance::status_retailer_cancel_value;
+    }
+    $paramDetailObj->quantity       = $new_quantity;
+    $paramDetailObj->net_amt        = $new_detail_net_amt;
+    $paramDetailObj->net_amt_w_disc = $new_detail_net_amt_w_disc;
+    $paramDetailObj->payable_amt    = $new_detail_payable_amt;
+
+    $change_quantity_result = $this->repo->changeQuantity($paramDetailObj);
+
+    if ($change_quantity_result['aceplusStatusCode'] !== ReturnMessage::OK) {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice detail quantity is not updated ...'));
+    }
+
+    //if quantity change is successful, then update invoice_header's amounts
+    //get invoice header obj
+    $paramHeaderObj = $this->repo->getObjByID($invoice_id);
+
+    //reduce cancel detail amounts
+    $paramHeaderObj->total_net_amt = $paramHeaderObj->total_net_amt - $canceled_detail_net_amt;
+    $paramHeaderObj->total_net_amt_w_disc = $paramHeaderObj->total_net_amt_w_disc - $canceled_detail_net_amt_w_disc;
+    $paramHeaderObj->total_payable_amt = $paramHeaderObj->total_payable_amt - $canceled_detail_payable_amt;
+
+    $update_header_price_result = $this->repo->updateHeaderPrice($paramHeaderObj);
+
+    if ($update_header_price_result['aceplusStatusCode'] !== ReturnMessage::OK) {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is updated but invoice header price is not updated...'));
+    }
+    //end updating header price
+
+    //check if all invoice details are canceled, if yes, update header status to canceled
+    $all_details_canceled_flag = $this->repo->checkAllInvoiceDetailsAreCanceledOrNot($invoice_id);
+
+    //if all invoice_details are canceled, start canceling header
+    if(isset($all_details_canceled_flag) && $all_details_canceled_flag == true){
+        $currentUser = Utility::getCurrentUserID(); //get currently logged in user
+
+        //change to cancel status
+        $paramHeaderObj->status = StatusConstance::status_retailer_cancel_value;
+        $paramHeaderObj->cancel_by = $currentUser;
+        $paramHeaderObj->cancel_date = date('Y-m-d H:i:s');
+
+        $header_result = $this->repo->cancel($paramHeaderObj);
+
+        //if canceling header is successful too, redirect to invoice detail page
+        if ($header_result['aceplusStatusCode'] == ReturnMessage::OK) {
+          return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+              ->withMessage(FormatGenerator::message('Success', 'Invoice detail (also invoice) is canceled ...'));
+        } else {
+          return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+              ->withMessage(FormatGenerator::message('Fail', 'Invoice detail (also invoice) is not canceled ...'));
+        }
+    }
+    //end canceling header
+
+    //start invoice_detail_history
+    $configRepo = new ConfigRepository();
+    //start generating invoice_detail_history_id
+    $invoice_detail_history_table      = (new InvoiceDetailHistory())->getTable();
+    $invoice_detail_history_col        = 'id';
+    $invoie_detail_history_offset      = 1;
+    $invoice_detail_history_pad_length = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+    $detail_history_id                 = Utility::generate_id($quantity_change_invoice_detail_id,$invoice_detail_history_table,$invoice_detail_history_col,$invoie_detail_history_offset,$invoice_detail_history_pad_length);
+    //end generating invoice_detail_history_id
+
+    $invDetailHistoryObj = new InvoiceDetailHistory();
+    $invDetailHistoryObj->id = $detail_history_id;
+    $invDetailHistoryObj->invoice_detail_id = $quantity_change_invoice_detail_id;
+    $invDetailHistoryObj->qty = -1 * abs($reduced_quantity); //negative value, because of cancel action
+    $invDetailHistoryObj->date = date('Y-m-d H:i:s');
+    $invDetailHistoryObj->type = CoreConstance::invoice_detail_order_value; //invoice_history_type is "order"
+    $invDetailHistoryObj->status = 1; //default is active
+
+    $detailHistoryRes = $this->repo->saveInvoiceDetailHistory($invDetailHistoryObj);
+
+    if($detailHistoryRes['aceplusStatusCode'] != ReturnMessage::OK){
+      DB::rollback();
+      $returnedObj['aceplusStatusCode']     = $detailHistoryRes['aceplusStatusCode'];
+      $returnedObj['aceplusStatusMessage']  = $detailHistoryRes['aceplusStatusMessage'];
+      return $returnedObj;
+    }
+    //end invoice_detail_history
+
+    if ($change_quantity_result['aceplusStatusCode'] == ReturnMessage::OK) {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Success', 'Invoice detail quantity and invoice header price is updated ...'));
+    } else {
+      return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+          ->withMessage(FormatGenerator::message('Fail', 'Invoice detail quantity is not updated ...'));
     }
   }
 }

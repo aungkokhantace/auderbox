@@ -62,7 +62,7 @@
       <!-- end status -->
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-          <button type="button" onclick="redirect_to_invoice_report()" class="form-control btn-danger">Clear Filters</button>
+        <button type="button" onclick="report_search_by_date_and_status('invoice_report')" class="form-control btn-danger">Search</button>
       </div>
     </div>
     <br>
@@ -70,7 +70,7 @@
       <!-- <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8"></div> -->
       <!-- start search button -->
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-          <button type="button" onclick="report_search_by_date_and_status('invoice_report')" class="form-control btn-danger">Search</button>
+        <button type="button" onclick="redirect_to_invoice_report()" class="form-control btn-danger">Clear Filters</button>
       </div>
       <!-- end search button -->
 

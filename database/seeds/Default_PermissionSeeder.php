@@ -91,6 +91,7 @@ class Default_PermissionSeeder extends Seeder
           ['id'=>75,'module'=>'Invoice Report','name'=>'Partial Deliver Invoice','description'=>'Partial Deliver Invoice','url'=>'backend/invoice_report/partial_deliver_invoice'],
           ['id'=>76,'module'=>'Invoice Report','name'=>'Partial Cancel Invoice','description'=>'Partial Cancel Invoice','url'=>'backend/invoice_report/partial_cancel_invoice'],
           ['id'=>77,'module'=>'Invoice Report','name'=>'Export CSV','description'=>'Export CSV','url'=>'backend/invoice_report/export_csv'],
+          ['id'=>78,'module'=>'Invoice Report','name'=>'Change Quantity','description'=>'Change Quantity','url'=>'backend/invoice_report/detail/change_quantity'],
 
         );
 

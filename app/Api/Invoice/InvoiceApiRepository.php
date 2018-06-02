@@ -170,7 +170,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $invDetailHistoryObj->invoice_detail_id = $detail_id;
             $invDetailHistoryObj->qty = $invDetail->quantity;
             $invDetailHistoryObj->date = date('Y-m-d H:i:s');
-            $invDetailHistoryObj->type = CoreConstance::invoice_detatil_order_value; //invoice_history_type is "order"
+            $invDetailHistoryObj->type = CoreConstance::invoice_detail_order_value; //invoice_history_type is "order"
             $invDetailHistoryObj->status = 1; //default is active
 
             $detailHistoryRes = $this->saveInvoiceDetailHistory($invDetailHistoryObj);

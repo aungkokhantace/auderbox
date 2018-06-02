@@ -136,7 +136,7 @@ function invoice_report_csv_export() {
     var from_date = $("#from_date").val();
     var to_date = $("#to_date").val();
     var status = $("#status").val();
-    
+
     if(from_date == "" && to_date == ""){
         var form_action = "/backend/invoice_report/export_csv/";
     }
@@ -160,4 +160,25 @@ function invoice_report_csv_export() {
         }
     }
     window.location = form_action;
+}
+
+function change_invoice_detail_quantity(invoice_detail_id) {
+    swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55 ",
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                $("#frm_change_qty_" + invoice_detail_id).submit();
+            } else {
+                return;
+            }
+        });
 }

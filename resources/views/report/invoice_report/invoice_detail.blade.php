@@ -39,6 +39,11 @@
       </div>
 
       <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Invoice Status</h4></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->status_text}}</h4></div>
+      </div>
+
+      <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Address</h4></div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailshop_address}}</h4></div>
       </div>
@@ -59,8 +64,8 @@
                         <th>Delivery Date</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <!-- <th colspan="2">Change Status</th> -->
-                        <th>Change Status</th>
+                        <th colspan="2">Change Status</th>
+                        <!-- <th>Change Status</th> -->
                     </tr>
                     </thead>
                     <tfoot>
@@ -91,17 +96,6 @@
                           <td>{{$invoice->delivery_date}}</td>
                           <td>{{number_format($invoice_detail->payable_amt,2)}}</td>
                           <td>{{$invoice_detail->status_text}}</td>
-                          <!-- <td>
-                            @if($invoice_detail->status == App\Core\StatusConstance::status_confirm_value)
-                              <form id="frm_invoice_partial_delivery_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/partial_deliver_invoice">
-                                  {{ csrf_field() }}
-                                  <input type="hidden" id="partial_delivered_invoice_detail_id" name="partial_delivered_invoice_detail_id" value="{{$invoice_detail->id}}">
-                                  <button type="button" onclick="partial_deliver_invoice('{{$invoice_detail->id}}');" class="btn btn-success">
-                                      DELIVERED
-                                  </button>
-                              </form>
-                            @endif
-                          </td> -->
                           <td>
                             @if($invoice_detail->status == App\Core\StatusConstance::status_confirm_value)
                               <form id="frm_invoice_partial_cancel_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/partial_cancel_invoice">
@@ -111,6 +105,81 @@
                                       CANCEL
                                   </button>
                               </form>
+                            @endif
+                          </td>
+                          <td>
+                            @if($invoice_detail->status == App\Core\StatusConstance::status_confirm_value)
+                              <!-- <form id="frm_change_qty_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/partial_deliver_invoice">
+                                  {{ csrf_field() }}
+                                  <input type="hidden" id="partial_delivered_invoice_detail_id" name="partial_delivered_invoice_detail_id" value="{{$invoice_detail->id}}">
+                                  <button type="button" onclick="partial_deliver_invoice('{{$invoice_detail->id}}');" class="btn btn-success">
+                                      Change Quantity
+                                  </button>
+                              </form> -->
+                              @if($invoice_detail->quantity !== 0)
+                              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{$invoice_detail->id}}">Change Quantity</button>
+                              @endif
+                              <!-- start modal -->
+                              <div class="modal fade" id="myModal_{{$invoice_detail->id}}" role="dialog">
+                                <div class="modal-dialog">
+
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Partial Invoice Cancellation (Change order quantity)</h4>
+                                    </div>
+
+                                    <!-- Start Modal Body -->
+                                    <div class="modal-body">
+                                        <form id="frm_change_qty_{{$invoice_detail->id}}" method="post" action="/backend/invoice_report/detail/change_quantity">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" id="quantity_change_invoice_detail_id" name="quantity_change_invoice_detail_id" value="{{$invoice_detail->id}}">
+                                            <div class="row">
+                                              <div class="col-md-3">
+                                                Ordered Quantity
+                                              </div>
+
+                                              <div class="col-md-1"> : </div>
+
+                                              <div class="col-md-4">
+                                                {{$invoice_detail->quantity}}
+                                              </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                              <div class="col-md-3">
+                                                Cancel Quantity
+                                              </div>
+
+                                              <div class="col-md-1"> : </div>
+
+                                              <div class="col-md-4">
+                                                <select class="form-control" id="reduced_qty" name="reduced_qty">
+                                                  @for($i = $invoice_detail->quantity; $i >= 1 ; $i--)
+                                                  <option>{{$i}}</option>
+                                                  @endfor
+                                                </select>
+                                              </div>
+                                              <div class="col-md-4">
+                                                <button type="button" onclick="change_invoice_detail_quantity('{{$invoice_detail->id}}');" class="btn btn-danger">
+                                                    Reduce Quantity
+                                                </button>
+                                              </div>
+                                            </div>
+                                            <br>
+                                        </form>
+                                    </div>
+                                    <!-- End Modal Body -->
+
+                                    <!-- <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div> -->
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!-- end modal -->
                             @endif
                           </td>
                       </tr>

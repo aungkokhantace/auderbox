@@ -15,11 +15,11 @@ class CoreConstance {
     const INVALID_PASSWORD = "INVALID_PASSWORD";
 
     //start invoice_detail types (to record order and cancel actions)
-    const invoice_detatil_order_value = 1;
-    const invoice_detatil_order_description = "Order";
+    const invoice_detail_order_value = 1;
+    const invoice_detail_order_description = "Order";
 
-    const invoice_detatil_cancel_value = 2;
-    const invoice_detatil_cancel_description = "Cancel";
+    const invoice_detail_cancel_value = 2;
+    const invoice_detail_cancel_description = "Cancel";
     //end invoice_detail types (to record order and cancel actions)
 
 

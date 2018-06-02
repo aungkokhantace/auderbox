@@ -381,7 +381,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                     $invDetailHistoryObj->invoice_detail_id = $detail_id;
                     $invDetailHistoryObj->qty = -1 * abs($invoice_detail->quantity); //negative value, because of cancel action
                     $invDetailHistoryObj->date = date('Y-m-d H:i:s');
-                    $invDetailHistoryObj->type = CoreConstance::invoice_detatil_order_value; //invoice_history_type is "order"
+                    $invDetailHistoryObj->type = CoreConstance::invoice_detail_order_value; //invoice_history_type is "order"
                     $invDetailHistoryObj->status = 1; //default is active
 
                     $detailHistoryRes = $this->saveInvoiceDetailHistory($invDetailHistoryObj);
@@ -512,6 +512,24 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
         $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
         $returnedObj['aceplusStatusMessage'] = "Invoice header price is successfully updated!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+      }
+    }
+
+    public function changeQuantity($paramDetailObj) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      try{
+        $tempObj = Utility::addUpdatedBy($paramDetailObj);
+        $tempObj->save();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice detail quantity and amount are successfully updated!";
 
         return $returnedObj;
       }
