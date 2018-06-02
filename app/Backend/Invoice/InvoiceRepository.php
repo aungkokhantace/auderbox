@@ -476,7 +476,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
           return $returnedObj;
       }
-
     }
 
     public function getInvoiceDetailByID($id){
@@ -502,5 +501,23 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       }
 
       return $all_canceled_flag;
+    }
+
+    public function updateHeaderPrice($paramHeaderObj) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      try{
+        $tempObj = Utility::addUpdatedBy($paramHeaderObj);
+        $tempObj->save();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice header price is successfully updated!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+      }
     }
 }

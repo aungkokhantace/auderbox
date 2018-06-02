@@ -42,7 +42,7 @@
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>Address</h4></div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><h4>{{$invoice->retailshop_address}}</h4></div>
       </div>
-
+      <br>
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="listing">
@@ -127,34 +127,34 @@
     <script type="text/javascript">
     $(document).ready(function(){
       //start data table
-      $('#list-table tfoot th.search-col').each( function () {
-          var title = $('#list-table thead th').eq( $(this).index() ).text();
-          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-      } );
+      // $('#list-table tfoot th.search-col').each( function () {
+      //     var title = $('#list-table thead th').eq( $(this).index() ).text();
+      //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      // } );
 
-      var table = $('#list-table').DataTable({
-          aLengthMenu: [
-              [10,15,25, 50, 100, 200, -1],
-              [10,15,25, 50, 100, 200, "All"]
-          ],
-          iDisplayLength: 5,
-          // "order": [[ 1, "desc" ]],
-          stateSave: false,
-          "pagingType": "full",
-          "dom": '<"pull-right m-t-20"i>rt<"bottom"lp><"clear">',
-          "pageLength": 15
-      });
+      // var table = $('#list-table').DataTable({
+      //     aLengthMenu: [
+      //         [10,15,25, 50, 100, 200, -1],
+      //         [10,15,25, 50, 100, 200, "All"]
+      //     ],
+      //     iDisplayLength: 5,
+      //     // "order": [[ 1, "desc" ]],
+      //     stateSave: false,
+      //     "pagingType": "full",
+      //     "dom": '<"pull-right m-t-20"i>rt<"bottom"lp><"clear">',
+      //     "pageLength": 15
+      // });
 
       // Apply the search
-      table.columns().eq( 0 ).each( function ( colIdx ) {
-          $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-              table
-                      .column( colIdx )
-                      .search( this.value )
-                      .draw();
-          } );
-
-      });
+      // table.columns().eq( 0 ).each( function ( colIdx ) {
+      //     $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+      //         table
+      //                 .column( colIdx )
+      //                 .search( this.value )
+      //                 .draw();
+      //     } );
+      //
+      // });
       //end datatable
 
       //start datepickers

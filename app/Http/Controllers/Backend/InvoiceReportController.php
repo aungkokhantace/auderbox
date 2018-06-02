@@ -229,14 +229,30 @@ class InvoiceReportController extends Controller
 
     if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
       //if invoice_detail cancellation is successful
+      //get invoice header obj
+      $paramHeaderObj = $this->repo->getObjByID($invoice_id);
+
+      //start updating header price
+      $canceled_detail_net_amount = $paramObj->net_amt;
+      $canceled_detail_payable_amount = $paramObj->payable_amt;
+
+      //reduce cancel detail amounts
+      $paramHeaderObj->total_net_amt = $paramHeaderObj->total_net_amt - $canceled_detail_net_amount;
+      $paramHeaderObj->total_payable_amt = $paramHeaderObj->total_payable_amt - $canceled_detail_payable_amount;
+
+      $update_header_price_result = $this->repo->updateHeaderPrice($paramHeaderObj);
+
+      if ($update_header_price_result['aceplusStatusCode'] !== ReturnMessage::OK) {
+        return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+            ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is canceled but invoice header price is not updateds...'));
+      }
+      //end updating header price
+
       //check if all invoice details are canceled, if yes, update header status to canceled
       $all_details_canceled_flag = $this->repo->checkAllInvoiceDetailsAreCanceledOrNot($invoice_id);
 
-
-      //start canceling header
+      //if all invoice_details are canceled, start canceling header
       if(isset($all_details_canceled_flag) && $all_details_canceled_flag == true){
-          $paramHeaderObj = $this->repo->getObjByID($invoice_id);
-
           $currentUser = Utility::getCurrentUserID(); //get currently logged in user
 
           //change to cancel status
@@ -338,7 +354,7 @@ class InvoiceReportController extends Controller
                   }
               });
           })
-              ->download('xls');
+              ->download('csv');
           ob_flush();
           return Redirect();
     }

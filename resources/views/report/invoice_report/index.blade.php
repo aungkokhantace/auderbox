@@ -60,10 +60,14 @@
         </select>
       </div>
       <!-- end status -->
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <button type="button" onclick="redirect_to_invoice_report()" class="form-control btn-danger">Clear Filters</button>
+      </div>
     </div>
     <br>
     <div class="row">
-      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8"></div>
+      <!-- <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8"></div> -->
       <!-- start search button -->
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
           <button type="button" onclick="report_search_by_date_and_status('invoice_report')" class="form-control btn-danger">Search</button>
@@ -74,6 +78,8 @@
             <button type="button" onclick="invoice_report_csv_export();" class="form-control btn-danger">Export CSV</button>
       </div>
     </div>
+
+    <br>
 
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -168,34 +174,34 @@
       //end datepickers
 
       //start data table
-      $('#list-table tfoot th.search-col').each( function () {
-          var title = $('#list-table thead th').eq( $(this).index() ).text();
-          $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-      } );
+      // $('#list-table tfoot th.search-col').each( function () {
+      //     var title = $('#list-table thead th').eq( $(this).index() ).text();
+      //     $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+      // } );
 
-      var table = $('#list-table').DataTable({
-          aLengthMenu: [
-              [10,15,25, 50, 100, 200, -1],
-              [10,15,25, 50, 100, 200, "All"]
-          ],
-          iDisplayLength: 5,
-          // "order": [[ 1, "desc" ]],
-          stateSave: false,
-          "pagingType": "full",
-          "dom": '<"pull-right m-t-20"i>rt<"bottom"lp><"clear">',
-          "pageLength": 15
-      });
+      // var table = $('#list-table').DataTable({
+      //     aLengthMenu: [
+      //         [10,15,25, 50, 100, 200, -1],
+      //         [10,15,25, 50, 100, 200, "All"]
+      //     ],
+      //     iDisplayLength: 5,
+      //     // "order": [[ 1, "desc" ]],
+      //     stateSave: false,
+      //     "pagingType": "full",
+      //     "dom": '<"pull-right m-t-20"i>rt<"bottom"lp><"clear">',
+      //     "pageLength": 15
+      // });
 
       // Apply the search
-      table.columns().eq( 0 ).each( function ( colIdx ) {
-          $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-              table
-                      .column( colIdx )
-                      .search( this.value )
-                      .draw();
-          } );
-
-      });
+      // table.columns().eq( 0 ).each( function ( colIdx ) {
+      //     $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+      //         table
+      //                 .column( colIdx )
+      //                 .search( this.value )
+      //                 .draw();
+      //     } );
+      //
+      // });
       //end datatable
     })
     </script>
