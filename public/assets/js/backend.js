@@ -58,9 +58,10 @@ function deliver_invoice(invoice_id) {
         },
         function (isConfirm) {
             if (isConfirm) {
-                $("#frm_invoice_delivery_" + invoice_id).submit();
+              $('.confirm').attr('disabled','disabled');
+              $("#frm_invoice_delivery_" + invoice_id).submit();
             } else {
-                return;
+              return;
             }
         });
 }
@@ -79,9 +80,10 @@ function cancel_invoice(invoice_id) {
         },
         function (isConfirm) {
             if (isConfirm) {
-                $("#frm_invoice_cancel_" + invoice_id).submit();
+              $('.confirm').attr('disabled','disabled');
+              $("#frm_invoice_cancel_" + invoice_id).submit();
             } else {
-                return;
+              return;
             }
         });
 }
@@ -100,9 +102,10 @@ function partial_deliver_invoice(invoice_id) {
         },
         function (isConfirm) {
             if (isConfirm) {
-                $("#frm_invoice_partial_delivery_" + invoice_id).submit();
+              $('.confirm').attr('disabled','disabled');
+              $("#frm_invoice_partial_delivery_" + invoice_id).submit();
             } else {
-                return;
+              return;
             }
         });
 }
@@ -121,6 +124,7 @@ function partial_cancel_invoice(invoice_id) {
         },
         function (isConfirm) {
             if (isConfirm) {
+              $('.confirm').attr('disabled','disabled');
                 $("#frm_invoice_partial_cancel_" + invoice_id).submit();
             } else {
                 return;
@@ -176,9 +180,10 @@ function change_invoice_detail_quantity(invoice_detail_id) {
         },
         function (isConfirm) {
             if (isConfirm) {
-                $("#frm_change_qty_" + invoice_detail_id).submit();
+              $('.confirm').attr('disabled','disabled');
+              $("#frm_change_qty_" + invoice_detail_id).submit();
             } else {
-                return;
+              return;
             }
         });
 }
