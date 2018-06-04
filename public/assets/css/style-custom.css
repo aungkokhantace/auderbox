@@ -166,6 +166,14 @@ ul .sub-menu{
 .page-header{
   color: #F37075 !important;
 }
+
+.sidebar .sub-menu{
+    background : #9a8d92 !important;
+}
+
+.has-sub active{
+  background : #f37023 !important;
+}
 /* change backend color to auderbox theme color */
 
 /* for horizontal scroll bar when listing table don’t fit on page */
