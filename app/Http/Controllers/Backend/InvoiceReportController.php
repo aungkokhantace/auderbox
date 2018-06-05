@@ -176,7 +176,7 @@ class InvoiceReportController extends Controller
     $currentUser = Utility::getCurrentUserID(); //get currently logged in user
 
     //change to cancel status
-    $paramObj->status = StatusConstance::status_retailer_cancel_value;
+    $paramObj->status = StatusConstance::status_auderbox_cancel_value;
     $paramObj->cancel_by = $currentUser;
     $paramObj->cancel_date = date('Y-m-d H:i:s');
 
@@ -261,7 +261,7 @@ class InvoiceReportController extends Controller
           $currentUser = Utility::getCurrentUserID(); //get currently logged in user
 
           //change to cancel status
-          $paramHeaderObj->status = StatusConstance::status_retailer_cancel_value;
+          $paramHeaderObj->status = StatusConstance::status_auderbox_cancel_value;
           $paramHeaderObj->cancel_by = $currentUser;
           $paramHeaderObj->cancel_date = date('Y-m-d H:i:s');
 
@@ -441,7 +441,7 @@ class InvoiceReportController extends Controller
 
     //update invoice detail obj with new qty and amounts
     if($new_quantity == 0) {
-      $paramDetailObj->status       = StatusConstance::status_retailer_cancel_value;
+      $paramDetailObj->status       = StatusConstance::status_auderbox_cancel_value;
     }
     $paramDetailObj->quantity       = $new_quantity;
     $paramDetailObj->net_amt        = $new_detail_net_amt;

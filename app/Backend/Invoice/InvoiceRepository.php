@@ -238,17 +238,25 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 $invoice_id = $paramObj->id;
                 $invoice_details = $this->getInvoiceDetailsByInvoiceId($invoice_id);
 
+                //array with all cancel statuses
+                $cancel_status_array = [StatusConstance::status_retailer_cancel_value,
+                                        StatusConstance::status_brand_owner_cancel_value,
+                                        StatusConstance::status_auderbox_cancel_value];
+
                 //deliver each invoice detail
                 foreach($invoice_details as $invoice_detail){
-                    //set status to delivered
-                    $invoice_detail->status = StatusConstance::status_deliver_value;
+                    //cancel all invoice_details which are not in any of the cancel statuses
+                    if(!(in_array($invoice_detail->status,$cancel_status_array))) {
+                        //set status to delivered
+                        $invoice_detail->status = StatusConstance::status_deliver_value;
 
-                    $invoice_detail_result = $this->deliverInvoiceDetail($invoice_detail);
+                        $invoice_detail_result = $this->deliverInvoiceDetail($invoice_detail);
 
-                    if($invoice_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
-                      $returnedObj['aceplusStatusMessage'] = "Error in delivering invoice_detail";
-                      DB::rollBack();
-                      return $returnedObj;
+                        if($invoice_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+                          $returnedObj['aceplusStatusMessage'] = "Error in delivering invoice_detail";
+                          DB::rollBack();
+                          return $returnedObj;
+                        }
                     }
                 }
 
@@ -353,7 +361,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 //cancel each invoice detail
                 foreach($invoice_details as $invoice_detail){
                     //set status to cancel
-                    $invoice_detail->status = StatusConstance::status_retailer_cancel_value;
+                    $invoice_detail->status = StatusConstance::status_auderbox_cancel_value;
                     $invoice_detail->cancel_by = $tempObj->cancel_by;
                     $invoice_detail->cancel_date = $tempObj->cancel_date;
 
