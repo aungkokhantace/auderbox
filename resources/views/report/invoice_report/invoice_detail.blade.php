@@ -116,7 +116,7 @@
                                       Change Quantity
                                   </button>
                               </form> -->
-                              @if($invoice_detail->quantity !== 0)
+                              @if($invoice_detail->quantity > 0)
                               <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{$invoice_detail->id}}">Change Quantity</button>
                               @endif
                               <!-- start modal -->
@@ -149,15 +149,19 @@
                                             <br>
                                             <div class="row">
                                               <div class="col-md-3">
-                                                Cancel Quantity
+                                                New Quantity
                                               </div>
 
                                               <div class="col-md-1"> : </div>
 
                                               <div class="col-md-4">
-                                                <select class="form-control" id="reduced_qty" name="reduced_qty">
-                                                  @for($i = $invoice_detail->quantity; $i >= 1 ; $i--)
-                                                  <option>{{$i}}</option>
+                                                <select class="form-control" id="new_qty" name="new_qty">
+                                                  @for($i = $invoice_detail->quantity; $i >= 0 ; $i--)
+                                                    @if($i == 0)
+                                                      <option value="{{$i}}">{{$i}} (Cancel)</option>
+                                                    @else
+                                                      <option value="{{$i}}">{{$i}}</option>
+                                                    @endif
                                                   @endfor
                                                 </select>
                                               </div>

@@ -398,7 +398,8 @@ class InvoiceReportController extends Controller
 
   public function changeDetailQuantity() {
     $quantity_change_invoice_detail_id = Input::get('quantity_change_invoice_detail_id');
-    $reduced_quantity = Input::get('reduced_qty');
+    // $reduced_quantity = Input::get('reduced_qty');
+    $new_quantity = Input::get('new_qty');
 
     $configRepo = new ConfigRepository();
 
@@ -410,8 +411,8 @@ class InvoiceReportController extends Controller
     //get tax amount
     $tax_amount = $configRepo->getTaxAmount();
 
-    //subtract reduced_qty from original qty
-    $new_quantity = $paramDetailObj->quantity - $reduced_quantity;
+    //get reduced_qty from original qty
+    $reduced_quantity = $paramDetailObj->quantity - $new_quantity;
 
     //record old invoice detail amounts
     $old_detail_net_amt         = $paramDetailObj->net_amt;
