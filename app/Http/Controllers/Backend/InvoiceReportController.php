@@ -322,6 +322,12 @@ class InvoiceReportController extends Controller
       //get invoices
       $invoices = $this->repo->getInvoiceList($from_date,$to_date,$status);
 
+      //array to store final export format
+      $invoice_export_array = array();
+
+      //counter for export array
+      $count = 0;
+
       if(isset($invoices) && count($invoices) > 0){
         foreach($invoices as $invoice_header){
           /*
@@ -347,6 +353,7 @@ class InvoiceReportController extends Controller
           }
           */
 
+          /*
           //for pilot version
           if($invoice_header->status == StatusConstance::status_confirm_value){
             $invoice_header->status_text = StatusConstance::status_confirm_description;
@@ -359,23 +366,39 @@ class InvoiceReportController extends Controller
           }
           //for pilot version
           //end status text
+          */
+
+          $invoice_id = $invoice_header->id;
+          $invoice_with_detail = $this->repo->getInvoiceDetail($invoice_id);
+
+          foreach($invoice_with_detail->invoice_details as $invoice_detail){
+            //construct array to export in excel
+            $invoice_export_array[$count]['Invoice Number']         = $invoice_with_detail->id;
+            $invoice_export_array[$count]['Shop Name']              = $invoice_with_detail->retailshop_name_eng;
+            $invoice_export_array[$count]['Shop Address']           = $invoice_with_detail->retailshop_address;
+            $invoice_export_array[$count]['Retailer Name']          = $invoice_with_detail->retailer_name_eng;
+            $invoice_export_array[$count]['Retailer Phone Number']  = $invoice_with_detail->retailer_phone;
+            $invoice_export_array[$count]['Brand Owner']            = $invoice_detail->brand_owner_name;
+            $invoice_export_array[$count]['Product Name']           = $invoice_detail->product_name;
+            $invoice_export_array[$count]['SKU']                    = $invoice_detail->sku;
+            $invoice_export_array[$count]['Product Quantity']       = $invoice_detail->quantity;
+            $invoice_export_array[$count]['Order Date']             = $invoice_with_detail->order_date;
+            $invoice_export_array[$count]['Delivery Date']          = $invoice_with_detail->delivery_date;
+            $invoice_export_array[$count]['Amount']                 = $invoice_detail->payable_amt;
+            $invoice_export_array[$count]['Status']                 = $invoice_detail->status_text;
+
+            //increase counter
+            $count++;
+          }
         }
       }
+      
       $today_date = date('d-m-Y');
-      Excel::create($today_date.'_InvoiceReport', function($excel)use($invoices) {
-              $excel->sheet('InvoiceReport', function($sheet)use($invoices) {
-                  $displayArray = array();
-                  foreach($invoices as $invoice){
-                      $displayArray[$invoice->id]["Invoice Number"] = $invoice->id;
-                      $displayArray[$invoice->id]["Retailshop Name (Eng)"] = $invoice->retailshop_name_eng;
-                      $displayArray[$invoice->id]["Order Date"] = $invoice->order_date;
-                      $displayArray[$invoice->id]["Delivery Date"] = $invoice->delivery_date;
-                      $displayArray[$invoice->id]["Total Amount"] = number_format($invoice->total_payable_amt,2);
-                      $displayArray[$invoice->id]["Status"] = $invoice->status_text;
-                  }
+      Excel::create($today_date.'_InvoiceReport', function($excel)use($invoice_export_array) {
+              $excel->sheet('InvoiceReport', function($sheet)use($invoice_export_array) {
 
-                  if(count($displayArray) == 0){
-                      $sheet->fromArray($displayArray);
+                  if(count($invoice_export_array) == 0){
+                      $sheet->fromArray($invoice_export_array);
                   }
                   else{
                       $sheet->cells('A1:F1', function($cells) {
@@ -383,7 +406,7 @@ class InvoiceReportController extends Controller
                           $cells->setFontSize(13);
                       });
 
-                      $sheet->fromArray($displayArray);
+                      $sheet->fromArray($invoice_export_array);
                   }
               });
           })
