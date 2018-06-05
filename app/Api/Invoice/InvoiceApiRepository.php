@@ -268,7 +268,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $invoice->status_text = StatusConstance::status_deliver_description;
         }
         else{
-          $invoice->status_text = StatusConstance::status_retailer_cancel_description;
+          $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
         }
         //for pilot
         //for pilot version
@@ -339,7 +339,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $invoice_detail->status_text = StatusConstance::status_deliver_description;
           }
           else{
-            $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
+            $invoice_detail->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot version
         }
@@ -445,7 +445,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
           else{
-            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
+            $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot
           //change date format to d-m-Y

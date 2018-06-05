@@ -18,14 +18,14 @@ class StatusConstance {
     const status_deliver_value = 3;
     // const status_deliver_description = "Delivered";
 
-    const status_retailer_cancel_value = 4;
-    // const status_retailer_cancel_description = "Retailer Cancelled";
+    const status_auderbox_cancel_value = 4;
+    // const status_auderbox_cancel_description = "Retailer Cancelled";
 
     const status_brand_owner_cancel_value = 5;
     // const status_brand_owner_cancel_description = "Brand Owner Cancelled";
 
-    const status_auderbox_cancel_value = 6;
-    // const status_auderbox_cancel_description = "Auderbox Cancelled";
+    const status_retailer_cancel_value = 6;
+    // const status_retailer_cancel_description = "Auderbox Cancelled";
     //end invoice statuses for full version
 
 
@@ -37,7 +37,7 @@ class StatusConstance {
   const status_deliver_description = "Delivered";
 
   // const status_retailer_cancel_value = 4;
-  const status_retailer_cancel_description = "Canceled";
+  const status_auderbox_cancel_description = "Canceled";
   //end invoice statuses for pilot version
 
 }

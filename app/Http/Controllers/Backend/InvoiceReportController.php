@@ -65,8 +65,8 @@ class InvoiceReportController extends Controller
           else if($invoice_header->status == StatusConstance::status_deliver_value){
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
-          else if($invoice_header->status == StatusConstance::status_retailer_cancel_value){
-            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
+          else if($invoice_header->status == StatusConstance::status_auderbox_cancel_value){
+            $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot version
           //end status text
@@ -85,7 +85,7 @@ class InvoiceReportController extends Controller
     if (Auth::guard('User')->check()) {
       //get invoice details
       $invoice = $this->repo->getInvoiceDetail($invoice_id);
-      
+
       return view('report.invoice_report.invoice_detail')
           ->with('invoice',$invoice);
     }
@@ -132,7 +132,7 @@ class InvoiceReportController extends Controller
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
           else{
-            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
+            $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot version
           //end status text
@@ -224,7 +224,7 @@ class InvoiceReportController extends Controller
     $invoice_id = $paramObj->invoice_id;
 
     //change to canceled status
-    $paramObj->status = StatusConstance::status_retailer_cancel_value;
+    $paramObj->status = StatusConstance::status_auderbox_cancel_value;
     $paramObj->cancel_by = $currentUser;
     $paramObj->cancel_date = date('Y-m-d H:i:s');
 
@@ -355,7 +355,7 @@ class InvoiceReportController extends Controller
             $invoice_header->status_text = StatusConstance::status_deliver_description;
           }
           else{
-            $invoice_header->status_text = StatusConstance::status_retailer_cancel_description;
+            $invoice_header->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot version
           //end status text
@@ -480,7 +480,7 @@ class InvoiceReportController extends Controller
         $currentUser = Utility::getCurrentUserID(); //get currently logged in user
 
         //change to cancel status
-        $paramHeaderObj->status = StatusConstance::status_retailer_cancel_value;
+        $paramHeaderObj->status = StatusConstance::status_auderbox_cancel_value;
         $paramHeaderObj->cancel_by = $currentUser;
         $paramHeaderObj->cancel_date = date('Y-m-d H:i:s');
 

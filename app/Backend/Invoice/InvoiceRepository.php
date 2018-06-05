@@ -140,8 +140,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         else if($invoice->status == StatusConstance::status_deliver_value) {
           $invoice->status_text = StatusConstance::status_deliver_description;
         }
-        else if($invoice->status == StatusConstance::status_retailer_cancel_value){
-          $invoice->status_text = StatusConstance::status_retailer_cancel_description;
+        else if($invoice->status == StatusConstance::status_auderbox_cancel_value){
+          $invoice->status_text = StatusConstance::status_auderbox_cancel_description;
         }
         //for pilot version
 
@@ -201,8 +201,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           else if($invoice_detail->status == StatusConstance::status_deliver_value){
             $invoice_detail->status_text = StatusConstance::status_deliver_description;
           }
-          else if($invoice_detail->status == StatusConstance::status_retailer_cancel_value){
-            $invoice_detail->status_text = StatusConstance::status_retailer_cancel_description;
+          else if($invoice_detail->status == StatusConstance::status_auderbox_cancel_value){
+            $invoice_detail->status_text = StatusConstance::status_auderbox_cancel_description;
           }
           //for pilot version
         }
