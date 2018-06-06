@@ -70,7 +70,7 @@
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 380px; height: 220px;">
 
-                                <img id='site_logoPopUp' src="" alt="Load Image"/>
+                                <img id='site_logoPopUp' src="{{ $configs['SETTING_LOGO'] }}" alt="Load Image"/>
                             </div>
                             <div data-provides="fileinput">
                         <span class="btn btn-default btn-file">
@@ -185,7 +185,7 @@
             var f=this.files[0];
             var fileSize = (f.size||f.fileSize);
             var imgkbytes = Math.round(parseInt(fileSize)/1024);
-
+            console.log(f);
             if(imgkbytes > 5000){
                 $('#image_error_fileSize').modal('show');
                 $('#site_logoPopUp').attr('src') = '';
@@ -201,7 +201,7 @@
                     $('#image_error_fileFormat').modal('show');
                     $('#site_logoPopUp').attr('src') = '';
             }
-            //}
+            // }
 
         });
     });
@@ -224,12 +224,12 @@
     }
 
     function showPopup() {
-        $('#modal-image').modal();
+      $('#modal-image').modal();
     }
 
     function changeItemImage(){
         var images = $('#modal-image img').attr('src');
-        $('.add_image_div').css('background-image', 'url(' + images + ')');
+        $('.site_logoPopUp').css('background-image', 'url(' + images + ')');
         $('#removeImageFlag').val(0);
     }
 

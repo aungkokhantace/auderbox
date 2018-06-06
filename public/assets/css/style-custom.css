@@ -191,3 +191,13 @@ overflow:auto;
   margin: 20px 0 0px;
   padding-bottom: 10px;
 }
+
+/* to get full width for file upload */
+.add_image_div {
+  width:100% !important;
+}
+
+.image_remove_btn {
+  width:100% !important;
+}
+/* to get full width for file upload */
