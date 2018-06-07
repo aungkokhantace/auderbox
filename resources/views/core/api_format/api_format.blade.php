@@ -17,6 +17,7 @@
             <li><a data-toggle="tab" href="#invoice_upload_api"><b>Invoice Upload</b></a></li>
             <li><a data-toggle="tab" href="#invoice_list_download_api"><b>Invoice List</b></a></li>
             <li><a data-toggle="tab" href="#invoice_detail_download_api"><b>Invoice Detail</b></a></li>
+            <li><a data-toggle="tab" href="#add_to_cart_api"><b>Add To Cart</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1015,6 +1016,44 @@
               </pre>
         </div>
         <!-- end invoice detail api content -->
+
+        <!-- start add to cart upload api content -->
+        <div id="add_to_cart_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/add_to_cart</b></p>
+            <hr>
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "add_to_cart": {
+        "retailer_id": 1,
+        "retailshop_id": 1,
+        "brand_owner_id": 1,
+        "product_id": 1,
+        "quantity": 1,
+        "created_date": "2018-04-01 11:01:30"
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success!",
+  "data": [
+
+  ]
+}
+              </pre>
+        </div>
+        <!-- end add to cart upload api content -->
       </div>
     </div>
 </div>
