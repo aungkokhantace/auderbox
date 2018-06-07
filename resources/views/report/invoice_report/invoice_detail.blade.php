@@ -156,7 +156,7 @@
 
                                               <div class="col-md-4">
                                                 <select class="form-control" id="new_qty" name="new_qty">
-                                                  @for($i = $invoice_detail->quantity; $i >= 0 ; $i--)
+                                                  @for($i = $invoice_detail->quantity - 1; $i >= 0 ; $i--)
                                                     @if($i == 0)
                                                       <option value="{{$i}}">{{$i}} (Cancel)</option>
                                                     @else

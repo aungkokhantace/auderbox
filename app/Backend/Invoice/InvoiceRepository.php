@@ -245,7 +245,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
                 //deliver each invoice detail
                 foreach($invoice_details as $invoice_detail){
-                    //cancel all invoice_details which are not in any of the cancel statuses
+                    //deliver all invoice_details which are not in any of the cancel statuses
                     if(!(in_array($invoice_detail->status,$cancel_status_array))) {
                         //set status to delivered
                         $invoice_detail->status = StatusConstance::status_deliver_value;
@@ -354,6 +354,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 $message = '['. $date .'] '. 'info: ' . 'User '.$currentUser.' canceled whole invoice_id = '.$tempObj->id . PHP_EOL;
                 LogCustom::create($date,$message);
 
+                /*
                 //update invoice_detail status
                 $invoice_id = $paramObj->id;
                 $invoice_details = $this->getInvoiceDetailsByInvoiceId($invoice_id);
@@ -401,6 +402,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                       return $returnedObj;
                     }
                     //end invoice_detail_history
+                    */
                 }
 
                 //all updates are successful
@@ -409,13 +411,11 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage'] = "Invoice and invoice detail canceled";
                 return $returnedObj;
-
-
-            }
-            else{
-                DB::rollBack();
-                return $returnedObj;
-            }
+            // }
+            // else{
+            //     DB::rollBack();
+            //     return $returnedObj;
+            // }
         }
         catch(\Exception $e){
             DB::rollBack();
@@ -440,9 +440,42 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
       try {
         DB::beginTransaction();
-
+        $configRepo = new ConfigRepository();
         $tempObj = Utility::addUpdatedBy($paramDetailObj);
-        $tempObj->save();
+        // $tempObj->save();
+
+        //update invoice_detail status
+        //cancel each invoice detail
+        if($tempObj->save()) {
+          $detail_id = $tempObj->id;
+          //invoice_detail cancel is successful
+          //start invoice_detail_history
+          //start generating invoice_detail_history_id
+          $invoice_detail_history_table      = (new InvoiceDetailHistory())->getTable();
+          $invoice_detail_history_col        = 'id';
+          $invoie_detail_history_offset      = 1;
+          $invoice_detail_history_pad_length = $configRepo->getInvoiceDetailIdPadLength()[0]->value; //number of digits without prefix and date
+          $detail_history_id                 = Utility::generate_id($detail_id,$invoice_detail_history_table,$invoice_detail_history_col,$invoie_detail_history_offset,$invoice_detail_history_pad_length);
+          //end generating invoice_detail_history_id
+
+          $invDetailHistoryObj = new InvoiceDetailHistory();
+          $invDetailHistoryObj->id = $detail_history_id;
+          $invDetailHistoryObj->invoice_detail_id = $detail_id;
+          $invDetailHistoryObj->qty = -1 * abs($tempObj->quantity); //negative value, because of cancel action
+          $invDetailHistoryObj->date = date('Y-m-d H:i:s');
+          $invDetailHistoryObj->type = CoreConstance::invoice_detail_order_value; //invoice_history_type is "order"
+          $invDetailHistoryObj->status = 1; //default is active
+
+          $detailHistoryRes = $this->saveInvoiceDetailHistory($invDetailHistoryObj);
+
+          if($detailHistoryRes['aceplusStatusCode'] != ReturnMessage::OK){
+            DB::rollback();
+            $returnedObj['aceplusStatusCode']     = $detailHistoryRes['aceplusStatusCode'];
+            $returnedObj['aceplusStatusMessage']  = $detailHistoryRes['aceplusStatusMessage'];
+            return $returnedObj;
+          }
+        }
+        //end invoice_detail_history
 
         DB::commit();
 
@@ -467,8 +500,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
       }
     }
 
-    public function saveInvoiceDetailHistory($paramObj)
-    {
+    public function saveInvoiceDetailHistory($paramObj) {
       $returnedObj = array();
       $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
       try{

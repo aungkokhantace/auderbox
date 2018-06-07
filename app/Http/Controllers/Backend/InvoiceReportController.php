@@ -182,7 +182,28 @@ class InvoiceReportController extends Controller
 
     $result = $this->repo->cancel($paramObj);
 
-    if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
+    if($result['aceplusStatusCode'] == ReturnMessage::OK) {
+      //invoice header cancel is successful, continue canceling invoice details
+      //start invoice detail cancel
+      $invoice_id = $paramObj->id;
+      $invoice_details = $this->repo->getInvoiceDetailsByInvoiceId($invoice_id);
+
+      //cancel each invoice detail
+      foreach($invoice_details as $invoice_detail){
+        //set status to cancel
+        $invoice_detail->status = StatusConstance::status_auderbox_cancel_value;
+        $invoice_detail->cancel_by = $invoice_detail->cancel_by;
+        $invoice_detail->cancel_date = $invoice_detail->cancel_date;
+
+        $invoice_detail_result = $this->repo->cancelInvoiceDetail($invoice_detail);
+
+        if($result['aceplusStatusCode'] !== ReturnMessage::OK) {
+          return redirect()->action('Backend\InvoiceReportController@index')
+              ->withMessage(FormatGenerator::message('Fail', 'Invoice is not canceled ...'));
+        }
+      }
+      //end invoice detail cancel
+
       return redirect()->action('Backend\InvoiceReportController@index')
           ->withMessage(FormatGenerator::message('Success', 'Invoice canceled ...'));
     } else {
@@ -278,6 +299,7 @@ class InvoiceReportController extends Controller
       }
       //end canceling header
 
+      /*
       //start invoice_detail_history
       $configRepo = new ConfigRepository();
       //start generating invoice_detail_history_id
@@ -305,6 +327,7 @@ class InvoiceReportController extends Controller
         return $returnedObj;
       }
       //end invoice_detail_history
+      */
 
       return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
           ->withMessage(FormatGenerator::message('Success', 'Invoice detail is canceled ...'));
@@ -392,7 +415,7 @@ class InvoiceReportController extends Controller
           }
         }
       }
-      
+
       $today_date = date('d-m-Y');
       Excel::create($today_date.'_InvoiceReport', function($excel)use($invoice_export_array) {
               $excel->sheet('InvoiceReport', function($sheet)use($invoice_export_array) {
@@ -510,11 +533,8 @@ class InvoiceReportController extends Controller
 
         $header_result = $this->repo->cancel($paramHeaderObj);
 
-        //if canceling header is successful too, redirect to invoice detail page
-        if ($header_result['aceplusStatusCode'] == ReturnMessage::OK) {
-          return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
-              ->withMessage(FormatGenerator::message('Success', 'Invoice detail (also invoice) is canceled ...'));
-        } else {
+        //if canceling header fails, redirect to invoice detail page
+        if ($header_result['aceplusStatusCode'] !== ReturnMessage::OK) {
           return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
               ->withMessage(FormatGenerator::message('Fail', 'Invoice detail (also invoice) is not canceled ...'));
         }
