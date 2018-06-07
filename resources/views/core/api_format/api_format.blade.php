@@ -18,6 +18,7 @@
             <li><a data-toggle="tab" href="#invoice_list_download_api"><b>Invoice List</b></a></li>
             <li><a data-toggle="tab" href="#invoice_detail_download_api"><b>Invoice Detail</b></a></li>
             <li><a data-toggle="tab" href="#add_to_cart_api"><b>Add To Cart</b></a></li>
+            <li><a data-toggle="tab" href="#update_cart_qty_api"><b>Update Cart Qty</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1044,15 +1045,54 @@
               <h3>Response</h3>
               <pre>
 {
-  "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Success!",
   "data": [
 
-  ]
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart data is successfully saved!"
 }
               </pre>
         </div>
         <!-- end add to cart upload api content -->
+
+        <!-- start update cart qty api content -->
+        <div id="update_cart_qty_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/update_cart_qty</b></p>
+            <hr>
+            <p>Remark : <b>If quantity is zero, the product will be removed from cart</b></p>
+            <hr>
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "add_to_cart": {
+        "retailer_id": 1,
+        "retailshop_id": 1,
+        "brand_owner_id": 1,
+        "product_id": 1,
+        "quantity": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "data": [
+
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart data is successfully saved!"
+}
+              </pre>
+        </div>
+        <!-- end update cart qty api content -->
       </div>
     </div>
 </div>
