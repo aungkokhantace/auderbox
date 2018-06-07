@@ -1033,8 +1033,7 @@
         "retailshop_id": 1,
         "brand_owner_id": 1,
         "product_id": 1,
-        "quantity": 1,
-        "created_date": "2018-04-01 11:01:30"
+        "quantity": 1
       }
     }
   ]

@@ -552,27 +552,61 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
 
       try{
         DB::beginTransaction();
-        $configRepo = new ConfigRepository();
 
-        //generate id for invoice_session table
-        $date_str                       = date('Ymd',strtotime("now"));
-        $prefix                         = $date_str;
-        $table                          = (new InvoiceSession())->getTable();
-        $col                            = 'id';
-        $offset                         = 1;
-        $pad_length                     = $configRepo->getInvoiceSessionIdPadLength()[0]->value; //number of digits without prefix and date
-        $invoice_session_id = Utility::generate_id($prefix,$table,$col,$offset, $pad_length = 6);
+        //declare config repository
+        $configRepo         = new ConfigRepository();
+        $current_date_time  = date('Y-m-d H:i:s');
+        $current_date       = date('Y-m-d');
 
-        //insert into db
-        DB::table('invoice_session')->insert([
-          'id'              => $invoice_session_id,
-          'retailer_id'     => $paramObj->retailer_id,
-          'retailshop_id'   => $paramObj->retailshop_id,
-          'brand_owner_id'  => $paramObj->brand_owner_id,
-          'product_id'      => $paramObj->product_id,
-          'quantity'        => $paramObj->quantity,
-          'created_date'    => $paramObj->created_date,
-        ]);
+        $retailer_id    = $paramObj->retailer_id;
+        $retailshop_id  = $paramObj->retailshop_id;
+        $brand_owner_id = $paramObj->brand_owner_id;
+        $product_id     = $paramObj->product_id;
+        $quantity       = $paramObj->quantity;
+        $created_date   = $current_date_time;
+
+        //start checking whether the product is already in cart list
+        $existing_product = DB::table('invoice_session')
+                                ->where('retailer_id',$retailer_id)
+                                ->where('retailshop_id',$retailshop_id)
+                                ->where('product_id',$product_id)
+                                ->whereDate('created_date','=',$current_date) //check records with today date
+                                ->first();
+        //end checking whether the product is already in cart list
+
+        //if the product is already in cart list, just update the quantity (increase quantity)
+        if(isset($existing_product) && count($existing_product) > 0) {
+          $old_quantity       = $existing_product->quantity;  //original qty
+          $add_more_quantity  = $quantity;  //newly added qty
+          $new_quantity       = $old_quantity + $add_more_quantity; //calculate new qty
+
+          //update quantity (add more quantity)
+          DB::table('invoice_session')
+            ->where('product_id', $product_id)
+            ->update(['quantity' => $new_quantity]);
+        }
+        //if the product doesn't exist in cart list yet, then, create new record in invoice_session table
+        else{
+          //generate id for invoice_session table
+          $date_str                       = date('Ymd',strtotime("now"));
+          $prefix                         = $date_str;
+          $table                          = (new InvoiceSession())->getTable();
+          $col                            = 'id';
+          $offset                         = 1;
+          $pad_length                     = $configRepo->getInvoiceSessionIdPadLength()[0]->value; //number of digits without prefix and date
+          $invoice_session_id = Utility::generate_id($prefix,$table,$col,$offset, $pad_length = 6);
+
+          //insert into db
+          DB::table('invoice_session')->insert([
+            'id'              => $invoice_session_id,
+            'retailer_id'     => $retailer_id,
+            'retailshop_id'   => $retailshop_id,
+            'brand_owner_id'  => $brand_owner_id,
+            'product_id'      => $product_id,
+            'quantity'        => $quantity,
+            'created_date'    => $created_date,
+          ]);
+        }
 
         DB::commit();
 
