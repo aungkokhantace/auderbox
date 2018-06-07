@@ -12,6 +12,7 @@ use App\Core\Config\ConfigRepository;
 use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
 use App\Core\CoreConstance;
+use App\Backend\InvoiceSession\InvoiceSession;
 
 /**
  * Author: Khin Zar Ni Wint
@@ -542,6 +543,48 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
           return $returnedObj;
       }
+    }
 
+    public function addToCart($paramObj)
+    {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try{
+        DB::beginTransaction();
+        $configRepo = new ConfigRepository();
+
+        //generate id for invoice_session table
+        $date_str                       = date('Ymd',strtotime("now"));
+        $prefix                         = $date_str;
+        $table                          = (new InvoiceSession())->getTable();
+        $col                            = 'id';
+        $offset                         = 1;
+        $pad_length                     = $configRepo->getInvoiceSessionIdPadLength()[0]->value; //number of digits without prefix and date
+        $invoice_session_id = Utility::generate_id($prefix,$table,$col,$offset, $pad_length = 6);
+
+        //insert into db
+        DB::table('invoice_session')->insert([
+          'id'              => $invoice_session_id,
+          'retailer_id'     => $paramObj->retailer_id,
+          'retailshop_id'   => $paramObj->retailshop_id,
+          'brand_owner_id'  => $paramObj->brand_owner_id,
+          'product_id'      => $paramObj->product_id,
+          'quantity'        => $paramObj->quantity,
+          'created_date'    => $paramObj->created_date,
+        ]);
+
+        DB::commit();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Cart data is successfully saved!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        DB::rollback();
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
     }
 }
