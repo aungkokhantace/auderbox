@@ -143,7 +143,43 @@ class InvoiceApiController extends Controller
     }
   }
 
-  public function add_to_cart(){
+  public function addToCart(){
+    $temp                   = Input::All();
+    $inputAll               = json_decode($temp['param_data']);
+    $checkServerStatusArray = Check::checkCodes($inputAll);
+
+    if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+        $params             = $checkServerStatusArray['data'][0];
+
+        $returnedObj['data'] = [];
+        if (isset($params->add_to_cart) && count($params->add_to_cart) > 0) {
+          $result = $this->repo->addToCart($params->add_to_cart);
+
+          if($result['aceplusStatusCode'] == ReturnMessage::OK){
+              $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
+              $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+              return \Response::json($returnedObj);
+          }
+          else{
+            $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+            $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+            return \Response::json($returnedObj);
+          }
+        }
+        //API parameter is missing
+        else{
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+          $returnedObj['aceplusStatusMessage'] = "Missing API Parameters";
+          $returnedObj['data'] = [];
+          return \Response::json($returnedObj);
+        }
+    }
+    else{
+        return \Response::json($checkServerStatusArray);
+    }
+  }
+
+  public function updateCartQty(){
     $temp                   = Input::All();
     $inputAll               = json_decode($temp['param_data']);
     $checkServerStatusArray = Check::checkCodes($inputAll);
@@ -154,7 +190,7 @@ class InvoiceApiController extends Controller
         $returnedObj['data'] = [];
         if (isset($params->add_to_cart) && count($params->add_to_cart) > 0) {
 
-          $result = $this->repo->addToCart($params->add_to_cart);
+          $result = $this->repo->updateCartQty($params->add_to_cart);
 
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
               $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
