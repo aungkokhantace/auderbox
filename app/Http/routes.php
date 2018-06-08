@@ -119,8 +119,11 @@ Route::group(['middleware' => 'web'], function () {
         Route::post('download_invoice_detail', array('as'=>'download_invoice_detail','uses'=>'Api\InvoiceApiController@getInvoiceDetail'));
 
         //add to cart api
-        Route::post('add_to_cart', array('as'=>'add_to_cart','uses'=>'Api\InvoiceApiController@addToCart'));
+        Route::post('add_to_cart', array('as'=>'add_to_cart','uses'=>'Api\CartApiController@addToCart'));
 
         //update cart order qty api
-        Route::post('update_cart_qty', array('as'=>'update_cart_qty','uses'=>'Api\InvoiceApiController@updateCartQty'));
+        Route::post('update_cart_qty', array('as'=>'update_cart_qty','uses'=>'Api\CartApiController@updateCartQty'));
+
+        //download cart list api
+        Route::post('download_cart_list', array('as'=>'download_cart_list','uses'=>'Api\CartApiController@downloadCartList'));
     });

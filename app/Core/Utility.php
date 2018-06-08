@@ -128,7 +128,12 @@ class Utility
       $cart_items = DB::table('invoice_session')
                         ->where('retailer_id',$retailer_id)
                         ->get();
-      $cart_item_count = count($cart_items);
+
+      $cart_item_count = 0;
+      foreach($cart_items as $cart_item) {
+        $cart_item_count += $cart_item->quantity;
+      }
+      
       return $cart_item_count;
     }
 }
