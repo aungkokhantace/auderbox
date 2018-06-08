@@ -19,6 +19,7 @@
             <li><a data-toggle="tab" href="#invoice_detail_download_api"><b>Invoice Detail</b></a></li>
             <li><a data-toggle="tab" href="#add_to_cart_api"><b>Add To Cart</b></a></li>
             <li><a data-toggle="tab" href="#update_cart_qty_api"><b>Update Cart Qty</b></a></li>
+            <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1093,6 +1094,86 @@
               </pre>
         </div>
         <!-- end update cart qty api content -->
+
+        <!-- start download cart list api content -->
+        <div id="download_cart_list_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_cart_list</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "cart_list": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart data download is successful!",
+  "data": [
+    {
+      "shop_info": {
+        "retailer_id": 1,
+        "retailshop_id": 1,
+        "retailshop_name_eng": "Pyae Sone (1)",
+        "retailshop_name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1041)",
+        "retailshop_address": "No(11), In Sein Road, Hlaing, Yangon"
+      },
+      "cart_list": [
+        {
+          "id": "20180607000001",
+          "retailer_id": 1,
+          "retailshop_id": 1,
+          "brand_owner_id": 1,
+          "product_id": 1,
+          "quantity": 10,
+          "created_date": "2018-06-07 13:38:48",
+          "product_name": "Coca-Cola Zero",
+          "product_uom_type_name_eng": "pack",
+          "product_uom_type_name_mm": "\u1000\u1010\u1039",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
+          "total_uom_quantity": "6",
+          "price": 1800,
+          "payable_amount": 18000
+        },
+        {
+          "id": "20180607000002",
+          "retailer_id": 1,
+          "retailshop_id": 1,
+          "brand_owner_id": 1,
+          "product_id": 2,
+          "quantity": 10,
+          "created_date": "2018-06-07 13:38:48",
+          "product_name": "Coca-Cola",
+          "product_uom_type_name_eng": "pack",
+          "product_uom_type_name_mm": "\u1000\u1010\u1039",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
+          "total_uom_quantity": "6",
+          "price": 1800,
+          "payable_amount": 18000
+        }
+      ],
+      "total_payable_amount": 36000
+    }
+  ]
+}
+              </pre>
+        </div>
+        <!-- end download cart list api content -->
       </div>
     </div>
 </div>
