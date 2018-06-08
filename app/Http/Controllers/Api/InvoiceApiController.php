@@ -13,6 +13,7 @@ use App\Core\Redirect\AceplusRedirect;
 use Illuminate\Support\Facades\Input;
 use App\Core\ReturnMessage;
 use App\Api\Invoice\InvoiceApiRepositoryInterface;
+use App\Core\Utility;
 
 class InvoiceApiController extends Controller
 {
@@ -156,9 +157,13 @@ class InvoiceApiController extends Controller
           $result = $this->repo->addToCart($params->add_to_cart);
 
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
-              $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
-              $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
-              return \Response::json($returnedObj);
+            //get cart item count
+            $cart_item_count = Utility::getCartItemCount($params->add_to_cart->retailer_id);
+
+            $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
+            $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
+            $returnedObj['cart_item_count']       = $cart_item_count;
+            return \Response::json($returnedObj);
           }
           else{
             $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;

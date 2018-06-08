@@ -26,6 +26,7 @@ use App\Core\ReturnMessage;
 use App\Api\Login\LoginApiRepository;
 use App\Api\User\UserApiRepository;
 use App\Api\RetailerProfile\RetailerProfileApiRepository;
+use App\Core\Utility;
 
 class LoginApiController extends Controller
 {
@@ -110,12 +111,16 @@ class LoginApiController extends Controller
                 $retailerObj = null;
               }
 
+              //get cart item count
+              $cart_item_count = Utility::getCartItemCount($retailerObj->retailer_id);
+
               //login request is successful and return login user id
               $returnedObj['aceplusStatusCode']       = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']    = "Success!";
               $returnedObj['user_id']                 = $user->id;
               $returnedObj['retailer']                = $retailerObj;
               $returnedObj['force_password_change']   = $force_password_change;
+              $returnedObj['cart_item_count']         = $cart_item_count;
 
               return \Response::json($returnedObj);
           }

@@ -123,4 +123,12 @@ class Utility
         $id = Auth::guard('User')->user()->id;
         return $id;
     }
+
+    public static function getCartItemCount($retailer_id){
+      $cart_items = DB::table('invoice_session')
+                        ->where('retailer_id',$retailer_id)
+                        ->get();
+      $cart_item_count = count($cart_items);
+      return $cart_item_count;
+    }
 }
