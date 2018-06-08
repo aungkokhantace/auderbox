@@ -14,6 +14,7 @@ use App\Http\Requests;
 use App\Session;
 use App\Core\User\UserRepository;
 use App\Core\SyncsTable\SyncsTable;
+use App\Core\Config\Config;
 
 class Utility
 {
@@ -133,7 +134,34 @@ class Utility
       foreach($cart_items as $cart_item) {
         $cart_item_count += $cart_item->quantity;
       }
-      
+
       return $cart_item_count;
+    }
+
+    public static function getTaxAmount()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $config  = DB::select("SELECT * FROM $tbConfig WHERE code = 'TAX_PERCENTAGE'");
+        if(isset($config) && count($config) > 0){
+          $value = $config[0]->value;
+          return $value;
+        }
+        return 0;
+    }
+
+    //calculate tax amount from tax percentage in config
+    public static function calculateTaxAmount($amount)
+    {
+        $tbConfig =  (new Config())->getTable();
+        $config  = DB::select("SELECT * FROM $tbConfig WHERE code = 'TAX_PERCENTAGE'");
+        if(isset($config) && count($config) > 0){
+          $tax_percentage = $config[0]->value;
+
+          //calculate tax amount from tax percentage
+          $tax_amount = $amount * ($tax_percentage/100);
+          return $tax_amount;
+        }
+        
+        return 0;
     }
 }

@@ -136,7 +136,7 @@ class CartApiRepository implements CartApiRepositoryInterface
                                   ->where('retailer_id',$retailer_id)
                                   ->where('retailshop_id',$retailshop_id)
                                   ->where('product_id',$product_id)
-                                  ->whereDate('created_date','=',$current_date) //check records with today date
+                                  // ->whereDate('created_date','=',$current_date) //check records with today date
                                   ->first();
           //end checking whether the product is already in cart list
 
@@ -164,6 +164,46 @@ class CartApiRepository implements CartApiRepositoryInterface
       }
       catch(\Exception $e){
         DB::rollback();
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
+    }
+
+    public function getCartItems($paramObj) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try{
+        //declare config repository
+        $configRepo         = new ConfigRepository();
+
+        $current_date_time  = date('Y-m-d H:i:s');
+        $current_date       = date('Y-m-d');
+
+        $retailer_id    = $paramObj->retailer_id;
+        $retailshop_id  = $paramObj->retailshop_id;
+
+        //get cart items
+        $cart_items = DB::table('invoice_session')
+                                ->where('retailer_id',$retailer_id)
+                                ->where('retailshop_id',$retailshop_id)
+                                ->get();
+
+        if(isset($cart_items) && count($cart_items) > 0) {
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage'] = "Cart list downloaded successfully !";
+          $returnedObj['cart_items'] = $cart_items;
+          return $returnedObj;
+        }
+        //if cart is empty
+        else{
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage'] = "The cart is empty !";
+          return $returnedObj;
+        }
+
+      }
+      catch(\Exception $e){
         $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
         return $returnedObj;
       }

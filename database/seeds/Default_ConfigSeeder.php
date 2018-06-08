@@ -27,6 +27,7 @@ class Default_ConfigSeeder extends Seeder
             ['code'=>'INVOICE_DETAIL_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'3','description'=>'Number of digits in invoice detail id without prefix'],
             ['code'=>'INVOICE_DETAIL_HISTORY_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'3','description'=>'Number of digits in invoice detail history id without prefix'],
             ['code'=>'INVOICE_SESSION_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'6','description'=>'Number of digits in invoice session id without prefix'],
+            ['code'=>'TAX_PERCENTAGE', 'type'=>'SETTING', 'value'=>'0','description'=>'Tax Percentage'],
 
         );
 

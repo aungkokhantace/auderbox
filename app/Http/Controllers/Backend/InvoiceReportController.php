@@ -454,9 +454,6 @@ class InvoiceReportController extends Controller
     //to redirect to detail list page
     $invoice_id = $paramDetailObj->invoice_id;
 
-    //get tax amount
-    $tax_amount = $configRepo->getTaxAmount();
-
     //get reduced_qty from original qty
     $reduced_quantity = $paramDetailObj->quantity - $new_quantity;
 
@@ -477,6 +474,8 @@ class InvoiceReportController extends Controller
       $new_detail_net_amt         = $paramDetailObj->unit_price * $new_quantity;
       $new_detail_discount_amt    = $paramDetailObj->discount_amt; //same for pilot version (there is no discount)
       $new_detail_net_amt_w_disc  = $new_detail_net_amt - $new_detail_discount_amt;
+
+      $tax_amount                 = Utility::calculateTaxAmount($new_detail_net_amt_w_disc);  //calculate tax amount
       $new_detail_payable_amt     = $new_detail_net_amt_w_disc + $tax_amount;
     }
 

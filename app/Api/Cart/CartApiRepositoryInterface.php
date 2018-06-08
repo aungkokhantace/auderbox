@@ -10,5 +10,5 @@ interface CartApiRepositoryInterface
 {
   public function addToCart($paramObj);
   public function updateCartQty($paramObj);
-
+  public function getCartItems($paramObj);
 }
