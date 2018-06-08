@@ -62,7 +62,8 @@
     "address": "No(59), Kan Lann, Hlaing, Yangon",
     "photo": "\/images\/retailer_images\/retailer_profile.png"
   },
-  "force_password_change": true
+  "force_password_change": true,
+  "cart_item_count": 5
 }
               </pre>
             </div>
@@ -1050,7 +1051,8 @@
 
   ],
   "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Cart data is successfully saved!"
+  "aceplusStatusMessage": "Cart data is successfully saved!",
+  "cart_item_count": 5
 }
               </pre>
         </div>
@@ -1124,13 +1126,6 @@
   "aceplusStatusMessage": "Cart data download is successful!",
   "data": [
     {
-      "shop_info": {
-        "retailer_id": 1,
-        "retailshop_id": 1,
-        "retailshop_name_eng": "Pyae Sone (1)",
-        "retailshop_name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1041)",
-        "retailshop_address": "No(11), In Sein Road, Hlaing, Yangon"
-      },
       "cart_list": [
         {
           "id": "20180607000001",
@@ -1145,7 +1140,7 @@
           "product_uom_type_name_mm": "\u1000\u1010\u1039",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": "6",
+          "total_uom_quantity": 6,
           "price": 1800,
           "payable_amount": 18000
         },
@@ -1162,7 +1157,7 @@
           "product_uom_type_name_mm": "\u1000\u1010\u1039",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": "6",
+          "total_uom_quantity": 6,
           "price": 1800,
           "payable_amount": 18000
         }
