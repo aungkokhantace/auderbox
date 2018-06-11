@@ -61,6 +61,9 @@ class Default_RolePermissionSeeder extends Seeder
             // API formats
             ['role_id'=>2, 'permission_id'=>36],
 
+            // System References
+            ['role_id'=>2, 'permission_id'=>37],
+
             // Country
             ['role_id'=>2, 'permission_id'=>40],
             ['role_id'=>2, 'permission_id'=>41],

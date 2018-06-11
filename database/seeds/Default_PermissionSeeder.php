@@ -57,6 +57,9 @@ class Default_PermissionSeeder extends Seeder
           //API format list
           ['id'=>36,'module'=>'API_Formats','name'=>'API_Formats','description'=>'API_Formats','url'=>'backend/api_formats'],
 
+          //System References
+          ['id'=>37,'module'=>'System_References','name'=>'System_References','description'=>'System_References','url'=>'backend/system_references'],
+
           //Country
           ['id'=>40,'module'=>'Country','name'=>'Listing','description'=>'Country Listing','url'=>'backend/country'],
           ['id'=>41,'module'=>'Country','name'=>'New','description'=>'Country New','url'=>'backend/country/create'],

@@ -88,6 +88,12 @@
                             <span>API Formats</span>
                         </a>
                     </li>
+
+                    <li nav-id="">
+                        <a href="/backend/system_references">
+                            <span>System References</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

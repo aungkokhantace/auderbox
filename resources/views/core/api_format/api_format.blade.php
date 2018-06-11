@@ -20,6 +20,7 @@
             <li><a data-toggle="tab" href="#add_to_cart_api"><b>Add To Cart</b></a></li>
             <li><a data-toggle="tab" href="#update_cart_qty_api"><b>Update Cart Qty</b></a></li>
             <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
+            <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1169,6 +1170,39 @@
               </pre>
         </div>
         <!-- end download cart list api content -->
+
+        <!-- start clear cart list api content -->
+        <div id="clear_cart_list_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/clear_cart_list</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "clear_cart_list": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart data is successfully cleared !",
+  "data": []
+}
+              </pre>
+        </div>
+        <!-- end clear cart list api content -->
       </div>
     </div>
 </div>

@@ -78,6 +78,9 @@ Route::group(['middleware' => 'web'], function () {
 
             //API formats
             Route::get('api_formats',array('as'=> 'backend/api_formats', 'uses'=> 'Core\ApiFormatController@index'));
+
+            //System References for developers (such as types, statuses, etc.)
+            Route::get('system_references',array('as'=> 'backend/system_references', 'uses'=> 'Core\SystemReferencesController@index'));
         });
 
     });
@@ -126,4 +129,10 @@ Route::group(['middleware' => 'web'], function () {
 
         //download cart list api
         Route::post('download_cart_list', array('as'=>'download_cart_list','uses'=>'Api\CartApiController@downloadCartList'));
+
+        //clear cart list api
+        Route::post('clear_cart_list', array('as'=>'clear_cart_list','uses'=>'Api\CartApiController@clearCartList'));
+
+        //download promotions api
+        Route::post('download_promotions', array('as'=>'download_promotions','uses'=>'Api\PromotionApiController@downloadPromotions'));
     });

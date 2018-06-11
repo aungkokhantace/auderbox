@@ -208,4 +208,36 @@ class CartApiRepository implements CartApiRepositoryInterface
         return $returnedObj;
       }
     }
+
+    public function clearCartItems($paramObj) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try{
+        //declare config repository
+        $configRepo         = new ConfigRepository();
+
+        $current_date_time  = date('Y-m-d H:i:s');
+        $current_date       = date('Y-m-d');
+
+        $retailer_id    = $paramObj->retailer_id;
+        $retailshop_id  = $paramObj->retailshop_id;
+
+        //clear cart items
+        $cart_items = DB::table('invoice_session')
+                                ->where('retailer_id',$retailer_id)
+                                ->where('retailshop_id',$retailshop_id)
+                                ->delete();
+
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Cart list cleared successfully !";
+        $returnedObj['cart_items'] = $cart_items;
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
+    }
 }
