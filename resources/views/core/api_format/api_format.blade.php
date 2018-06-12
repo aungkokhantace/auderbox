@@ -21,6 +21,7 @@
             <li><a data-toggle="tab" href="#update_cart_qty_api"><b>Update Cart Qty</b></a></li>
             <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
             <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
+            <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1187,6 +1188,39 @@
               </pre>
         </div>
         <!-- end clear cart list api content -->
+
+        <!-- start checkout cart api content -->
+        <div id="checkout_cart_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/checkout_cart</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "checkout_cart": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart is checked out successfully !",
+  "data": []
+}
+              </pre>
+        </div>
+        <!-- end checkout cart api content -->
       </div>
     </div>
 </div>
