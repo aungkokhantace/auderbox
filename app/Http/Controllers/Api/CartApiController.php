@@ -118,7 +118,7 @@ class CartApiController extends Controller
         $returnedObj['data'] = [];
         if (isset($params->cart_list) && count($params->cart_list) > 0) {
           $result = $this->repo->getCartItems($params->cart_list);
-          
+
           //result is ok and cart has items
           if($result['aceplusStatusCode'] == ReturnMessage::OK && isset($result['cart_items']) && count($result['cart_items']) > 0){
             //total payable amount for whole order
@@ -128,6 +128,9 @@ class CartApiController extends Controller
 
             //get details of cart_items
             foreach($cart_items as $raw_cart_item){
+              //define maximum qty of product (50 for now //hard code)
+              $raw_cart_item->maximum_qty = 50;
+
               $product_id = $raw_cart_item->product_id;
               $product_qty = $raw_cart_item->quantity;
               $retailshop_id = $raw_cart_item->retailshop_id;
@@ -164,11 +167,12 @@ class CartApiController extends Controller
               //calculate final payable amount for the whole order
               $whole_order_payable_amount                 += $total_payable_amount;
             }
-
+            $data = array();
             //response data array
-
-            $returnedObj['data']['cart_list']             = $cart_items;
-            $returnedObj['data']['total_payable_amount']  = $whole_order_payable_amount;
+            
+            // $returnedObj['data']['cart_list']             = $cart_items;
+            $returnedObj['data'][0]["cart_list"]                          = $cart_items;
+            $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;
 
 
             $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];

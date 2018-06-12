@@ -1123,49 +1123,32 @@
               <h3>Response</h3>
               <pre>
 {
-  "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Cart data download is successful!",
   "data": [
     {
       "cart_list": [
         {
-          "id": "20180607000001",
-          "retailer_id": 1,
-          "retailshop_id": 1,
-          "brand_owner_id": 1,
-          "product_id": 1,
-          "quantity": 10,
-          "created_date": "2018-06-07 13:38:48",
-          "product_name": "Coca-Cola Zero",
-          "product_uom_type_name_eng": "pack",
-          "product_uom_type_name_mm": "\u1000\u1010\u1039",
-          "product_volume_type_name": "330 ml",
-          "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": 6,
-          "price": 1800,
-          "payable_amount": 18000
-        },
-        {
-          "id": "20180607000002",
+          "id": "20180612000001",
           "retailer_id": 1,
           "retailshop_id": 1,
           "brand_owner_id": 1,
           "product_id": 2,
-          "quantity": 10,
-          "created_date": "2018-06-07 13:38:48",
+          "quantity": 1,
+          "created_date": "2018-06-12 09:35:22",
           "product_name": "Coca-Cola",
-          "product_uom_type_name_eng": "pack",
-          "product_uom_type_name_mm": "\u1000\u1010\u1039",
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
           "product_volume_type_name": "330 ml",
-          "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": 6,
-          "price": 1800,
-          "payable_amount": 18000
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
+          "price": 7200,
+          "payable_amount": 7200
         }
       ],
-      "total_payable_amount": 36000
+      "total_payable_amount": 7200
     }
-  ]
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart list downloaded successfully !"
 }
               </pre>
         </div>
