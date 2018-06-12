@@ -1203,7 +1203,8 @@
     {
       "checkout_cart": {
         "retailer_id": 1,
-        "retailshop_id": 1
+        "retailshop_id": 1,
+        "delivery_date": "2018-06-15"
       }
     }
   ]
