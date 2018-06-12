@@ -184,8 +184,12 @@ class CartApiRepository implements CartApiRepositoryInterface
         $retailshop_id  = $paramObj->retailshop_id;
 
         //get cart items
-        $cart_items = DB::table('invoice_session')
+        /*$cart_items = DB::table('invoice_session')
                                 ->where('retailer_id',$retailer_id)
+                                ->where('retailshop_id',$retailshop_id)
+                                ->get(); */
+
+        $cart_items = InvoiceSession::where('retailer_id',$retailer_id)
                                 ->where('retailshop_id',$retailshop_id)
                                 ->get();
 
