@@ -118,8 +118,9 @@ class CartApiController extends Controller
         $returnedObj['data'] = [];
         if (isset($params->cart_list) && count($params->cart_list) > 0) {
           $result = $this->repo->getCartItems($params->cart_list);
-
-          if($result['aceplusStatusCode'] == ReturnMessage::OK){
+          
+          //result is ok and cart has items
+          if($result['aceplusStatusCode'] == ReturnMessage::OK && isset($result['cart_items']) && count($result['cart_items']) > 0){
             //total payable amount for whole order
             $whole_order_payable_amount = 0;
 
@@ -175,6 +176,13 @@ class CartApiController extends Controller
 
             return \Response::json($returnedObj);
           }
+          //the cart is empty
+          else if($result['aceplusStatusCode'] == ReturnMessage::OK) {
+            $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
+            $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+            return \Response::json($returnedObj);
+          }
+          //error
           else{
             $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
             $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
