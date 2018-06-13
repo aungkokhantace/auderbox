@@ -1290,7 +1290,7 @@
           "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": "1",
+          "total_uom_quantity": 1,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
           "purchase_qty": 2
@@ -1315,7 +1315,7 @@
           "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": "1",
+          "total_uom_quantity": 1,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
           "purchase_qty": 2
@@ -1342,7 +1342,7 @@
           "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": "1",
+          "total_uom_quantity": 1,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
           "purchase_qty": 2
