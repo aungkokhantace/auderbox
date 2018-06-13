@@ -22,6 +22,7 @@
             <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
             <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
             <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
+            <li><a data-toggle="tab" href="#download_promotion_api"><b>Download Promotions</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1222,6 +1223,141 @@
               </pre>
         </div>
         <!-- end checkout cart api content -->
+
+        <!-- start download promotion api content -->
+        <div id="download_promotion_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_promotions</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "download_promotions": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "data": [
+    {
+      "received_promotion": {
+        "promotion_item_level_id": 1,
+        "code": "00001",
+        "name": "Rainy Season Promotion",
+        "promo_type": 1,
+        "promo_type_text": "Quantity Promotion",
+        "from_date": "2018-06-01",
+        "from_date": "2018-06-30",
+        "promo_purchase_amt": 0.0,
+        "promo_purchase_qty": 3,
+        "promo_percentage": 0.0,
+        "promo_amt": 0.0,
+        "max_count_apply": 2,
+        "promo_allow_max_count": 2,
+        "remark": "promotion remark",
+        "current_purchase_qty": 4,
+        "current_purchase_amt": 10000.00
+      },
+      "product_array": [
+        {
+          "id": 1,
+          "product_group_id": 1,
+          "product_uom_type_id": 1,
+          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
+          "sku": "coca-0001",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": 300,
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "unit",
+          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
+          "total_uom_quantity": "1",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 2
+        },
+        {
+          "id": 1,
+          "product_group_id": 1,
+          "product_uom_type_id": 1,
+          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
+          "sku": "coca-0001",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": 300,
+          "name": "Coca Cola",
+          "product_uom_type_name_eng": "unit",
+          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
+          "total_uom_quantity": "1",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 2
+        }
+      ],
+      "promo_product_array": [
+        {
+          "id": 35,
+          "product_group_id": 1,
+          "product_uom_type_id": 1,
+          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
+          "sku": "coca-0001",
+          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null,
+          "price": 300,
+          "name": "Max2O Pure Drinking Water",
+          "product_uom_type_name_eng": "unit",
+          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "Glass Bottle",
+          "total_uom_quantity": "1",
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 2
+        }
+      ],
+      "additional_qty": 2,
+      "additional_amt": 5000
+    }
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Downloaded promotion data successfully !"
+}
+              </pre>
+        </div>
+        <!-- end download promotion api content -->
       </div>
     </div>
 </div>
