@@ -251,7 +251,7 @@ class PromotionApiController extends Controller
             $additional_qty = 0;
             $additional_amt = 0.0;
 
-            if($promotionObj->promo_purchase_type = PromotionConstance::promotion_quantity_value && $promotionObj->purchase_qty !== 0){
+            if($promotionObj->promo_purchase_type == PromotionConstance::promotion_quantity_value && $promotionObj->purchase_qty !== 0){
               //get exceeding qty (eg. if promo_purchase_qty is 5 and user currently buy a total of 7 exceeding qty is [7-5=2])
               $exceeding_purchase_qty = $promotionObj->current_purchase_qty % $promotionObj->purchase_qty;
               if($exceeding_purchase_qty !== 0){
@@ -260,7 +260,7 @@ class PromotionApiController extends Controller
               }
             }
 
-            if($promotionObj->promo_purchase_type = PromotionConstance::promotion_amount_value && $promotionObj->purchase_amt !== 0.0){
+            if($promotionObj->promo_purchase_type == PromotionConstance::promotion_amount_value && $promotionObj->purchase_amt !== 0.0){
               $exceeding_purchase_amt = $promotionObj->current_purchase_amt % $promotionObj->purchase_amt;
               if($exceeding_purchase_amt !== 0){
                 $additional_amt = $promotionObj->purchase_amt - $exceeding_purchase_amt;
@@ -438,7 +438,7 @@ class PromotionApiController extends Controller
                   //   }
                   // }
                 // }
-
+                
                 $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage']  = "Downloaded Promotion Data Successfully !";
                 $returnedObj['data'] = array();
