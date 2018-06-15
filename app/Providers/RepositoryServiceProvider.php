@@ -39,6 +39,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Api\Invoice\InvoiceApiRepositoryInterface','App\Api\Invoice\InvoiceApiRepository');
         $this->app->bind('App\Backend\Invoice\InvoiceRepositoryInterface','App\Backend\Invoice\InvoiceRepository');
         $this->app->bind('App\Api\Cart\CartApiRepositoryInterface','App\Api\Cart\CartApiRepository');
+        $this->app->bind('App\Api\Promotion\PromotionApiRepositoryInterface','App\Api\Promotion\PromotionApiRepository');
 
     }
 }

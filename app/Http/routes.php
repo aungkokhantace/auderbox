@@ -133,6 +133,9 @@ Route::group(['middleware' => 'web'], function () {
         //clear cart list api
         Route::post('clear_cart_list', array('as'=>'clear_cart_list','uses'=>'Api\CartApiController@clearCartList'));
 
-        //download promotions api
-        Route::post('download_promotions', array('as'=>'download_promotions','uses'=>'Api\PromotionApiController@downloadPromotions'));
+        //checkout cart list api
+        Route::post('checkout_cart_list', array('as'=>'checkout_cart_list','uses'=>'Api\CartApiController@checkoutCartList'));
+
+        //download item level promotions api
+        Route::post('download_item_level_promotions', array('as'=>'download_item_level_promotions','uses'=>'Api\PromotionApiController@downloadItemLevelPromotions'));
     });

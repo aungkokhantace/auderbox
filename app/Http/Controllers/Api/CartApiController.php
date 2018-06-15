@@ -18,6 +18,11 @@ use App\Api\Cart\CartApiRepositoryInterface;
 use App\Api\Cart\CartApiRepository;
 use App\Api\Product\ProductApiRepository;
 use App\Api\ShopList\ShopListApiRepository;
+use App\Backend\Invoice\Invoice;
+use App\Backend\InvoiceDetail\InvoiceDetail;
+use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
+use App\Core\Config\ConfigRepository;
+use App\Core\StatusConstance;
 
 class CartApiController extends Controller
 {
@@ -169,7 +174,7 @@ class CartApiController extends Controller
             }
             $data = array();
             //response data array
-            
+
             // $returnedObj['data']['cart_list']             = $cart_items;
             $returnedObj['data'][0]["cart_list"]                          = $cart_items;
             $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;
@@ -243,6 +248,135 @@ class CartApiController extends Controller
     }
     else{
         return \Response::json($checkServerStatusArray);
+    }
+  }
+
+  public function checkoutCartList() {
+      $temp                   = Input::All();
+      $inputAll               = json_decode($temp['param_data']);
+      $checkServerStatusArray = Check::checkCodes($inputAll);
+
+      if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+        try{
+          $configRepo = new ConfigRepository();
+          $productApiRepo     = new ProductApiRepository();
+          $retailshopApiRepo  = new ShopListApiRepository();
+
+          $params             = $checkServerStatusArray['data'][0];
+
+          $returnedObj['data'] = [];
+          if (isset($params->checkout_cart) && count($params->checkout_cart) > 0) {
+            $retailer_id   = $params->checkout_cart->retailer_id;
+            $retailshop_id = $params->checkout_cart->retailshop_id;
+            $delivery_date = date('Y-m-d',strtotime($params->checkout_cart->delivery_date));
+
+            //get cart items
+            $cart_items_result = $this->repo->getCartItems($params->checkout_cart);
+
+            if($cart_items_result['aceplusStatusCode'] !== ReturnMessage::OK){
+              $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
+              $returnedObj['aceplusStatusMessage']  = $cart_items_result['aceplusStatusMessage'];
+              return \Response::json($returnedObj);
+            }
+
+            $cart_items = $cart_items_result["cart_items"];
+
+            //start invoice
+            $today = date('Y-m-d');  //get today date
+            $current_timestamp = date('Y-m-d H:i:s');  //get current timestamp
+
+            $tax_rate = $configRepo->getTaxPercentage();
+
+            //start total net amt
+            $total_net_amt = 0.0;
+            foreach($cart_items as $cart_item){
+              // dd('cart',$cart_item);
+              //get retailshop object
+              $retailshop = $retailshopApiRepo->getShopById($retailshop_id);
+
+              //get retailshop ward id
+              $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+              $product_detail_result = $productApiRepo->getProductDetailByID($cart_item->product_id, $retailshop_address_ward_id);
+
+              if($product_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+                $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+                $returnedObj['aceplusStatusMessage'] = "Product does not exist!";
+                $returnedObj['data'] = [];
+                return \Response::json($returnedObj);
+              }
+
+              $product_detail = $product_detail_result["resultObj"];
+
+              $net_amt = $product_detail->price * $cart_item->quantity;
+              $total_net_amt += $net_amt;
+            }
+
+            $total_discount_amt = 0.0;
+            $total_net_amt_w_disc = $total_net_amt - $total_discount_amt;
+            $total_tax_amt = Utility::calculateTaxAmount($total_net_amt_w_disc);
+            $total_payable_amt = $total_net_amt_w_disc + $total_tax_amt;
+
+            // dd('total_net_amt',$product_detail->price,$cart_item->quantity,$total_net_amt);
+            //start invoice_id generation
+            $id_prefix                      = $configRepo->getInvoicePrefixId()[0]->value;
+            $date_str                       = date('Ymd',strtotime("now"));
+            $prefix                         = $id_prefix.$date_str;
+            $table                          = (new Invoice())->getTable();
+            $col                            = 'id';
+            $offset                         = 1;
+            $pad_length                     = $configRepo->getInvoiceIdPadLength()[0]->value; //number of digits without prefix and date
+            //generate invoice id
+            $invoice_id                     = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
+            //end invoice_id generation
+
+            //create invoice obj
+            $invoiceObj = new Invoice();
+            $invoiceObj->id = $invoice_id;
+            $invoiceObj->status               = StatusConstance::status_confirm_value;
+            $invoiceObj->order_date           = $today;
+            $invoiceObj->delivery_date        = $delivery_date;
+            $invoiceObj->payment_date         = $delivery_date;
+            $invoiceObj->retailer_id          = $retailer_id;
+            $invoiceObj->brand_owner_id       = 1;              // currently
+            $invoiceObj->retailshop_id        = $retailshop_id;
+            $invoiceObj->tax_rate             = $tax_rate;
+            $invoiceObj->total_net_amt        = $total_net_amt;
+            $invoiceObj->total_discount_amt   = $total_discount_amt;
+            $invoiceObj->total_net_amt_w_disc = $total_net_amt_w_disc;
+            $invoiceObj->total_tax_amt        = $total_tax_amt;
+            $invoiceObj->total_payable_amt    = $total_payable_amt;
+            $invoiceObj->remark               = "";
+            $invoiceObj->confirm_by           = NULL;
+            $invoiceObj->confirm_date         = NULL;
+            $invoiceObj->cancel_by            = NULL;
+            $invoiceObj->cancel_date          = NULL;
+            $invoiceObj->created_by           = $retailer_id;
+            $invoiceObj->updated_by           = $retailer_id;
+            $invoiceObj->deleted_by           = NULL;
+            $invoiceObj->created_at           = $current_timestamp;
+            $invoiceObj->updated_at           = $current_timestamp;
+            $invoiceObj->deleted_at           = NULL;
+            dd('obj',$invoiceObj);
+            $invoiceRes                     = $this->saveInvoice($invoice,$invoice_id);
+            //end invoice
+          }
+          //API parameter is missing
+          else{
+            $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+            $returnedObj['aceplusStatusMessage'] = "Missing API Parameters";
+            $returnedObj['data'] = [];
+            return \Response::json($returnedObj);
+          }
+      }
+      catch(\Exception $e){
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
+    }
+    else{
+      return \Response::json($checkServerStatusArray);
     }
   }
 }

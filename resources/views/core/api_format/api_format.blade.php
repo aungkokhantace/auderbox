@@ -22,7 +22,7 @@
             <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
             <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
             <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
-            <li><a data-toggle="tab" href="#download_promotion_api"><b>Download Promotions</b></a></li>
+            <li><a data-toggle="tab" href="#download_item_level_promotion_api"><b>Download Item Level Promotions</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -1224,10 +1224,10 @@
         </div>
         <!-- end checkout cart api content -->
 
-        <!-- start download promotion api content -->
-        <div id="download_promotion_api" class="tab-pane fade in">
+        <!-- start download item level promotion api content -->
+        <div id="download_item_level_promotion_api" class="tab-pane fade in">
             <h3>URL</h3>
-            <p><b>http://localhost:8000/api/download_promotions</b></p>
+            <p><b>http://localhost:8000/api/download_item_level_promotions</b></p>
             <hr>
 
             <h3>Request</h3>
@@ -1236,7 +1236,7 @@
   "site_activation_key": "1234567",
   "data": [
     {
-      "download_promotions": {
+      "download_item_level_promotions": {
         "retailer_id": 1,
         "retailshop_id": 1
       }
@@ -1255,8 +1255,10 @@
         "promotion_item_level_id": 1,
         "code": "00001",
         "name": "Rainy Season Promotion",
-        "promo_type": 1,
-        "promo_type_text": "Quantity Promotion",
+        "promo_purchase_type": 1,
+        "promo_purchase_type_text": "Quantity Promotion",
+        "promo_present_type": 1,
+        "promo_present_type_text": "Quantity Promotion",
         "from_date": "2018-06-01",
         "from_date": "2018-06-30",
         "promo_purchase_amt": 0.0,
@@ -1357,7 +1359,7 @@
 }
               </pre>
         </div>
-        <!-- end download promotion api content -->
+        <!-- end download item level promotion api content -->
       </div>
     </div>
 </div>

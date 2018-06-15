@@ -74,6 +74,16 @@ class ConfigRepository implements ConfigRepositoryInterface
         return $configs;
     }
 
+    public function getTaxPercentage()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'TAX_PERCENTAGE'");
+        if(isset($configs) && count($configs) > 0){
+          return $configs[0]->value;
+        }
+        return 0;
+    }
+
     public function getTaxAmount()
     {
         $tbConfig =  (new Config())->getTable();

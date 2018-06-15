@@ -50,7 +50,7 @@
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Amount Prmotion</td>
+                        <td>Amount Promotion</td>
                         <td>2</td>
                     </tr>
                     <tr>
