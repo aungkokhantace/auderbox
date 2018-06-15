@@ -84,14 +84,19 @@ class CartApiController extends Controller
 
           $result = $this->repo->updateCartQty($params->add_to_cart);
 
+          //get cart item count
+          $cart_item_count = Utility::getCartItemCount($params->add_to_cart->retailer_id);
+
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
-              $returnedObj['aceplusStatusCode'] = $result['aceplusStatusCode'];
-              $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+              $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
+              $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
+              $returnedObj['cart_item_count']       = $cart_item_count;
               return \Response::json($returnedObj);
           }
           else{
             $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
             $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+            $returnedObj['cart_item_count']       = $cart_item_count;
             return \Response::json($returnedObj);
           }
         }

@@ -1252,33 +1252,61 @@
   "data": [
     {
       "received_promotion": {
-        "promotion_item_level_id": 1,
+        "id": 1,
+        "promotion_item_level_group_id": 1,
         "code": "00001",
-        "name": "Rainy Season Promotion",
+        "name": "Item Level Promotion 1 (quantity)",
         "promo_purchase_type": 1,
-        "promo_purchase_type_text": "Quantity Promotion",
         "promo_present_type": 1,
-        "promo_present_type_text": "Quantity Promotion",
         "from_date": "2018-06-01",
-        "from_date": "2018-06-30",
-        "promo_purchase_amt": 0.0,
-        "promo_purchase_qty": 3,
-        "promo_percentage": 0.0,
-        "promo_amt": 0.0,
-        "max_count_apply": 2,
-        "promo_allow_max_count": 2,
-        "remark": "promotion remark",
-        "current_purchase_qty": 4,
-        "current_purchase_amt": 10000.00
+        "to_date": "2018-06-30",
+        "purchase_amt": 0,
+        "purchase_qty": 5,
+        "promo_percentage": 0,
+        "promo_amt": 0,
+        "max_count_apply": 50,
+        "promo_allow_max_count": 10,
+        "remark": null,
+        "status": 1,
+        "created_by": 1,
+        "updated_by": 1,
+        "deleted_by": null,
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null,
+        "promotion_product_id_array": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "cart_item_array_included_in_promotion": [
+          {
+            "id": "20180614000001",
+            "retailer_id": 1,
+            "retailshop_id": 1,
+            "brand_owner_id": 1,
+            "product_id": 2,
+            "quantity": 12,
+            "created_date": "2018-06-14 10:07:13"
+          }
+        ],
+        "promo_purchase_type_text": "Quantity Promotion",
+        "promo_present_type_text": "Quantity Promotion",
+        "current_purchase_qty": 12,
+        "current_purchase_amt": 86400
       },
       "product_array": [
         {
-          "id": 1,
-          "product_group_id": 1,
+          "id": 2,
+          "product_group_id": 2,
           "product_uom_type_id": 1,
-          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
-          "sku": "coca-0001",
-          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "image": "\/images\/product_images\/Coca Cola (330 ml) x 24.png",
+          "sku": "COCA-COLA-000002",
+          "remark": "A product of Coca-Cola Family",
           "status": 1,
           "created_by": 1,
           "updated_by": 1,
@@ -1286,51 +1314,24 @@
           "created_at": null,
           "updated_at": null,
           "deleted_at": null,
-          "price": 300,
-          "name": "Coca Cola",
-          "product_uom_type_name_eng": "unit",
-          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
+          "price": 7200,
+          "name": "Coca-Cola",
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
           "product_volume_type_name": "330 ml",
-          "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": 1,
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
-          "purchase_qty": 2
-        },
-        {
-          "id": 1,
-          "product_group_id": 1,
-          "product_uom_type_id": 1,
-          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
-          "sku": "coca-0001",
-          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
-          "status": 1,
-          "created_by": 1,
-          "updated_by": 1,
-          "deleted_by": null,
-          "created_at": null,
-          "updated_at": null,
-          "deleted_at": null,
-          "price": 300,
-          "name": "Coca Cola",
-          "product_uom_type_name_eng": "unit",
-          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
-          "product_volume_type_name": "330 ml",
-          "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": 1,
-          "minimum_order_qty": 1,
-          "maximum_order_qty": 50,
-          "purchase_qty": 2
+          "purchase_qty": 12
         }
       ],
       "promo_product_array": [
         {
-          "id": 35,
-          "product_group_id": 1,
-          "product_uom_type_id": 1,
-          "image": "\/images\/product_images\/Max_Power_Strawberry_350mL Bottle_Dry_LR.jpg",
-          "sku": "coca-0001",
-          "remark": "Coca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in historyCoca Cola 1.5L is the most popular and biggest selling soft drink in history",
+          "id": 1,
+          "promotion_item_level_id": 1,
+          "promo_product_id": 35,
+          "promo_qty": 1,
           "status": 1,
           "created_by": 1,
           "updated_by": 1,
@@ -1338,24 +1339,15 @@
           "created_at": null,
           "updated_at": null,
           "deleted_at": null,
-          "price": 300,
-          "name": "Max2O Pure Drinking Water",
-          "product_uom_type_name_eng": "unit",
-          "product_uom_type_name_mm": "\u101c\u102f\u1036\u1038",
-          "product_volume_type_name": "330 ml",
-          "product_container_type_name": "Glass Bottle",
-          "total_uom_quantity": 1,
-          "minimum_order_qty": 1,
-          "maximum_order_qty": 50,
-          "purchase_qty": 2
+          "received_promo_qty": 2
         }
       ],
-      "additional_qty": 2,
-      "additional_amt": 5000
+      "additional_qty": 3,
+      "additional_amt": 0
     }
   ],
   "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Downloaded promotion data successfully !"
+  "aceplusStatusMessage": "Downloaded Promotion Data Successfully !"
 }
               </pre>
         </div>

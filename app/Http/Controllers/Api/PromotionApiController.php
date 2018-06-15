@@ -267,6 +267,14 @@ class PromotionApiController extends Controller
               }
             }
 
+            foreach($promotion_gifts as $promo_gift) {
+              if($promotionObj->promo_present_type == PromotionConstance::promotion_quantity_value && $promotionObj->purchase_qty !== 0){
+                //get received promo qty (eg. if promo_purchase_qty is 5 and user currently buy a total of 16, the received promo qty is [int(16/5) = 3])
+                $received_promo_qty = intval(floor($promotionObj->current_purchase_qty / $promotionObj->purchase_qty));
+                $promo_gift->received_promo_qty = $received_promo_qty;
+              }
+            }
+
         //
         //     //start getting promo_product_array
         //     //only qty promotions for now
@@ -438,7 +446,7 @@ class PromotionApiController extends Controller
                   //   }
                   // }
                 // }
-                
+
                 $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
                 $returnedObj['aceplusStatusMessage']  = "Downloaded Promotion Data Successfully !";
                 $returnedObj['data'] = array();
@@ -454,20 +462,21 @@ class PromotionApiController extends Controller
             // old in_array checking
           // }
 
-          if($result['aceplusStatusCode'] == ReturnMessage::OK){
-            //get cart item count
-            $cart_item_count = Utility::getCartItemCount($params->add_to_cart->retailer_id);
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "No promotion available!";
+          return \Response::json($returnedObj);
 
-            $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
-            $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
-            $returnedObj['cart_item_count']       = $cart_item_count;
-            return \Response::json($returnedObj);
-          }
-          else{
-            $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
-            $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
-            return \Response::json($returnedObj);
-          }
+          // if($result['aceplusStatusCode'] == ReturnMessage::OK){
+          //
+          //   $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
+          //   $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
+          //   return \Response::json($returnedObj);
+          // }
+          // else{
+          //   $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+          //   $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
+          //   return \Response::json($returnedObj);
+          // }
         }
         //API parameter is missing
         else{
