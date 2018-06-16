@@ -11,4 +11,5 @@ interface CartApiRepositoryInterface
   public function addToCart($paramObj);
   public function updateCartQty($paramObj);
   public function getCartItems($paramObj);
+  public function clearCartItems($retailer_id,$retailshop_id);
 }

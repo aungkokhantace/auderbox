@@ -57,6 +57,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             $paramObj->save();
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+            $returnedObj['aceplusStatusMessage'] = "Invoice header is successfully saved!";
             return $returnedObj;
         }
         catch(\Exception $e){
@@ -100,6 +101,7 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
             ]);
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+            $returnedObj['aceplusStatusMessage'] = "Invoice detail is successfully saved !";
             return $returnedObj;
         }
         catch(\Exception $e){
