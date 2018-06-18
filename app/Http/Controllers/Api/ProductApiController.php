@@ -21,6 +21,7 @@ use App\Api\Product\ProductApiRepositoryInterface;
 use App\Api\ShopList\ShopListApiRepository;
 use App\Api\ProductDeliveryRestriction\ProductDeliveryRestrictionApiRepository;
 use App\Api\ProductGroup\ProductGroupApiRepository;
+use App\Api\Promotion\PromotionApiRepository;
 
 class ProductApiController extends Controller
 {
@@ -40,6 +41,7 @@ class ProductApiController extends Controller
               $shopListApiRepo = new ShopListApiRepository();
               $productDeliveryRestrictionRepo = new ProductDeliveryRestrictionApiRepository();
               $productGroupRepo = new ProductGroupApiRepository();
+              $promotionApiRepo = new PromotionApiRepository();
 
               $params             = $checkServerStatusArray['data'][0];
 
@@ -61,7 +63,7 @@ class ProductApiController extends Controller
                 // get products that are restricted in the retailshop's township
                 //raw query result
                 $raw_restricted_product_groups = $productDeliveryRestrictionRepo->getRestrictedProductsByWardId($retailshop_address_ward_id);
-                
+
                 //push to array
                 foreach($raw_restricted_product_groups as $restricted_product_group){
                     array_push($restricted_product_group_id_array, $restricted_product_group->product_group_id);
@@ -87,6 +89,8 @@ class ProductApiController extends Controller
                 // $result = $this->repo->getAvailableProducts($product_category_id,$restricted_product_id_array,$retailshop_township_id);
                 $product_result = $this->repo->getAvailableProducts($product_group_id_array,$retailshop_address_ward_id);
 
+                $today_date = date('Y-m-d'); //to check promotions
+
                 if($product_result['aceplusStatusCode'] == ReturnMessage::OK){
                     $data = array();
                     $count = 0;
@@ -97,6 +101,20 @@ class ProductApiController extends Controller
                       $result_product->minimum_order_qty = 1;
                       $result_product->maximum_order_qty = 50;
                       $result_product->out_of_stock_flag = 0;
+
+                      //start promotion
+                      //check for promotions
+                      $raw_promotion = $promotionApiRepo->checkPromotionForproduct($result_product->id,$result_product->product_line_id,$today_date);
+
+                      if(isset($raw_promotion) && count($raw_promotion) > 0){
+                        $promotion_image = $raw_promotion->promotion_image;
+                      }
+                      else {
+                        $promotion_image = null;
+                      }
+                      //bind promotion image to product obj
+                      $result_product->promotion_image = $promotion_image;
+                      //end promotion
                     }
 
                     $data[0]["products"] = $product_result['resultObjs'];
@@ -143,6 +161,7 @@ class ProductApiController extends Controller
         if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
           try {
                 $shopListApiRepo = new ShopListApiRepository();
+                $promotionApiRepo = new PromotionApiRepository();
 
                 $params             = $checkServerStatusArray['data'][0];
 
@@ -164,12 +183,32 @@ class ProductApiController extends Controller
                       $data = array();
                       //add minimum_order_qty, maximum_order_qty, out_of_stock_flag
                       //all by default now
+
+                      $today_date = date('Y-m-d'); //to check promotions
+
                       if(isset($result['resultObj']) && count($result['resultObj']) > 0){
                         $result['resultObj']->minimum_order_qty = 1;
                         $result['resultObj']->maximum_order_qty = 50;
                         $result['resultObj']->out_of_stock_flag = 0;
-                      }
 
+                        $product_id       = $result['resultObj']->id;
+                        $product_line_id  = $result['resultObj']->product_line_id;
+
+                        //start promotion
+                        //check for promotions
+                        $raw_promotion = $promotionApiRepo->checkPromotionForproduct($product_id,$product_line_id,$today_date);
+
+                        if(isset($raw_promotion) && count($raw_promotion) > 0){
+                          $promotion_image = $raw_promotion->promotion_image;
+                        }
+                        else {
+                          $promotion_image = null;
+                        }
+                        //bind promotion image to product obj
+                        $result['resultObj']->promotion_image = $promotion_image;
+                        //end promotion
+                      }
+                      
                       // create std object
                       $data[0] = new \stdClass();
                       $data[0]->product_detail = $result['resultObj'];

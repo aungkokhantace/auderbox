@@ -130,6 +130,9 @@ Route::group(['middleware' => 'web'], function () {
         //download cart list api
         Route::post('download_cart_list', array('as'=>'download_cart_list','uses'=>'Api\CartApiController@downloadCartList'));
 
+        //download order list api
+        Route::post('download_order_list', array('as'=>'download_order_list','uses'=>'Api\CartApiController@downloadOrderList'));
+
         //clear cart list api
         Route::post('clear_cart_list', array('as'=>'clear_cart_list','uses'=>'Api\CartApiController@clearCartList'));
 
