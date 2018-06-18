@@ -609,7 +609,7 @@ class CartApiController extends Controller
               }
               $data = array();
               //response data array
-              dd('cart_items',$cart_items);
+              
               // $returnedObj['data']['cart_list']             = $cart_items;
               $returnedObj['data'][0]["cart_list"]             = $cart_items;
               $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;

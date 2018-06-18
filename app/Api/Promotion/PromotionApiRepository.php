@@ -130,12 +130,11 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
 
     public function markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id){
       $result = DB::table('invoice_session_show_noti')->insert([
-        'invoice_session_id'      => null,
         'retailer_id'             => $retailer_id,
         'retailshop_id'           => $retailshop_id,
         'promotion_item_level_id' => $promotion_item_level_id
       ]);
-      
+
       return $result;
     }
 }

@@ -561,7 +561,6 @@ class PromotionApiController extends Controller
               }
 
               //save the received promotion to invoice_session_show_noti table
-              // dd('promotionObj',$promotionObj->id);
               $promotion_item_level_id = $promotionObj->id;
 
               //returns true if mark as noti process is successful

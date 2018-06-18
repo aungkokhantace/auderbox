@@ -1890,8 +1890,10 @@
       "received_promotion": {
         "id": 1,
         "promotion_item_level_group_id": 1,
+        "product_line_id": 1,
         "code": "00001",
         "name": "Item Level Promotion 1 (quantity)",
+        "promotion_image": "\/images\/product_images\/Max2O Pure Drinking Water (1 L) x 6.png",
         "promo_purchase_type": 1,
         "promo_present_type": 1,
         "from_date": "2018-06-01",
@@ -1900,7 +1902,7 @@
         "purchase_qty": 5,
         "promo_percentage": 0,
         "promo_amt": 0,
-        "max_count_apply": 50,
+        "max_count_apply": 0,
         "promo_allow_max_count": 10,
         "remark": null,
         "status": 1,
@@ -1910,6 +1912,7 @@
         "created_at": null,
         "updated_at": null,
         "deleted_at": null,
+        "product_line_name": "Coca-Cola",
         "promotion_product_id_array": [
           1,
           2,
@@ -1926,14 +1929,14 @@
             "retailshop_id": 1,
             "brand_owner_id": 1,
             "product_id": 2,
-            "quantity": 12,
+            "quantity": 37,
             "created_date": "2018-06-14 10:07:13"
           }
         ],
         "promo_purchase_type_text": "Quantity Promotion",
         "promo_present_type_text": "Quantity Promotion",
-        "current_purchase_qty": 12,
-        "current_purchase_amt": 86400
+        "current_purchase_qty": 37,
+        "current_purchase_amt": 266400
       },
       "product_array": [
         {
@@ -1957,16 +1960,18 @@
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "can",
           "total_uom_quantity": 24,
+          "product_line_id": 1,
+          "product_line_name": "Coca-Cola",
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
-          "purchase_qty": 12
+          "purchase_qty": 37
         }
       ],
       "promo_product_array": [
         {
-          "id": 1,
-          "promotion_item_level_id": 1,
-          "promo_product_id": 35,
+          "id": 2,
+          "promotion_item_level_id": 2,
+          "promo_product_id": 36,
           "promo_qty": 1,
           "status": 1,
           "created_by": 1,
@@ -1975,11 +1980,13 @@
           "created_at": null,
           "updated_at": null,
           "deleted_at": null,
-          "received_promo_qty": 2
+          "promo_product_name": "Max2O Pure Drinking Water",
+          "received_promo_qty": 7
         }
       ],
       "additional_qty": 3,
-      "additional_amt": 0
+      "additional_amt": 0,
+      "current_purchase_qty": 37
     }
   ],
   "aceplusStatusCode": 200,
