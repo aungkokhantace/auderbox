@@ -597,9 +597,7 @@ class CartApiController extends Controller
 
               //if there is no available item level promo group for today, just return
               if(!(isset($promotion_item_level_groups) && count($promotion_item_level_groups) > 0)) {
-                $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
-                $returnedObj['aceplusStatusMessage']  = "No item level promotion group available today !";
-                return \Response::json($returnedObj);
+                $gift_array = [];
               }
 
               // //get already alerted promotions
@@ -621,9 +619,7 @@ class CartApiController extends Controller
 
               // there are no item level promotion, just return
               if(count($promotion_item_level_array) == 0) {
-                $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
-                $returnedObj['aceplusStatusMessage']  = "No item level promotion available today !";
-                return \Response::json($returnedObj);
+                $gift_array = [];
               }
 
               foreach($promotion_item_level_array as $promotion_item_level_value){
@@ -644,9 +640,7 @@ class CartApiController extends Controller
                 }
 
                 if(count($promotion_item_level_detail_array) == 0) {
-                  $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
-                  $returnedObj['aceplusStatusMessage']  = "No item level promotion detail available today !";
-                  return \Response::json($returnedObj);
+                  $gift_array = [];
                 }
 
                 //bind to promotion_item_level_obj
@@ -737,9 +731,7 @@ class CartApiController extends Controller
 
                   //if gifts array is empty
                   if(count($promotion_gifts) == 0) {
-                    $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
-                    $returnedObj['aceplusStatusMessage']  = "No promotion gift available!";
-                    return \Response::json($returnedObj);
+                    $gift_array = [];
                   }
 
                   foreach($promotion_gifts as $promo_gift) {
