@@ -695,4 +695,25 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         return $returnedObj;
       }
     }
+
+    public function clearInvoiceSessionShowNoti($retailer_id,$retailshop_id) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try{
+        //clear table
+        DB::table('invoice_session_show_noti')
+                  ->where('retailer_id',$retailer_id)
+                  ->where('retailshop_id',$retailshop_id)
+                  ->delete();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Show Noti list cleared successfully !";
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
+    }
 }

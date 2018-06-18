@@ -515,6 +515,17 @@ class CartApiController extends Controller
             }
             //end cart clear
 
+            //start promotion_show_noti clear
+            //start cart clear
+            $invoice_session_show_noti_clear_result = $invoiceApiRepo->clearInvoiceSessionShowNoti($retailer_id,$retailshop_id);
+
+            if($invoice_session_show_noti_clear_result["aceplusStatusCode"] !== ReturnMessage::OK){
+              DB::rollback();
+              $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
+              $returnedObj['aceplusStatusMessage']  = $invoice_session_show_noti_clear_result["aceplusStatusMessage"];
+            }
+            //end promotion_show_noti clear
+
             DB::commit();
 
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
@@ -609,7 +620,7 @@ class CartApiController extends Controller
               }
               $data = array();
               //response data array
-              
+
               // $returnedObj['data']['cart_list']             = $cart_items;
               $returnedObj['data'][0]["cart_list"]             = $cart_items;
               $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;

@@ -13,4 +13,6 @@ interface InvoiceApiRepositoryInterface
     public function uploadInvoice($invoices);
     public function getInvoiceList($retailer_id,$filter);
     public function getInvoiceDetail($invoice_id);
+    public function saveInvoiceDetailHistory($paramObj);
+    public function clearInvoiceSessionShowNoti($retailer_id,$retailshop_id);
 }
