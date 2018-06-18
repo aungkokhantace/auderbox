@@ -25,6 +25,7 @@ use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
 use App\Core\Config\ConfigRepository;
 use App\Core\StatusConstance;
 use App\Core\CoreConstance;
+use App\Core\PromotionConstance;
 use Illuminate\Support\Facades\DB;
 use App\Api\Promotion\PromotionApiRepository;
 
@@ -565,6 +566,7 @@ class CartApiController extends Controller
           $productApiRepo     = new ProductApiRepository();
           $retailshopApiRepo  = new ShopListApiRepository();
           $promotionApiRepo   = new PromotionApiRepository();
+          $shopListApiRepo    = new ShopListApiRepository();
 
           $params             = $checkServerStatusArray['data'][0];
 
@@ -593,24 +595,201 @@ class CartApiController extends Controller
 
               $promotion_item_level_groups = $promotionApiRepo->getAvailablePromotionItemLevelGroups($today_date);
 
-              //get already alerted promotions
-              $raw_already_alerted_promotions = $promotionApiRepo->getAlreadyAlertedPromotions($retailer_id,$retailshop_id);
-
-              $alerted_promotion_id_array = array();
-              foreach($raw_already_alerted_promotions as $raw_already_alerted_promotion){
-                array_push($alerted_promotion_id_array,$raw_already_alerted_promotion->promotion_item_level_id);
+              //if there is no available item level promo group for today, just return
+              if(!(isset($promotion_item_level_groups) && count($promotion_item_level_groups) > 0)) {
+                $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+                $returnedObj['aceplusStatusMessage']  = "No item level promotion group available today !";
+                return \Response::json($returnedObj);
               }
+
+              // //get already alerted promotions
+              // $raw_already_alerted_promotions = $promotionApiRepo->getAlreadyAlertedPromotions($retailer_id,$retailshop_id);
+              //
+              // $alerted_promotion_id_array = array();
+              // foreach($raw_already_alerted_promotions as $raw_already_alerted_promotion){
+              //   array_push($alerted_promotion_id_array,$raw_already_alerted_promotion->promotion_item_level_id);
+              // }
 
               foreach($promotion_item_level_groups as $promotion_item_level_group) {
                 $group_id = $promotion_item_level_group->id;
-                $promotion_item_levels = $promotionApiRepo->getPromotionItemLevelByGroupId($group_id, $today_date,$alerted_promotion_id_array);
+                $promotion_item_levels = $promotionApiRepo->getPromotionItemLevelByGroupId($group_id, $today_date);
 
                 foreach($promotion_item_levels as $promotion_item_level){
                   array_push($promotion_item_level_array, $promotion_item_level);
                 }
               }
-              dd('$promotion_item_level_array',$promotion_item_level_array);
 
+              // there are no item level promotion, just return
+              if(count($promotion_item_level_array) == 0) {
+                $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+                $returnedObj['aceplusStatusMessage']  = "No item level promotion available today !";
+                return \Response::json($returnedObj);
+              }
+
+              foreach($promotion_item_level_array as $promotion_item_level_value){
+                $promotion_item_level_id = $promotion_item_level_value->id;
+                $promotion_item_level_details = $promotionApiRepo->getPromotionItemLevelDetailByLevelId($promotion_item_level_id, $today_date);
+
+                $product_id_count = 0; //start counter
+
+                //reset array
+                $promotion_item_level_detail_array = array();
+                $cart_item_array_included_in_promotion = array();
+
+                foreach($promotion_item_level_details as $promotion_item_level_detail) {
+                  //add to detail array
+                  // $promotion_item_level_detail_array[$promotion_item_level_id][$product_id_count] = $promotion_item_level_detail->product_id;
+                  array_push($promotion_item_level_detail_array,$promotion_item_level_detail->product_id);
+                  $product_id_count++;
+                }
+
+                if(count($promotion_item_level_detail_array) == 0) {
+                  $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+                  $returnedObj['aceplusStatusMessage']  = "No item level promotion detail available today !";
+                  return \Response::json($returnedObj);
+                }
+
+                //bind to promotion_item_level_obj
+                $promotion_item_level_value->promotion_product_id_array = $promotion_item_level_detail_array;
+                foreach($cart_items as $cart_item_obj){
+                  if(in_array($cart_item_obj->product_id , $promotion_item_level_detail_array)){
+                    array_push($cart_item_array_included_in_promotion, $cart_item_obj);
+                  }
+                }
+
+                $promotion_item_level_value->cart_item_array_included_in_promotion = $cart_item_array_included_in_promotion;
+              }
+
+              $promotion_obj_array = array();
+
+              foreach($promotion_item_level_array as $promotion_item_level){
+                $cart_items_that_match_promotion = $promotion_item_level->cart_item_array_included_in_promotion;
+                //if purchase type is qty
+                if($promotion_item_level->promo_purchase_type == PromotionConstance::promotion_quantity_value){
+                  $cart_purchase_qty_for_promo = 0;
+                  foreach($cart_items_that_match_promotion as $cart_item_that_match_promotion) {
+                    $cart_purchase_qty_for_promo += $cart_item_that_match_promotion->quantity;
+                  }
+
+                  //if cart_purchase_qty is more than promo_purchase_qty
+                  if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
+                    $item_level_promotion_id = $promotion_item_level->id;
+
+                    //add to promotion obj array
+                    array_push($promotion_obj_array,$promotion_item_level);
+                  }
+                }
+              }
+
+              foreach($promotion_obj_array as $promotion_obj){
+                $current_purchase_qty = 0; // for currently purchased qty
+                $current_purchase_amt = 0; // for currently purchased amt
+                $purchased_products_array = array(); //to store details of purchased products
+                $promo_products_array = array(); //to store details of promo products
+
+                //start current purchase qty
+                foreach($promotion_obj->cart_item_array_included_in_promotion as $cart_item){
+                  //calculate total purchase qty
+                  $current_purchase_qty += $cart_item->quantity;
+
+                  //start calculating total purchase amount
+                  $product_id          = $cart_item->product_id;
+                  $retailshop_id       = $cart_item->retailshop_id;
+
+                  //get retailshop object
+                  $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+
+                  //get retailshop ward id
+                  $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+                  //get product detail including price
+                  $product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
+
+                  //if getting product details is not successful, return with error message
+                  if($product_detail_result["aceplusStatusCode"] !== ReturnMessage::OK){
+                    $returnedObj['aceplusStatusCode']     = $product_detail_result["aceplusStatusCode"];
+                    $returnedObj['aceplusStatusMessage']  = $product_detail_result["aceplusStatusMessage"];
+                    return \Response::json($returnedObj);
+                  }
+
+                  //get product_detail obj
+                  $product_detail = $product_detail_result["resultObj"];
+
+                  //define minimum_order_qty and maximum_order_qty (temporarily hard-coded for now)
+                  $product_detail->minimum_order_qty = 1;
+                  $product_detail->maximum_order_qty = 50;
+                  $product_detail->purchase_qty      = $cart_item->quantity;
+
+                  //push product detail to product array
+                  array_push($purchased_products_array,$product_detail);
+
+                  //add each product's [price*quantity] to current total purchase amount
+                  $current_purchase_amt += $product_detail->price * $product_detail->purchase_qty;
+                  //end calculating total purchase amount
+                }
+                //end current purchase qty
+
+                //bind to promotion obj
+                $promotion_obj->current_purchase_qty = $current_purchase_qty;
+
+                if($promotion_obj->promo_present_type = PromotionConstance::promotion_quantity_value){
+                  $promotion_gifts = $promotionApiRepo->getPromotionItemLevelGiftsByLevelId($promotion_item_level_id);
+
+                  //if gifts array is empty
+                  if(count($promotion_gifts) == 0) {
+                    $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+                    $returnedObj['aceplusStatusMessage']  = "No promotion gift available!";
+                    return \Response::json($returnedObj);
+                  }
+
+                  foreach($promotion_gifts as $promo_gift) {
+                    if($promotion_obj->promo_present_type == PromotionConstance::promotion_quantity_value && $promotion_obj->purchase_qty !== 0){
+                      //get received promo qty (eg. if promo_purchase_qty is 5 and user currently buy a total of 16, the received promo qty is [int(16/5) = 3])
+                      $received_promo_qty = intval(floor($promotion_obj->current_purchase_qty / $promotion_obj->purchase_qty));
+                      $promo_gift->received_promo_qty = $received_promo_qty;
+                    }
+                  }
+
+                  $promotion_obj->promotion_gifts = $promotion_gifts;
+                }
+              }
+
+              $gift_array = array();
+
+              foreach($promotion_obj_array as $promotion_object){
+                foreach($promotion_object->promotion_gifts as $gift_item){
+                  $received_promo_qty = $gift_item->received_promo_qty;
+
+                  $product_id = $gift_item->promo_product_id;
+
+                  //get retailshop object
+                  $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+
+                  //get retailshop ward id
+                  $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+                  //get product detail including price
+                  $promo_product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
+
+                  if($promo_product_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+                    $returnedObj['aceplusStatusCode']     = $promo_product_detail_result['aceplusStatusCode'];
+                    $returnedObj['aceplusStatusMessage']  = $promo_product_detail_result['aceplusStatusMessage'];
+                    return \Response::json($returnedObj);
+                  }
+                  $promo_product_detail = $promo_product_detail_result['resultObj'];
+                  $promo_product_detail->quantity = $received_promo_qty;
+
+                  //set amounts to zero
+                  $promo_product_detail->price = 0.0;
+                  $promo_product_detail->payable_amt = 0.0;
+
+                  //push to gift_array
+                  array_push($gift_array,$promo_product_detail);
+                }
+              }
+              //end promotion products
+
+              //start cart products
               //get details of cart_items
               foreach($cart_items as $raw_cart_item){
                 //define maximum qty of product (50 for now //hard code)
@@ -655,18 +834,50 @@ class CartApiController extends Controller
               $data = array();
               //response data array
 
-              //start promotion items
 
-              //end promotion items
+              // $order_list_array = array_merge($cart_items,$gift_array);
 
-              // $returnedObj['data']['cart_list']             = $cart_items;
-              $returnedObj['data'][0]["cart_list"]             = $cart_items;
-              $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;
+              $order_list_array = array();
+              $index = 0;
+
+              //loop through cart_items
+              foreach($cart_items as $cart_item){
+                $order_list_array[$index]['product_id']                   = $cart_item->product_id;
+                $order_list_array[$index]['product_name']                 = $cart_item->product_name;
+                $order_list_array[$index]['quantity']                     = $cart_item->quantity;
+                $order_list_array[$index]['product_uom_type_name_eng']    = $cart_item->product_uom_type_name_eng;
+                $order_list_array[$index]['product_uom_type_name_mm']     = $cart_item->product_uom_type_name_mm;
+                $order_list_array[$index]['product_volume_type_name']     = $cart_item->product_volume_type_name;
+                $order_list_array[$index]['product_container_type_name']  = $cart_item->product_container_type_name;
+                $order_list_array[$index]['total_uom_quantity']           = $cart_item->total_uom_quantity;
+                $order_list_array[$index]['maximum_qty']                  = $cart_item->maximum_qty;
+                $order_list_array[$index]['price']                        = $cart_item->price;
+                $order_list_array[$index]['payable_amount']               = $cart_item->payable_amount;
+                $index++;
+              }
+
+              //loop through gift_array
+              foreach($gift_array as $gift){
+                $order_list_array[$index]['product_id']                   = $gift->id;
+                $order_list_array[$index]['product_name']                 = $gift->name;
+                $order_list_array[$index]['quantity']                     = $gift->quantity;
+                $order_list_array[$index]['product_uom_type_name_eng']    = $gift->product_uom_type_name_eng;
+                $order_list_array[$index]['product_uom_type_name_mm']     = $gift->product_uom_type_name_mm;
+                $order_list_array[$index]['product_volume_type_name']     = $gift->product_volume_type_name;
+                $order_list_array[$index]['product_container_type_name']  = $gift->product_container_type_name;
+                $order_list_array[$index]['total_uom_quantity']           = $gift->total_uom_quantity;
+                $order_list_array[$index]['maximum_qty']                  = 0;
+                $order_list_array[$index]['price']                        = $gift->price;
+                $order_list_array[$index]['payable_amount']               = $gift->payable_amt;
+                $index++;
+              }
+
+              $returnedObj['data'][0]["order_list"]             = $order_list_array;
+              $returnedObj['data'][0]['total_payable_amount']   = $whole_order_payable_amount;
 
 
               $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
               $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
-              // dd('returnObj',$returnedObj);
               return \Response::json($returnedObj);
             }
             //the cart is empty

@@ -36,21 +36,40 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
       return $result;
     }
 
-    public function getPromotionItemLevelByGroupId($group_id,$today_date,$alerted_promotion_id_array) {
+    public function getPromotionItemLevelByGroupId($group_id,$today_date,$alerted_promotion_id_array=[]) {
       //get all item_level_promotions that are available today
-      $result = PromotionItemLevel::select('promotion_item_levels.*','product_lines.name as product_line_name')
-                                        ->leftJoin('product_lines', 'promotion_item_levels.product_line_id', '=', 'product_lines.id')
-                                        ->where('promotion_item_levels.promotion_item_level_group_id','=', $group_id)
-                                        ->where('promotion_item_levels.from_date','<=', $today_date)
-                                        ->where('promotion_item_levels.to_date','>=', $today_date)
-                                        ->whereNotIn('promotion_item_levels.id',$alerted_promotion_id_array)
+      // $result = PromotionItemLevel::select('promotion_item_levels.*','product_lines.name as product_line_name')
+      //                                   ->leftJoin('product_lines', 'promotion_item_levels.product_line_id', '=', 'product_lines.id')
+      //                                   ->where('promotion_item_levels.promotion_item_level_group_id','=', $group_id)
+      //                                   ->where('promotion_item_levels.from_date','<=', $today_date)
+      //                                   ->where('promotion_item_levels.to_date','>=', $today_date)
+      //                                   ->whereNotIn('promotion_item_levels.id',$alerted_promotion_id_array)
+      //
+      //                                   ->where('promotion_item_levels.status','=',1)  //active
+      //                                   ->where('product_lines.status','=',1)  //active
+      //
+      //                                   ->whereNull('promotion_item_levels.deleted_at') //not deleted
+      //                                   ->whereNull('product_lines.deleted_at') //not deleted
+      //                                   ->get();
 
-                                        ->where('promotion_item_levels.status','=',1)  //active
-                                        ->where('product_lines.status','=',1)  //active
+      $query = PromotionItemLevel::query();
+      $query = $query->select('promotion_item_levels.*','product_lines.name as product_line_name');
+      $query = $query->leftJoin('product_lines', 'promotion_item_levels.product_line_id', '=', 'product_lines.id');
+      $query = $query->where('promotion_item_levels.promotion_item_level_group_id','=', $group_id);
+      $query = $query->where('promotion_item_levels.from_date','<=', $today_date);
+      $query = $query->where('promotion_item_levels.to_date','>=', $today_date);
 
-                                        ->whereNull('promotion_item_levels.deleted_at') //not deleted
-                                        ->whereNull('product_lines.deleted_at') //not deleted
-                                        ->get();
+      if(isset($alerted_promotion_id_array) && count($alerted_promotion_id_array) > 0){
+        $query = $query->whereNotIn('promotion_item_levels.id',$alerted_promotion_id_array);
+      }
+
+      $query = $query->where('promotion_item_levels.status','=',1);  //active;
+      $query = $query->where('product_lines.status','=',1);  //active;
+
+      $query = $query->whereNull('promotion_item_levels.deleted_at'); //not deleted;
+      $query = $query->whereNull('product_lines.deleted_at'); //not deleted;
+      $result = $query->get();
+      
       return $result;
     }
 

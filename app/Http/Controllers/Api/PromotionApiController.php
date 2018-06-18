@@ -423,7 +423,6 @@ class PromotionApiController extends Controller
               $promotion_item_level_value->cart_item_array_included_in_promotion = $cart_item_array_included_in_promotion;
             }
 
-
             foreach($promotion_item_level_array as $promotion_item_level){
               $cart_items_that_match_promotion = $promotion_item_level->cart_item_array_included_in_promotion;
               //if purchase type is qty
@@ -439,10 +438,11 @@ class PromotionApiController extends Controller
                   //get the promotion info
                   // $promotionObj = $this->repo->getItemLevelPromotionById($item_level_promotion_id);
                   $promotionObj = $promotion_item_level;
+                  break;
                 }
               }
             }
-
+            
             if(isset($promotionObj) && count($promotionObj) > 0) {
               //start checking promo_purchase_type
               if($promotionObj->promo_purchase_type == PromotionConstance::promotion_quantity_value) {
