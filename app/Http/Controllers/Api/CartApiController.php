@@ -26,6 +26,7 @@ use App\Core\Config\ConfigRepository;
 use App\Core\StatusConstance;
 use App\Core\CoreConstance;
 use Illuminate\Support\Facades\DB;
+use App\Api\Promotion\PromotionApiRepository;
 
 class CartApiController extends Controller
 {
@@ -563,11 +564,15 @@ class CartApiController extends Controller
 
           $productApiRepo     = new ProductApiRepository();
           $retailshopApiRepo  = new ShopListApiRepository();
+          $promotionApiRepo   = new PromotionApiRepository();
 
           $params             = $checkServerStatusArray['data'][0];
 
           $returnedObj['data'] = [];
           if (isset($params->cart_list) && count($params->cart_list) > 0) {
+            $retailer_id = $params->cart_list->retailer_id;
+            $retailshop_id = $params->cart_list->retailshop_id;
+
             $result = $this->repo->getCartItems($params->cart_list);
 
             //result is ok and cart has items
@@ -576,6 +581,35 @@ class CartApiController extends Controller
               $whole_order_payable_amount = 0;
 
               $cart_items = $result['cart_items'];
+
+              //get today date to get available item level promotion groups
+              $today_date = date('Y-m-d');
+
+              //array to store promotion item levels
+              $promotion_item_level_array = array();
+
+              // array to store promotion detail information
+              $promotion_item_level_detail_array = array();
+
+              $promotion_item_level_groups = $promotionApiRepo->getAvailablePromotionItemLevelGroups($today_date);
+
+              //get already alerted promotions
+              $raw_already_alerted_promotions = $promotionApiRepo->getAlreadyAlertedPromotions($retailer_id,$retailshop_id);
+
+              $alerted_promotion_id_array = array();
+              foreach($raw_already_alerted_promotions as $raw_already_alerted_promotion){
+                array_push($alerted_promotion_id_array,$raw_already_alerted_promotion->promotion_item_level_id);
+              }
+
+              foreach($promotion_item_level_groups as $promotion_item_level_group) {
+                $group_id = $promotion_item_level_group->id;
+                $promotion_item_levels = $promotionApiRepo->getPromotionItemLevelByGroupId($group_id, $today_date,$alerted_promotion_id_array);
+
+                foreach($promotion_item_levels as $promotion_item_level){
+                  array_push($promotion_item_level_array, $promotion_item_level);
+                }
+              }
+              dd('$promotion_item_level_array',$promotion_item_level_array);
 
               //get details of cart_items
               foreach($cart_items as $raw_cart_item){
@@ -620,6 +654,10 @@ class CartApiController extends Controller
               }
               $data = array();
               //response data array
+
+              //start promotion items
+
+              //end promotion items
 
               // $returnedObj['data']['cart_list']             = $cart_items;
               $returnedObj['data'][0]["cart_list"]             = $cart_items;
