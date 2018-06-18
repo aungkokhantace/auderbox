@@ -20,6 +20,7 @@
             <li><a data-toggle="tab" href="#add_to_cart_api"><b>Add To Cart</b></a></li>
             <li><a data-toggle="tab" href="#update_cart_qty_api"><b>Update Cart Qty</b></a></li>
             <li><a data-toggle="tab" href="#download_cart_list_api"><b>Download Cart List</b></a></li>
+            <li><a data-toggle="tab" href="#download_order_list_api"><b>Download Order List</b></a></li>
             <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
             <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
             <li><a data-toggle="tab" href="#download_item_level_promotion_api"><b>Download Item Level Promotions</b></a></li>
@@ -1792,6 +1793,84 @@
               </pre>
         </div>
         <!-- end download cart list api content -->
+
+        <!-- start download order list api content -->
+        <div id="download_order_list_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_order_list</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "cart_list": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+{
+  "data": [
+    {
+      "order_list": [
+        {
+          "product_id": 8,
+          "product_name": "Sprite",
+          "quantity": 10,
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
+          "maximum_qty": 50,
+          "price": 7200,
+          "payable_amount": 72000
+        },
+        {
+          "product_id": 1,
+          "product_name": "Coca-Cola",
+          "quantity": 10,
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
+          "product_volume_type_name": "250 ml\r\n",
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
+          "maximum_qty": 50,
+          "price": 7200,
+          "payable_amount": 72000
+        },
+        {
+          "product_id": 35,
+          "product_name": "Max2O Pure Drinking Water",
+          "quantity": 2,
+          "product_uom_type_name_eng": "6 bottles\/ case",
+          "product_uom_type_name_mm": "6 bottles\/ case",
+          "product_volume_type_name": "1 L\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 6,
+          "maximum_qty": 0,
+          "price": 0,
+          "payable_amount": 0
+        }
+      ],
+      "total_payable_amount": 144000
+    }
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Order list downloaded successfully !"
+}
+              </pre>
+        </div>
+        <!-- end download order list api content -->
 
         <!-- start clear cart list api content -->
         <div id="clear_cart_list_api" class="tab-pane fade in">
