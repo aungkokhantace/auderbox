@@ -121,4 +121,12 @@ class ProductApiRepository implements ProductApiRepositoryInterface
           return $returnedObj;
       }
     }
+
+    public function getBrandOwnerIdByProductId($product_id){
+      $result = Product::select('products.id as product_id','brand_owners.*')
+                            ->leftJoin('product_group', 'products.product_group_id', '=', 'product_group.id')
+                            ->leftJoin('brand_owners', 'brand_owners.id', '=', 'product_group.brand_owner_id')
+                            ->first();
+      return $result;
+    }
 }

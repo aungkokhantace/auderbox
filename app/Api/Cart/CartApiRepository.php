@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
 use App\Core\CoreConstance;
 use App\Backend\InvoiceSession\InvoiceSession;
+use App\Api\Product\ProductApiRepository;
+use App\Api\ShopList\ShopListApiRepository;
 
 /**
  * Author: Aung Ko Khant
@@ -46,7 +48,7 @@ class CartApiRepository implements CartApiRepositoryInterface
                                 ->where('retailer_id',$retailer_id)
                                 ->where('retailshop_id',$retailshop_id)
                                 ->where('product_id',$product_id)
-                                ->whereDate('created_date','=',$current_date) //check records with today date
+                                // ->whereDate('created_date','=',$current_date) //check records with today date
                                 ->first();
         //end checking whether the product is already in cart list
 
@@ -237,5 +239,110 @@ class CartApiRepository implements CartApiRepositoryInterface
         $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
         return $returnedObj;
       }
+    }
+
+    public function addAdditionalProducts($paramObj){
+        $returnedObj = array();
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+        try{
+          DB::beginTransaction();
+
+          //declare config repository
+          $configRepo         = new ConfigRepository();
+          $productApiRepo     = new ProductApiRepository();
+          $shopListApiRepo    = new ShopListApiRepository();
+
+          $current_date_time  = date('Y-m-d H:i:s');
+          $current_date       = date('Y-m-d');
+
+          $retailer_id    = $paramObj->retailer_id;
+          $retailshop_id  = $paramObj->retailshop_id;
+          $additional_product_array = $paramObj->additional_product_array;
+
+          foreach($additional_product_array as $additional_product){
+
+            $product_id = $additional_product->product_id;
+            $quantity   = $additional_product->qty;
+
+            //start checking whether the product is already in cart list
+            $existing_product = DB::table('invoice_session')
+                                    ->where('retailer_id',$retailer_id)
+                                    ->where('retailshop_id',$retailshop_id)
+                                    ->where('product_id',$product_id)
+                                    ->first();
+            //end checking whether the product is already in cart list
+
+            //if the product is already in cart list, just update the quantity (increase quantity)
+            if(isset($existing_product) && count($existing_product) > 0) {
+              $old_quantity       = $existing_product->quantity;  //original qty
+              $add_more_quantity  = $quantity;  //newly added qty
+              $new_quantity       = $old_quantity + $add_more_quantity; //calculate new qty
+
+              //update quantity (add more quantity)
+              DB::table('invoice_session')
+                ->where('product_id', $product_id)
+                ->update(['quantity' => $new_quantity]);
+            }
+            //if the product doesn't exist in cart list yet, then, create new record in invoice_session table
+            else{
+              //generate id for invoice_session table
+              $date_str                       = date('Ymd',strtotime("now"));
+              $prefix                         = $date_str;
+              $table                          = (new InvoiceSession())->getTable();
+              $col                            = 'id';
+              $offset                         = 1;
+              $pad_length                     = $configRepo->getInvoiceSessionIdPadLength()[0]->value; //number of digits without prefix and date
+              $invoice_session_id = Utility::generate_id($prefix,$table,$col,$offset, $pad_length = 6);
+
+              //get retailshop object
+              $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+              //get retailshop ward id
+              $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+              //get product detail including price
+              $product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
+
+              //if getting product details is not successful, return with error message
+              if($product_detail_result["aceplusStatusCode"] !== ReturnMessage::OK){
+                $returnedObj['aceplusStatusCode']     = $product_detail_result["aceplusStatusCode"];
+                $returnedObj['aceplusStatusMessage']  = $product_detail_result["aceplusStatusMessage"];
+                return \Response::json($returnedObj);
+              }
+
+              //get product_detail obj
+              $product_detail = $product_detail_result["resultObj"];
+
+              $raw_brand_owner = $productApiRepo->getBrandOwnerIdByProductId($product_id);
+              $brand_owner_id = $raw_brand_owner->id;
+
+              //get current timestamp for created_date
+              $current_timestamp = date('Y-m-d H:i:s');
+
+              //insert into db
+              DB::table('invoice_session')->insert([
+                'id'              => $invoice_session_id,
+                'retailer_id'     => $retailer_id,
+                'retailshop_id'   => $retailshop_id,
+                'brand_owner_id'  => $brand_owner_id,
+                'product_id'      => $product_id,
+                'quantity'        => $quantity,
+                'created_date'    => $current_timestamp,
+              ]);
+            }
+          }
+
+          DB::commit();
+
+          $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage'] = "Cart data is successfully saved!";
+
+          return $returnedObj;
+        }
+        catch(\Exception $e){
+          DB::rollback();
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+        }
     }
 }

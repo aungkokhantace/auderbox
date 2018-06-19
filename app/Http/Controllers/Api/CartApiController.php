@@ -915,21 +915,20 @@ class CartApiController extends Controller
     $temp                   = Input::All();
     $inputAll               = json_decode($temp['param_data']);
     $checkServerStatusArray = Check::checkCodes($inputAll);
-    dd('checked');
+
     if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
         $params             = $checkServerStatusArray['data'][0];
 
         $returnedObj['data'] = [];
-        if (isset($params->add_to_cart) && count($params->add_to_cart) > 0) {
-          $result = $this->repo->addToCart($params->add_to_cart);
+        if (isset($params->add_addtional_qty) && count($params->add_addtional_qty) > 0) {
+          $retailer_id = $params->add_addtional_qty->retailer_id;
+          $retailshop_id = $params->add_addtional_qty->retailshop_id;
+
+          $result = $this->repo->addAdditionalProducts($params->add_addtional_qty);
 
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
-            //get cart item count
-            $cart_item_count = Utility::getCartItemCount($params->add_to_cart->retailer_id);
-
             $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
             $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
-            $returnedObj['cart_item_count']       = $cart_item_count;
             return \Response::json($returnedObj);
           }
           else{

@@ -24,6 +24,7 @@
             <li><a data-toggle="tab" href="#clear_cart_list_api"><b>Clear Cart List</b></a></li>
             <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
             <li><a data-toggle="tab" href="#download_item_level_promotion_api"><b>Download Item Level Promotions</b></a></li>
+            <li><a data-toggle="tab" href="#add_additional_qty_api"><b>Add additional qty for promotion</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -2161,21 +2162,51 @@
         <!-- end download item level promotion api content -->
 
         <!-- start add additional_qty for promotion api content -->
-        <div id="download_item_level_promotion_api" class="tab-pane fade in">
+        <div id="add_additional_qty_api" class="tab-pane fade in">
             <h3>URL</h3>
-            <p><b>http://localhost:8000/api/download_item_level_promotions</b></p>
+            <p><b>http://localhost:8000/api/add_additional_qty</b></p>
             <hr>
 
             <h3>Request</h3>
             <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "add_addtional_qty": {
+        "retailer_id": 1,
+        "retailshop_id": 1,
+        "additional_product_array": [
+          {
+            "product_id": 1,
+            "qty": 5
+          },
+          {
+            "product_id": 2,
+            "qty": 5
+          },
+          {
+            "product_id": 3,
+            "qty": 5
+          }
+        ]
+      }
+    }
+  ]
+}
+            </pre>
 
-              </pre>
+            <hr>
+            <h3>Response</h3>
+            <pre>
+{
+  "data": [
 
-              <hr>
-              <h3>Response</h3>
-              <pre>
-
-              </pre>
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Cart data is successfully saved!"
+}
+            </pre>
         </div>
         <!-- end add additional_qty for promotion api content -->
       </div>
