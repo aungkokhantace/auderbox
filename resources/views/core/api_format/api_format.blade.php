@@ -1972,7 +1972,7 @@
         "product_line_id": 1,
         "code": "00001",
         "name": "Item Level Promotion 1 (quantity)",
-        "promotion_image": "\/images\/product_images\/Max2O Pure Drinking Water (1 L) x 6.png",
+        "promotion_image": "\/images\/promotion_images\/auderbox_promotion_image.png",
         "promo_purchase_type": 1,
         "promo_present_type": 1,
         "from_date": "2018-06-01",
@@ -1981,7 +1981,7 @@
         "purchase_qty": 5,
         "promo_percentage": 0,
         "promo_amt": 0,
-        "max_count_apply": 0,
+        "max_count_apply": 50,
         "promo_allow_max_count": 10,
         "remark": null,
         "status": 1,
@@ -2003,54 +2003,139 @@
         ],
         "cart_item_array_included_in_promotion": [
           {
-            "id": "20180614000001",
+            "id": "20180618000002",
             "retailer_id": 1,
             "retailshop_id": 1,
             "brand_owner_id": 1,
-            "product_id": 2,
-            "quantity": 37,
-            "created_date": "2018-06-14 10:07:13"
+            "product_id": 1,
+            "quantity": 1,
+            "created_date": "2018-06-18 14:57:54"
           }
         ],
         "promo_purchase_type_text": "Quantity Promotion",
         "promo_present_type_text": "Quantity Promotion",
-        "current_purchase_qty": 37,
-        "current_purchase_amt": 266400
+        "current_purchase_qty": 1,
+        "current_purchase_amt": 7200
       },
       "product_array": [
         {
+          "id": 1,
+          "name": "Coca-Cola",
+          "image": "\/images\/product_images\/Coca Cola (250 ml) x 24.png",
+          "sku": "COCA-COLA-000001",
+          "remark": "A product of Coca-Cola Family",
+          "price": 7200,
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
+          "product_volume_type_name": "250 ml\r\n",
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 1
+        },
+        {
           "id": 2,
-          "product_group_id": 2,
-          "product_uom_type_id": 1,
+          "name": "Coca-Cola",
           "image": "\/images\/product_images\/Coca Cola (330 ml) x 24.png",
           "sku": "COCA-COLA-000002",
           "remark": "A product of Coca-Cola Family",
-          "status": 1,
-          "created_by": 1,
-          "updated_by": 1,
-          "deleted_by": null,
-          "created_at": null,
-          "updated_at": null,
-          "deleted_at": null,
           "price": 7200,
-          "name": "Coca-Cola",
           "product_uom_type_name_eng": "24 cans\/ case",
           "product_uom_type_name_mm": "24 cans\/ case",
           "product_volume_type_name": "330 ml",
           "product_container_type_name": "can",
           "total_uom_quantity": 24,
-          "product_line_id": 1,
-          "product_line_name": "Coca-Cola",
           "minimum_order_qty": 1,
           "maximum_order_qty": 50,
-          "purchase_qty": 37
+          "purchase_qty": 0
+        },
+        {
+          "id": 3,
+          "name": "Coca-Cola",
+          "image": "\/images\/product_images\/Coca Cola (1.5 L) x 6.png",
+          "sku": "COCA-COLA-000003",
+          "remark": "A product of Coca-Cola Family",
+          "price": 4800,
+          "product_uom_type_name_eng": "6 bottles\/ case",
+          "product_uom_type_name_mm": "6 bottles\/ case",
+          "product_volume_type_name": "1.5 L\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 6,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 0
+        },
+        {
+          "id": 4,
+          "name": "Coca-Cola",
+          "image": "\/images\/product_images\/Coca Cola (350 ml) x 12.png",
+          "sku": "COCA-COLA-000004",
+          "remark": "A product of Coca-Cola Family",
+          "price": 3600,
+          "product_uom_type_name_eng": "12 bottles\/ case",
+          "product_uom_type_name_mm": "12 bottles\/ case",
+          "product_volume_type_name": "350 ml\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 12,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 0
+        },
+        {
+          "id": 5,
+          "name": "Coca-Cola",
+          "image": "\/images\/product_images\/Coca Cola (600 ml) x 12.png",
+          "sku": "COCA-COLA-000005",
+          "remark": "A product of Coca-Cola Family",
+          "price": 6000,
+          "product_uom_type_name_eng": "12 bottles\/ case",
+          "product_uom_type_name_mm": "12 bottles\/ case",
+          "product_volume_type_name": "600 ml\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 12,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 0
+        },
+        {
+          "id": 6,
+          "name": "Coca-Cola Zero",
+          "image": "\/images\/product_images\/Coca Cola Zero (330 ml) x 24.png",
+          "sku": "COCA-COLA-000006",
+          "remark": "A product of Coca-Cola Family",
+          "price": 7200,
+          "product_uom_type_name_eng": "24 cans\/ case",
+          "product_uom_type_name_mm": "24 cans\/ case",
+          "product_volume_type_name": "330 ml",
+          "product_container_type_name": "can",
+          "total_uom_quantity": 24,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 0
+        },
+        {
+          "id": 7,
+          "name": "Coca-Cola Zero",
+          "image": "\/images\/product_images\/Coca Cola Zero (1.5 L) x 6.png",
+          "sku": "COCA-COLA-000007",
+          "remark": "A product of Coca-Cola Family",
+          "price": 4800,
+          "product_uom_type_name_eng": "6 bottles\/ case",
+          "product_uom_type_name_mm": "6 bottles\/ case",
+          "product_volume_type_name": "1.5 L\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 6,
+          "minimum_order_qty": 1,
+          "maximum_order_qty": 50,
+          "purchase_qty": 0
         }
       ],
       "promo_product_array": [
         {
-          "id": 2,
-          "promotion_item_level_id": 2,
-          "promo_product_id": 36,
+          "id": 1,
+          "promotion_item_level_id": 1,
+          "promo_product_id": 35,
           "promo_qty": 1,
           "status": 1,
           "created_by": 1,
@@ -2060,12 +2145,12 @@
           "updated_at": null,
           "deleted_at": null,
           "promo_product_name": "Max2O Pure Drinking Water",
-          "received_promo_qty": 7
+          "received_promo_qty": 0
         }
       ],
-      "additional_qty": 3,
+      "additional_qty": 4,
       "additional_amt": 0,
-      "current_purchase_qty": 37
+      "current_purchase_qty": 1
     }
   ],
   "aceplusStatusCode": 200,
@@ -2074,6 +2159,25 @@
               </pre>
         </div>
         <!-- end download item level promotion api content -->
+
+        <!-- start add additional_qty for promotion api content -->
+        <div id="download_item_level_promotion_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_item_level_promotions</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+
+              </pre>
+
+              <hr>
+              <h3>Response</h3>
+              <pre>
+
+              </pre>
+        </div>
+        <!-- end add additional_qty for promotion api content -->
       </div>
     </div>
 </div>

@@ -141,4 +141,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //download item level promotions api
         Route::post('download_item_level_promotions', array('as'=>'download_item_level_promotions','uses'=>'Api\PromotionApiController@downloadItemLevelPromotions'));
+
+        //add additional qty for promotion api
+        Route::post('add_additional_qty', array('as'=>'add_additional_qty','uses'=>'Api\CartApiController@addAdditionalQty'));
     });
