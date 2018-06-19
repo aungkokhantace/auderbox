@@ -561,7 +561,7 @@ class PromotionApiController extends Controller
 
               // dd('$purchased_products_array',$purchased_products_array);
 
-              /*
+
               //save the received promotion to invoice_session_show_noti table
               $promotion_item_level_id = $promotionObj->id;
 
@@ -573,7 +573,7 @@ class PromotionApiController extends Controller
                 $returnedObj['aceplusStatusMessage']  = "Promotion cannot be marked as already shown!";
                 return \Response::json($returnedObj);
               }
-              */
+              
 
               //get all products included in current promotion
               $cart_item_id_array_included_in_promotion = array();
