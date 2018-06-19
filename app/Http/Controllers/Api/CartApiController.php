@@ -230,6 +230,7 @@ class CartApiController extends Controller
 
         $productApiRepo     = new ProductApiRepository();
         $retailshopApiRepo  = new ShopListApiRepository();
+        $invoiceApiRepo     = new InvoiceApiRepository();
 
         $params             = $checkServerStatusArray['data'][0];
 
@@ -243,6 +244,17 @@ class CartApiController extends Controller
           $result = $this->repo->clearCartItems($retailer_id,$retailshop_id);
 
           if($result['aceplusStatusCode'] == ReturnMessage::OK){
+            //start promotion_show_noti clear
+            //start cart clear
+            $invoice_session_show_noti_clear_result = $invoiceApiRepo->clearInvoiceSessionShowNoti($retailer_id,$retailshop_id);
+
+            if($invoice_session_show_noti_clear_result["aceplusStatusCode"] !== ReturnMessage::OK){
+              DB::rollback();
+              $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
+              $returnedObj['aceplusStatusMessage']  = $invoice_session_show_noti_clear_result["aceplusStatusMessage"];
+            }
+            //end promotion_show_noti clear
+
             $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
             $returnedObj['aceplusStatusMessage'] = $result['aceplusStatusMessage'];
             return \Response::json($returnedObj);

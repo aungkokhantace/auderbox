@@ -306,7 +306,6 @@ class PromotionApiController extends Controller
   }
 
   public function downloadItemLevelPromotions(){
-
       $temp                   = Input::All();
       $inputAll               = json_decode($temp['param_data']);
       $checkServerStatusArray = Check::checkCodes($inputAll);
@@ -433,16 +432,16 @@ class PromotionApiController extends Controller
                 }
 
                 //if cart_purchase_qty is more than promo_purchase_qty
-                if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
+                // if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
                   $item_level_promotion_id = $promotion_item_level->id;
                   //get the promotion info
                   // $promotionObj = $this->repo->getItemLevelPromotionById($item_level_promotion_id);
                   $promotionObj = $promotion_item_level;
                   break;
-                }
+                // }
               }
             }
-            
+            // dd('promotion_product_id_array',$promotionObj->promotion_product_id_array);
             if(isset($promotionObj) && count($promotionObj) > 0) {
               //start checking promo_purchase_type
               if($promotionObj->promo_purchase_type == PromotionConstance::promotion_quantity_value) {
@@ -560,6 +559,9 @@ class PromotionApiController extends Controller
                 }
               }
 
+              // dd('$purchased_products_array',$purchased_products_array);
+
+              /*
               //save the received promotion to invoice_session_show_noti table
               $promotion_item_level_id = $promotionObj->id;
 
@@ -571,6 +573,41 @@ class PromotionApiController extends Controller
                 $returnedObj['aceplusStatusMessage']  = "Promotion cannot be marked as already shown!";
                 return \Response::json($returnedObj);
               }
+              */
+
+              //get all products included in current promotion
+              $cart_item_id_array_included_in_promotion = array();
+              foreach($cart_item_array_included_in_promotion as $cart_item_obj_in_promotion){
+                array_push($cart_item_id_array_included_in_promotion,$cart_item_obj_in_promotion->product_id);
+              }
+
+              //here is all product ids in current promotion
+              $all_product_ids_in_promotion = $promotionObj->promotion_product_id_array;
+
+              $temp_product_ids_excluded_from_promotion = array_diff($all_product_ids_in_promotion,$cart_item_id_array_included_in_promotion);
+
+              //reindex excluded array
+              $product_ids_excluded_from_promotion = array_values($temp_product_ids_excluded_from_promotion);
+
+              // dd('excluded',$product_ids_excluded_from_promotion);
+              // dd('promotionObj',$promotionObj);
+
+              //get product detail including price
+              // $product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
+
+              foreach($product_ids_excluded_from_promotion as $excluded_product_id){
+                // dd('$excluded_product_id',$excluded_product_id);
+                $excluded_product_detail_result = $productApiRepo->getProductDetailByID($excluded_product_id,$retailshop_address_ward_id);
+                // dd('excluded_details',$excluded_product_detail_result);
+                //if getting product details is not successful, return with error message
+                if($excluded_product_detail_result["aceplusStatusCode"] !== ReturnMessage::OK){
+                  $returnedObj['aceplusStatusCode']     = $excluded_product_detail_result["aceplusStatusCode"];
+                  $returnedObj['aceplusStatusMessage']  = $excluded_product_detail_result["aceplusStatusMessage"];
+                  return \Response::json($returnedObj);
+                }
+
+              }
+
 
               //everything is ok
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
