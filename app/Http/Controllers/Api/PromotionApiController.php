@@ -441,7 +441,7 @@ class PromotionApiController extends Controller
                 // }
               }
             }
-            // dd('promotion_product_id_array',$promotionObj->promotion_product_id_array);
+
             if(isset($promotionObj) && count($promotionObj) > 0) {
               //start checking promo_purchase_type
               if($promotionObj->promo_purchase_type == PromotionConstance::promotion_quantity_value) {
@@ -559,9 +559,6 @@ class PromotionApiController extends Controller
                 }
               }
 
-              // dd('$purchased_products_array',$purchased_products_array);
-
-
               //save the received promotion to invoice_session_show_noti table
               $promotion_item_level_id = $promotionObj->id;
 
@@ -573,7 +570,6 @@ class PromotionApiController extends Controller
                 $returnedObj['aceplusStatusMessage']  = "Promotion cannot be marked as already shown!";
                 return \Response::json($returnedObj);
               }
-              
 
               //get all products included in current promotion
               $cart_item_id_array_included_in_promotion = array();
@@ -589,16 +585,13 @@ class PromotionApiController extends Controller
               //reindex excluded array
               $product_ids_excluded_from_promotion = array_values($temp_product_ids_excluded_from_promotion);
 
-              // dd('excluded',$product_ids_excluded_from_promotion);
-              // dd('promotionObj',$promotionObj);
-
               //get product detail including price
               // $product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
 
+              //array to store excluded product objs
+              $excluded_product_obj_array = array();
               foreach($product_ids_excluded_from_promotion as $excluded_product_id){
-                // dd('$excluded_product_id',$excluded_product_id);
                 $excluded_product_detail_result = $productApiRepo->getProductDetailByID($excluded_product_id,$retailshop_address_ward_id);
-                // dd('excluded_details',$excluded_product_detail_result);
                 //if getting product details is not successful, return with error message
                 if($excluded_product_detail_result["aceplusStatusCode"] !== ReturnMessage::OK){
                   $returnedObj['aceplusStatusCode']     = $excluded_product_detail_result["aceplusStatusCode"];
@@ -606,15 +599,59 @@ class PromotionApiController extends Controller
                   return \Response::json($returnedObj);
                 }
 
+                $excluded_product_detail = $excluded_product_detail_result['resultObj'];
+                array_push($excluded_product_obj_array,$excluded_product_detail);
               }
 
+              //array to store both purchased_products and products excluded from promotion
+              $total_product_array = array();
+              $total_product_array_index = 0;
+
+              // start binding all products(both purchased and excluded) to $total_product_array
+              foreach($purchased_products_array as $purchased_product){
+                $total_product_array[$total_product_array_index]['id']                          = $purchased_product->id;
+                $total_product_array[$total_product_array_index]['name']                        = $purchased_product->name;
+                $total_product_array[$total_product_array_index]['image']                       = $purchased_product->image;
+                $total_product_array[$total_product_array_index]['sku']                         = $purchased_product->sku;
+                $total_product_array[$total_product_array_index]['remark']                      = $purchased_product->remark;
+                $total_product_array[$total_product_array_index]['price']                       = $purchased_product->price;
+                $total_product_array[$total_product_array_index]['product_uom_type_name_eng']   = $purchased_product->product_uom_type_name_eng;
+                $total_product_array[$total_product_array_index]['product_uom_type_name_mm']    = $purchased_product->product_uom_type_name_mm;
+                $total_product_array[$total_product_array_index]['product_volume_type_name']    = $purchased_product->product_volume_type_name;
+                $total_product_array[$total_product_array_index]['product_container_type_name'] = $purchased_product->product_container_type_name;
+                $total_product_array[$total_product_array_index]['total_uom_quantity']          = $purchased_product->total_uom_quantity;
+                $total_product_array[$total_product_array_index]['minimum_order_qty']           = $purchased_product->minimum_order_qty;
+                $total_product_array[$total_product_array_index]['maximum_order_qty']           = $purchased_product->maximum_order_qty;
+                $total_product_array[$total_product_array_index]['purchase_qty']                = $purchased_product->purchase_qty;
+                $total_product_array_index++;
+              }
+
+              foreach($excluded_product_obj_array as $excluded_product){
+                $total_product_array[$total_product_array_index]['id']                          = $excluded_product->id;
+                $total_product_array[$total_product_array_index]['name']                        = $excluded_product->name;
+                $total_product_array[$total_product_array_index]['image']                       = $excluded_product->image;
+                $total_product_array[$total_product_array_index]['sku']                         = $excluded_product->sku;
+                $total_product_array[$total_product_array_index]['remark']                      = $excluded_product->remark;
+                $total_product_array[$total_product_array_index]['price']                       = $excluded_product->price;
+                $total_product_array[$total_product_array_index]['product_uom_type_name_eng']   = $excluded_product->product_uom_type_name_eng;
+                $total_product_array[$total_product_array_index]['product_uom_type_name_mm']    = $excluded_product->product_uom_type_name_mm;
+                $total_product_array[$total_product_array_index]['product_volume_type_name']    = $excluded_product->product_volume_type_name;
+                $total_product_array[$total_product_array_index]['product_container_type_name'] = $excluded_product->product_container_type_name;
+                $total_product_array[$total_product_array_index]['total_uom_quantity']          = $excluded_product->total_uom_quantity;
+                $total_product_array[$total_product_array_index]['minimum_order_qty']           = 1;
+                $total_product_array[$total_product_array_index]['maximum_order_qty']           = 50;
+                $total_product_array[$total_product_array_index]['purchase_qty']                = 0;
+                $total_product_array_index++;
+              }
+              // end binding all products(both purchased and excluded) to $total_product_array
 
               //everything is ok
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']  = "Downloaded Promotion Data Successfully !";
               $returnedObj['data'] = array();
               $returnedObj['data'][0]["received_promotion"]   = $promotionObj;
-              $returnedObj['data'][0]["product_array"]        = $purchased_products_array;
+              // $returnedObj['data'][0]["product_array"]        = $purchased_products_array;
+              $returnedObj['data'][0]["product_array"]        = $total_product_array;
               $returnedObj['data'][0]["promo_product_array"]  = $promotion_gifts;
               $returnedObj['data'][0]["additional_qty"]       = $additional_qty;
               $returnedObj['data'][0]["additional_amt"]       = $additional_amt;
