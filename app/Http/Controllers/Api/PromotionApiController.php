@@ -19,6 +19,7 @@ use App\Api\Product\ProductApiRepository;
 use App\Api\ShopList\ShopListApiRepository;
 use App\Api\Promotion\PromotionApiRepositoryInterface;
 use App\Core\PromotionConstance;
+use App\Core\Config\ConfigRepository;
 
 class PromotionApiController extends Controller
 {
@@ -314,6 +315,7 @@ class PromotionApiController extends Controller
           $cartApiRepo = new CartApiRepository();
           $shopListApiRepo = new ShopListApiRepository();
           $productApiRepo = new ProductApiRepository();
+          $configRepo = new ConfigRepository();
 
           $params             = $checkServerStatusArray['data'][0];
 
@@ -422,6 +424,11 @@ class PromotionApiController extends Controller
               $promotion_item_level_value->cart_item_array_included_in_promotion = $cart_item_array_included_in_promotion;
             }
 
+            //get alert flags for promotion qty
+            $show_greater_qty_than_promotion_flag   = $configRepo->getAlertFlagForPromoQty('SHOW_GREATER_QTY_THAN_PROMOTION');
+            $show_less_qty_than_promotion_flag      = $configRepo->getAlertFlagForPromoQty('SHOW_LESS_QTY_THAN_PROMOTION');
+            $show_equal_qty_to_promotion_flag       = $configRepo->getAlertFlagForPromoQty('SHOW_EQUAL_QTY_TO_PROMOTION');
+
             foreach($promotion_item_level_array as $promotion_item_level){
               $cart_items_that_match_promotion = $promotion_item_level->cart_item_array_included_in_promotion;
               //if purchase type is qty
@@ -431,13 +438,31 @@ class PromotionApiController extends Controller
                   $cart_purchase_qty_for_promo += $cart_item_that_match_promotion->quantity;
                 }
 
+                $item_level_promotion_id = $promotion_item_level->id;
+
                 //if cart_purchase_qty is more than promo_purchase_qty
-                // if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
-                  $item_level_promotion_id = $promotion_item_level->id;
-                  //get the promotion info
-                  // $promotionObj = $this->repo->getItemLevelPromotionById($item_level_promotion_id);
+                if(($show_greater_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo > $promotion_item_level->purchase_qty)) {
                   $promotionObj = $promotion_item_level;
                   break;
+                }
+
+                //if cart_purchase_qty is less than promo_purchase_qty
+                if(($show_less_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo < $promotion_item_level->purchase_qty)) {
+                  $promotionObj = $promotion_item_level;
+                  break;
+                }
+
+                //if cart_purchase_qty is equal to promo_purchase_qty
+                if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo = $promotion_item_level->purchase_qty)){
+                  $promotionObj = $promotion_item_level;
+                  break;
+                }
+                // if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
+                  // $item_level_promotion_id = $promotion_item_level->id;
+                  // //get the promotion info
+                  // // $promotionObj = $this->repo->getItemLevelPromotionById($item_level_promotion_id);
+                  // $promotionObj = $promotion_item_level;
+                  // break;
                 // }
               }
             }

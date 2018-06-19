@@ -100,4 +100,14 @@ class ConfigRepository implements ConfigRepositoryInterface
         $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'INVOICE_SESSION_ID_PAD_LENGTH'");
         return $configs;
     }
+
+    public function getAlertFlagForPromoQty($param_code)
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = '$param_code'");
+        if(isset($configs) && count($configs)>0){
+          return $configs[0]->value;
+        }
+        return 1;
+    }
 }

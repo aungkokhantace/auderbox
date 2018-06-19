@@ -28,6 +28,9 @@ class Default_ConfigSeeder extends Seeder
             ['code'=>'INVOICE_DETAIL_HISTORY_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'3','description'=>'Number of digits in invoice detail history id without prefix'],
             ['code'=>'INVOICE_SESSION_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'6','description'=>'Number of digits in invoice session id without prefix'],
             ['code'=>'TAX_PERCENTAGE', 'type'=>'SETTING', 'value'=>'0','description'=>'Tax Percentage'],
+            ['code'=>'SHOW_EQUAL_QTY_TO_PROMOTION', 'type'=>'SETTING', 'value'=>'0','description'=>'Alert when purchase qty is equal to promotion qty'],
+            ['code'=>'SHOW_GREATER_QTY_THAN_PROMOTION', 'type'=>'SETTING', 'value'=>'1','description'=>'Alert when purchase qty is greater than promotion qty'],
+            ['code'=>'SHOW_LESS_QTY_THAN_PROMOTION', 'type'=>'SETTING', 'value'=>'1','description'=>'Alert when purchase qty is less than promotion qty'],
 
         );
 
