@@ -437,6 +437,7 @@ class PromotionApiController extends Controller
 
             foreach($promotion_item_level_array as $promotion_item_level){
               $cart_items_that_match_promotion = $promotion_item_level->cart_item_array_included_in_promotion;
+
               //if purchase type is qty
               if($promotion_item_level->promo_purchase_type == PromotionConstance::promotion_quantity_value){
                 $cart_purchase_qty_for_promo = 0;
@@ -446,23 +447,27 @@ class PromotionApiController extends Controller
 
                 $item_level_promotion_id = $promotion_item_level->id;
 
-                //if cart_purchase_qty is more than promo_purchase_qty
-                if(($show_greater_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo > $promotion_item_level->purchase_qty)) {
-                  $promotionObj = $promotion_item_level;
-                  break;
+                //*****get promotion obj only if there are cart items that match the promotion
+                if(count($promotion_item_level->cart_item_array_included_in_promotion) > 0) {
+                  //if cart_purchase_qty is more than promo_purchase_qty
+                  if(($show_greater_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo > $promotion_item_level->purchase_qty)) {
+                    $promotionObj = $promotion_item_level;
+                    break;
+                  }
+
+                  //if cart_purchase_qty is less than promo_purchase_qty
+                  if(($show_less_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo < $promotion_item_level->purchase_qty)) {
+                    $promotionObj = $promotion_item_level;
+                    break;
+                  }
+
+                  //if cart_purchase_qty is equal to promo_purchase_qty
+                  if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo = $promotion_item_level->purchase_qty)){
+                    $promotionObj = $promotion_item_level;
+                    break;
+                  }
                 }
 
-                //if cart_purchase_qty is less than promo_purchase_qty
-                if(($show_less_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo < $promotion_item_level->purchase_qty)) {
-                  $promotionObj = $promotion_item_level;
-                  break;
-                }
-
-                //if cart_purchase_qty is equal to promo_purchase_qty
-                if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo = $promotion_item_level->purchase_qty)){
-                  $promotionObj = $promotion_item_level;
-                  break;
-                }
                 // if($cart_purchase_qty_for_promo >= $promotion_item_level->purchase_qty){
                   // $item_level_promotion_id = $promotion_item_level->id;
                   // //get the promotion info
@@ -604,10 +609,11 @@ class PromotionApiController extends Controller
 
               //get all products included in current promotion
               $cart_item_id_array_included_in_promotion = array();
-              foreach($cart_item_array_included_in_promotion as $cart_item_obj_in_promotion){
+              // foreach($cart_item_array_included_in_promotion as $cart_item_obj_in_promotion){
+              foreach($promotionObj->cart_item_array_included_in_promotion as $cart_item_obj_in_promotion){
                 array_push($cart_item_id_array_included_in_promotion,$cart_item_obj_in_promotion->product_id);
               }
-
+              
               //here is all product ids in current promotion
               $all_product_ids_in_promotion = $promotionObj->promotion_product_id_array;
 
@@ -618,7 +624,6 @@ class PromotionApiController extends Controller
 
               //get product detail including price
               // $product_detail_result = $productApiRepo->getProductDetailByID($product_id,$retailshop_address_ward_id);
-
               //array to store excluded product objs
               $excluded_product_obj_array = array();
               foreach($product_ids_excluded_from_promotion as $excluded_product_id){
