@@ -25,6 +25,7 @@
             <li><a data-toggle="tab" href="#checkout_cart_api"><b>Checkout Cart</b></a></li>
             <li><a data-toggle="tab" href="#download_item_level_promotion_api"><b>Download Item Level Promotions</b></a></li>
             <li><a data-toggle="tab" href="#add_additional_qty_api"><b>Add additional qty for promotion</b></a></li>
+            <li><a data-toggle="tab" href="#download_retailer_total_points"><b>Download retailer total points</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -2209,6 +2210,42 @@
             </pre>
         </div>
         <!-- end add additional_qty for promotion api content -->
+
+        <!-- start download_retailer_total_points api content -->
+        <div id="download_retailer_total_points" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_retailer_total_points</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "retailer_total_points": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+            </pre>
+
+            <hr>
+            <h3>Response</h3>
+            <pre>
+{
+  "data": [
+
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Point is successfully saved!",
+  "retailer_total_points": 150
+}
+            </pre>
+        </div>
+        <!-- end download_retailer_total_points api content -->
       </div>
     </div>
 </div>
