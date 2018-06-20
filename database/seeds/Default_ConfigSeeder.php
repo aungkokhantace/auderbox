@@ -24,6 +24,7 @@ class Default_ConfigSeeder extends Seeder
             ['code'=>'SETTING_SITE_ACTIVATION_KEY', 'type'=>'SETTING', 'value'=>'1234567','description'=>'Site Activation Key'],
             ['code'=>'INVOICE_ID_PREFIX', 'type'=>'SETTING', 'value'=>'INV','description'=>'Default Prefix Id'],
             ['code'=>'INVOICE_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'6','description'=>'Number of digits in invoice id without prefix'],
+            ['code'=>'DEFAULT_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'6','description'=>'Number of digits in default id without prefix'],
             ['code'=>'INVOICE_DETAIL_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'3','description'=>'Number of digits in invoice detail id without prefix'],
             ['code'=>'INVOICE_DETAIL_HISTORY_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'3','description'=>'Number of digits in invoice detail history id without prefix'],
             ['code'=>'INVOICE_SESSION_ID_PAD_LENGTH', 'type'=>'SETTING', 'value'=>'6','description'=>'Number of digits in invoice session id without prefix'],

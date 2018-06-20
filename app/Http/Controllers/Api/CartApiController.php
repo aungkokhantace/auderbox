@@ -190,8 +190,12 @@ class CartApiController extends Controller
             $returnedObj['data'][0]['total_payable_amount']  = $whole_order_payable_amount;
 
 
+            //get cart item count
+            $cart_item_count = Utility::getCartItemCount($params->cart_list->retailer_id);
+
             $returnedObj['aceplusStatusCode']     = $result['aceplusStatusCode'];
             $returnedObj['aceplusStatusMessage']  = $result['aceplusStatusMessage'];
+            $returnedObj['cart_item_count']       = $cart_item_count;
 
             return \Response::json($returnedObj);
           }

@@ -110,4 +110,14 @@ class ConfigRepository implements ConfigRepositoryInterface
         }
         return 1;
     }
+
+    public function getDefaultIdPadLength()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $configs  = DB::select("SELECT * FROM $tbConfig WHERE code = 'DEFAULT_ID_PAD_LENGTH'");
+        if(isset($configs) && count($configs)>0){
+          return $configs[0]->value;
+        }
+        return 6;
+    }
 }

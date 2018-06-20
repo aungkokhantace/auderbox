@@ -19,6 +19,11 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Core\Config\ConfigRepository;
 use App\Backend\InvoiceDetailHistory\InvoiceDetailHistory;
 use App\Core\CoreConstance;
+use App\Backend\Point\PointRepository;
+use App\Backend\Point\RetailerPoint;
+use Illuminate\Support\Facades\DB;
+use App\Log\LogCustom;
+use App\Backend\RetailerPointLog\RetailerPointLog;
 
 class InvoiceReportController extends Controller
 {
@@ -154,18 +159,149 @@ class InvoiceReportController extends Controller
   public function deliverInvoice(){
     $invoice_id = Input::get('delivered_invoice_id');
     $paramObj = $this->repo->getObjByID($invoice_id);
+    try{
+      DB::beginTransaction();
+      //declare repo
+      $pointRepo    = new PointRepository();
+      $configRepo   = new ConfigRepository();
 
-    //change to delivered status
-    $paramObj->status = StatusConstance::status_deliver_value;
+      //change to delivered status
+      $paramObj->status = StatusConstance::status_deliver_value;
 
-    $result = $this->repo->deliver($paramObj);
+      $result = $this->repo->deliver($paramObj);
 
-    if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
-      return redirect()->action('Backend\InvoiceReportController@index')
-          ->withMessage(FormatGenerator::message('Success', 'Invoice delivered ...'));
-    } else {
-      return redirect()->action('Backend\InvoiceReportController@index')
-          ->withMessage(FormatGenerator::message('Fail', 'Invoice is not delivered ...'));
+      if ($result['aceplusStatusCode'] == ReturnMessage::OK) {
+        //invoice and invoice_detail are delivered
+        //start points
+        //start retailer point
+        $total_payable_amt = $paramObj->total_payable_amt;
+        $today_date = date('Y-m-d');
+        $current_timestamp = date('Y-m-d H:i:s');
+
+        //get point configuration
+        $points_config = $pointRepo->getPromotionPoint();
+
+        if($points_config->with_expiration == 1){
+          $life_time_day_count = $points_config->point_life_time_day_count;
+          $promo_amount = $points_config->promo_amount;
+          $promo_point = $points_config->promo_point;
+        }
+        else{
+          $promo_amount = $points_config->promo_amount;
+          $promo_point = $points_config->promo_point;
+        }
+
+        //calculate received points
+        $received_points = intval(floor($promo_point * ($total_payable_amt / $promo_amount)));
+
+        //start retailer_point_id generation
+        $date_str                       = date('Ymd',strtotime("now"));
+        $prefix                         = $date_str;
+        $table                          = (new Invoice())->getTable();
+        $col                            = 'id';
+        $offset                         = 1;
+        $pad_length                     = $configRepo->getDefaultIdPadLength(); //number of digits without prefix and date
+        //generate id
+        $retailer_point_id              = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
+        //end retailer_point_id generation
+
+        $retailer_id        = $paramObj->retailer_id;
+        $retailshop_id      = $paramObj->retailshop_id;
+        $brand_owner_id     = $paramObj->brand_owner_id;
+        $invoice_id         = $paramObj->id;
+        $used_points        = 0;
+        $available_points   = $received_points;
+        $total_points       = $received_points;
+        $with_expiration    = $points_config->with_expiration;
+        if($with_expiration == 1){
+          //calculate expiry date
+        } else{
+          $expiry_date      = null;  //no expiry date
+        }
+        $remark             = null;
+        $status             = 1; //active
+
+        $pointObj                   = new RetailerPoint();
+        $pointObj->id               = $retailer_point_id;
+        $pointObj->retailer_id      = $retailer_id;
+        $pointObj->retailshop_id    = $retailshop_id;
+        $pointObj->brand_owner_id   = $brand_owner_id;
+        $pointObj->invoice_id       = $invoice_id;
+        $pointObj->used_points      = $used_points;
+        $pointObj->available_points = $available_points;
+        $pointObj->total_points     = $total_points;
+        $pointObj->with_expiration  = $with_expiration;
+        $pointObj->expiry_date      = $expiry_date;
+        $pointObj->remark           = $remark;
+        $pointObj->status           = $status;
+
+        $point_result = $pointRepo->saveRetailerPoints($pointObj);
+
+        if($point_result['aceplusStatusCode'] !== ReturnMessage::OK){
+          //retailer point is not successfully saved, return with error
+          DB::rollBack();
+          return redirect()->action('Backend\InvoiceReportController@index')
+              ->withMessage(FormatGenerator::message('Fail', 'Points are not saved...'));
+        }
+        //end retailer point
+
+        // retailer point is successfully saved
+        // start saving retailer point log
+        //start retailer_point_id generation
+        $date_str                       = date('Ymd',strtotime("now"));
+        $prefix                         = $date_str;
+        $table                          = (new Invoice())->getTable();
+        $col                            = 'id';
+        $offset                         = 1;
+        $pad_length                     = $configRepo->getDefaultIdPadLength(); //number of digits without prefix and date
+        //generate id
+        $retailer_point_log_id          = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
+        //end retailer_point_id generation
+        // dd('paramObj',$pointObj);
+        $created_date       = $current_timestamp;
+        $points             = $received_points;
+        $retailer_reward_id = null;  //$retailer_reward_id is always null for status = 1 (Deliver type)
+        $status             = 1;  //type is 1 (Deliver), or 0 (Reward Claim)
+
+        //create log obj
+        $pointLogObj                  = new RetailerPointLog();
+
+        $pointLogObj->id                 = $retailer_point_log_id;
+        $pointLogObj->retailer_point_id  = $retailer_point_id;
+        $pointLogObj->created_date       = $retailshop_id;
+        $pointLogObj->points             = $points;
+        $pointLogObj->retailer_reward_id = $retailer_reward_id;
+        $pointLogObj->status             = $status;
+
+        $point_log_result = $pointRepo->saveRetailerPointLog($pointLogObj);
+
+        if($point_log_result['aceplusStatusCode'] !== ReturnMessage::OK){
+          //retailer point is not successfully saved, return with error
+          DB::rollBack();
+          return redirect()->action('Backend\InvoiceReportController@index')
+              ->withMessage(FormatGenerator::message('Fail', 'Point Log is not saved ...'));
+        }
+        //end saving retailer point log
+        //end points
+        DB::commit();
+
+        return redirect()->action('Backend\InvoiceReportController@index')
+            ->withMessage(FormatGenerator::message('Success', 'Invoice is delivered ...'));
+      } else {
+        return redirect()->action('Backend\InvoiceReportController@index')
+            ->withMessage(FormatGenerator::message('Fail', 'Invoice is not delivered ...'));
+      }
+    }
+    catch(\Exception $e){
+        DB::rollBack();
+
+        //create error log
+        $date    = date("Y-m-d H:i:s");
+        $message = '['. $date .'] '. 'error: ' . 'User '.$currentUser.' delivered an invoice and got error -------'.$e->getMessage(). ' ----- line ' .$e->getLine(). ' ----- ' .$e->getFile(). PHP_EOL;
+        LogCustom::create($date,$message);
+
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+        return $returnedObj;
     }
   }
 
