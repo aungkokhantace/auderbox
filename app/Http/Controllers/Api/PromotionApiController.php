@@ -322,6 +322,12 @@ class PromotionApiController extends Controller
           $retailer_id = $params->download_item_level_promotions->retailer_id;
           $retailshop_id = $params->download_item_level_promotions->retailshop_id;
 
+          //get retailshop object
+          $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+
+          //get retailshop ward id
+          $retailshop_address_ward_id = $retailshop->address_ward_id;
+
           $returnedObj['data'] = [];
           if (isset($params->download_item_level_promotions) && count($params->download_item_level_promotions) > 0) {
             //get ids
