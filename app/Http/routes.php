@@ -144,4 +144,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //add additional qty for promotion api
         Route::post('add_additional_qty', array('as'=>'add_additional_qty','uses'=>'Api\CartApiController@addAdditionalQty'));
+
+        //download retailer total point api
+        Route::post('download_retailer_total_points', array('as'=>'download_retailer_total_points','uses'=>'Api\PointApiController@getRetailerTotalPoints'));
     });
