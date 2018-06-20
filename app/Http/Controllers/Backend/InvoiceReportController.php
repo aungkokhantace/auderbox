@@ -268,7 +268,7 @@ class InvoiceReportController extends Controller
 
         $pointLogObj->id                 = $retailer_point_log_id;
         $pointLogObj->retailer_point_id  = $retailer_point_id;
-        $pointLogObj->created_date       = $retailshop_id;
+        $pointLogObj->created_date       = $created_date;
         $pointLogObj->points             = $points;
         $pointLogObj->retailer_reward_id = $retailer_reward_id;
         $pointLogObj->status             = $status;
