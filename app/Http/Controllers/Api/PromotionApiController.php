@@ -450,19 +450,21 @@ class PromotionApiController extends Controller
                 //*****get promotion obj only if there are cart items that match the promotion
                 if(count($promotion_item_level->cart_item_array_included_in_promotion) > 0) {
                   //if cart_purchase_qty is more than promo_purchase_qty
-                  if(($show_greater_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo > $promotion_item_level->purchase_qty)) {
+                  if(($show_greater_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo > $promotion_item_level->purchase_qty) && ($cart_purchase_qty_for_promo % $promotion_item_level->purchase_qty !== 0)) {
                     $promotionObj = $promotion_item_level;
                     break;
                   }
 
                   //if cart_purchase_qty is less than promo_purchase_qty
-                  if(($show_less_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo < $promotion_item_level->purchase_qty)) {
+                  if(($show_less_qty_than_promotion_flag == 1) && ($cart_purchase_qty_for_promo < $promotion_item_level->purchase_qty) && ($cart_purchase_qty_for_promo % $promotion_item_level->purchase_qty !== 0)) {
                     $promotionObj = $promotion_item_level;
                     break;
                   }
 
                   //if cart_purchase_qty is equal to promo_purchase_qty
-                  if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo = $promotion_item_level->purchase_qty)){
+                  // if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo = $promotion_item_level->purchase_qty)){
+
+                  if(($show_equal_qty_to_promotion_flag == 1) && ($cart_purchase_qty_for_promo % $promotion_item_level->purchase_qty == 0)){
                     $promotionObj = $promotion_item_level;
                     break;
                   }
@@ -613,7 +615,7 @@ class PromotionApiController extends Controller
               foreach($promotionObj->cart_item_array_included_in_promotion as $cart_item_obj_in_promotion){
                 array_push($cart_item_id_array_included_in_promotion,$cart_item_obj_in_promotion->product_id);
               }
-              
+
               //here is all product ids in current promotion
               $all_product_ids_in_promotion = $promotionObj->promotion_product_id_array;
 
