@@ -10,6 +10,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#invoice_status_constances"><b>Invoice Status Constances</b></a></li>
             <li><a data-toggle="tab" href="#item_level_promotion_types"><b>Item Level Promotion Types</b></a></li>
+            <li><a data-toggle="tab" href="#retailer_points"><b>Retailer Points</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -60,6 +61,41 @@
                 </table>
             </div>
             <!-- end item_level_promotion_types content -->
+
+            <!-- start retailer points content -->
+            <div id="retailer_points" class="tab-pane fade in">
+              <h3>"promotion_points" table</h3>
+              <p>"with_expiration" flag's default value is 0,<br>
+if with_expiration flag is 1, system will calculate
+the point expiry date by the point_life_time_day_count</p>
+
+              <hr>
+              <h3>"retailer_point_log" table status</h3>
+              <table border="2" width="300px" style="text-align: center">
+                  <tr>
+                      <td><strong>Name</strong></td>
+                      <td><strong>Value</strong></td>
+                  </tr>
+                  <tr>
+                      <td>Deliver [+]</td>
+                      <td>1</td>
+                  </tr>
+                  <tr>
+                      <td>Reward Claim [-]</td>
+                      <td>2</td>
+                  </tr>
+              </table>
+              <br>
+              <p>Remark : </p>
+              <p>If (status == 1),<br>
+                there will not be data at "retailer_reward_id ) and retailer_reward_id = NULL
+              <br>
+              If (status == 2),<br>
+              there will be data at "retailer_reward_id )
+              </p>
+              <hr>
+            </div>
+            <!-- end retailer points content -->
       </div>
     </div>
 </div>

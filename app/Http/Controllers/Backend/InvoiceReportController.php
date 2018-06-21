@@ -257,7 +257,7 @@ class InvoiceReportController extends Controller
         //generate id
         $retailer_point_log_id          = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
         //end retailer_point_id generation
-        // dd('paramObj',$pointObj);
+
         $created_date       = $current_timestamp;
         $points             = $received_points;
         $retailer_reward_id = null;  //$retailer_reward_id is always null for status = 1 (Deliver type)
