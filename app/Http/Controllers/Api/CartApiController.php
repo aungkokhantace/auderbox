@@ -846,41 +846,45 @@ class CartApiController extends Controller
               // $order_list_array = array_merge($cart_items,$gift_array);
 
               $order_list_array = array();
-              $index = 0;
+              $order_list_index = 0;
 
               //loop through cart_items
               foreach($cart_items as $cart_item){
-                $order_list_array[$index]['product_id']                   = $cart_item->product_id;
-                $order_list_array[$index]['product_name']                 = $cart_item->product_name;
-                $order_list_array[$index]['quantity']                     = $cart_item->quantity;
-                $order_list_array[$index]['product_uom_type_name_eng']    = $cart_item->product_uom_type_name_eng;
-                $order_list_array[$index]['product_uom_type_name_mm']     = $cart_item->product_uom_type_name_mm;
-                $order_list_array[$index]['product_volume_type_name']     = $cart_item->product_volume_type_name;
-                $order_list_array[$index]['product_container_type_name']  = $cart_item->product_container_type_name;
-                $order_list_array[$index]['total_uom_quantity']           = $cart_item->total_uom_quantity;
-                $order_list_array[$index]['maximum_qty']                  = $cart_item->maximum_qty;
-                $order_list_array[$index]['price']                        = $cart_item->price;
-                $order_list_array[$index]['payable_amount']               = $cart_item->payable_amount;
-                $index++;
+                $order_list_array[$order_list_index]['product_id']                   = $cart_item->product_id;
+                $order_list_array[$order_list_index]['product_name']                 = $cart_item->product_name;
+                $order_list_array[$order_list_index]['quantity']                     = $cart_item->quantity;
+                $order_list_array[$order_list_index]['product_uom_type_name_eng']    = $cart_item->product_uom_type_name_eng;
+                $order_list_array[$order_list_index]['product_uom_type_name_mm']     = $cart_item->product_uom_type_name_mm;
+                $order_list_array[$order_list_index]['product_volume_type_name']     = $cart_item->product_volume_type_name;
+                $order_list_array[$order_list_index]['product_container_type_name']  = $cart_item->product_container_type_name;
+                $order_list_array[$order_list_index]['total_uom_quantity']           = $cart_item->total_uom_quantity;
+                $order_list_array[$order_list_index]['maximum_qty']                  = $cart_item->maximum_qty;
+                $order_list_array[$order_list_index]['price']                        = $cart_item->price;
+                $order_list_array[$order_list_index]['payable_amount']               = $cart_item->payable_amount;
+                $order_list_index++;
               }
+
+              $gift_list_array = array();
+              $gift_list_index = 0;
 
               //loop through gift_array
               foreach($gift_array as $gift){
-                $order_list_array[$index]['product_id']                   = $gift->id;
-                $order_list_array[$index]['product_name']                 = $gift->name;
-                $order_list_array[$index]['quantity']                     = $gift->quantity;
-                $order_list_array[$index]['product_uom_type_name_eng']    = $gift->product_uom_type_name_eng;
-                $order_list_array[$index]['product_uom_type_name_mm']     = $gift->product_uom_type_name_mm;
-                $order_list_array[$index]['product_volume_type_name']     = $gift->product_volume_type_name;
-                $order_list_array[$index]['product_container_type_name']  = $gift->product_container_type_name;
-                $order_list_array[$index]['total_uom_quantity']           = $gift->total_uom_quantity;
-                $order_list_array[$index]['maximum_qty']                  = 0;
-                $order_list_array[$index]['price']                        = $gift->price;
-                $order_list_array[$index]['payable_amount']               = $gift->payable_amt;
-                $index++;
+                $gift_list_array[$gift_list_index]['product_id']                    = $gift->id;
+                $gift_list_array[$gift_list_index]['product_name']                  = $gift->name;
+                $gift_list_array[$gift_list_index]['quantity']                      = $gift->quantity;
+                $gift_list_array[$gift_list_index]['product_uom_type_name_eng']     = $gift->product_uom_type_name_eng;
+                $gift_list_array[$gift_list_index]['product_uom_type_name_mm']      = $gift->product_uom_type_name_mm;
+                $gift_list_array[$gift_list_index]['product_volume_type_name']      = $gift->product_volume_type_name;
+                $gift_list_array[$gift_list_index]['product_container_type_name']   = $gift->product_container_type_name;
+                $gift_list_array[$gift_list_index]['total_uom_quantity']            = $gift->total_uom_quantity;
+                $gift_list_array[$gift_list_index]['maximum_qty']                   = 0;
+                $gift_list_array[$gift_list_index]['price']                         = $gift->price;
+                $gift_list_array[$gift_list_index]['payable_amount']                = $gift->payable_amt;
+                $gift_list_index++;
               }
 
               $returnedObj['data'][0]["order_list"]             = $order_list_array;
+              $returnedObj['data'][0]["gift_list"]              = $gift_list_array;
               $returnedObj['data'][0]['total_payable_amount']   = $whole_order_payable_amount;
 
 

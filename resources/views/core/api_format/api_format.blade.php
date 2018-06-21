@@ -1825,9 +1825,9 @@
     {
       "order_list": [
         {
-          "product_id": 8,
-          "product_name": "Sprite",
-          "quantity": 10,
+          "product_id": 2,
+          "product_name": "Coca-Cola",
+          "quantity": 5,
           "product_uom_type_name_eng": "24 cans\/ case",
           "product_uom_type_name_mm": "24 cans\/ case",
           "product_volume_type_name": "330 ml",
@@ -1835,12 +1835,12 @@
           "total_uom_quantity": 24,
           "maximum_qty": 50,
           "price": 7200,
-          "payable_amount": 72000
+          "payable_amount": 36000
         },
         {
           "product_id": 1,
           "product_name": "Coca-Cola",
-          "quantity": 10,
+          "quantity": 1,
           "product_uom_type_name_eng": "24 cans\/ case",
           "product_uom_type_name_mm": "24 cans\/ case",
           "product_volume_type_name": "250 ml\r\n",
@@ -1848,12 +1848,27 @@
           "total_uom_quantity": 24,
           "maximum_qty": 50,
           "price": 7200,
-          "payable_amount": 72000
+          "payable_amount": 7200
         },
+        {
+          "product_id": 3,
+          "product_name": "Coca-Cola",
+          "quantity": 2,
+          "product_uom_type_name_eng": "6 bottles\/ case",
+          "product_uom_type_name_mm": "6 bottles\/ case",
+          "product_volume_type_name": "1.5 L\r\n",
+          "product_container_type_name": "bottle",
+          "total_uom_quantity": 6,
+          "maximum_qty": 50,
+          "price": 4800,
+          "payable_amount": 9600
+        }
+      ],
+      "gift_list": [
         {
           "product_id": 35,
           "product_name": "Max2O Pure Drinking Water",
-          "quantity": 2,
+          "quantity": 1,
           "product_uom_type_name_eng": "6 bottles\/ case",
           "product_uom_type_name_mm": "6 bottles\/ case",
           "product_volume_type_name": "1 L\r\n",
@@ -1864,11 +1879,11 @@
           "payable_amount": 0
         }
       ],
-      "total_payable_amount": 144000
+      "total_payable_amount": 52800
     }
   ],
   "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Order list downloaded successfully !"
+  "aceplusStatusMessage": "Cart list downloaded successfully !"
 }
               </pre>
         </div>
