@@ -2256,7 +2256,7 @@
   ],
   "aceplusStatusCode": 200,
   "aceplusStatusMessage": "Point is successfully saved!",
-  "retailer_total_points": 150
+  "retailer_total_points": "150"
 }
             </pre>
         </div>
