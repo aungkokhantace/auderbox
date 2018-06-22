@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Backend\Retailshop\Retailshop;
 use App\Core\CoreConstance;
 use App\Backend\InvoiceSession\InvoiceSession;
+use App\Backend\InvoicePromotion\InvoicePromotion;
 
 /**
  * Author: Khin Zar Ni Wint
@@ -347,7 +348,43 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
           //for pilot version
         }
 
-        $invoice->invoice_detail = $invoice_details;
+        //declare invoice detail array and index
+        $invoice_detail_array = array();
+        $invoice_detail_index = 0;
+
+        //construct array
+        foreach($invoice_details as $inv_detail){
+          $invoice_detail_array[$invoice_detail_index]['invoice_id']                = $inv_detail->invoice_id;
+          $invoice_detail_array[$invoice_detail_index]['product_id']                = $inv_detail->product_id;
+          $invoice_detail_array[$invoice_detail_index]['product_group_id']          = $inv_detail->product_group_id;
+          $invoice_detail_array[$invoice_detail_index]['uom_id']                    = $inv_detail->uom_id;
+          $invoice_detail_array[$invoice_detail_index]['status']                    = $inv_detail->status;
+          $invoice_detail_array[$invoice_detail_index]['uom']                       = $inv_detail->uom;
+          $invoice_detail_array[$invoice_detail_index]['quantity']                  = $inv_detail->quantity;
+          $invoice_detail_array[$invoice_detail_index]['unit_price']                = $inv_detail->unit_price;
+          $invoice_detail_array[$invoice_detail_index]['net_amt']                   = $inv_detail->net_amt;
+          $invoice_detail_array[$invoice_detail_index]['discount_amt']              = $inv_detail->discount_amt;
+          $invoice_detail_array[$invoice_detail_index]['net_amt_w_disc']            = $inv_detail->net_amt_w_disc;
+          $invoice_detail_array[$invoice_detail_index]['payable_amt']               = $inv_detail->payable_amt;
+          $invoice_detail_array[$invoice_detail_index]['confirm_date']              = $inv_detail->confirm_date;
+          $invoice_detail_array[$invoice_detail_index]['cancel_by']                 = $inv_detail->cancel_by;
+          $invoice_detail_array[$invoice_detail_index]['cancel_date']               = $inv_detail->cancel_date;
+          $invoice_detail_array[$invoice_detail_index]['created_by']                = $inv_detail->created_by;
+          $invoice_detail_array[$invoice_detail_index]['updated_by']                = $inv_detail->updated_by;
+          // $invoice_detail_array[$invoice_detail_index]['created_at']                = $inv_detail->created_at;
+          // $invoice_detail_array[$invoice_detail_index]['updated_at']                = $inv_detail->updated_at;
+          $invoice_detail_array[$invoice_detail_index]['product_name']              = $inv_detail->product_name;
+          $invoice_detail_array[$invoice_detail_index]['product_uom_type_name_eng'] = $inv_detail->product_uom_type_name_eng;
+          $invoice_detail_array[$invoice_detail_index]['product_uom_type_name_mm']  = $inv_detail->product_uom_type_name_mm;
+          $invoice_detail_array[$invoice_detail_index]['total_uom_quantity']        = $inv_detail->total_uom_quantity;
+          $invoice_detail_array[$invoice_detail_index]['product_volume_type_name']  = $inv_detail->product_volume_type_name;
+          $invoice_detail_array[$invoice_detail_index]['product_container_type_name'] = $inv_detail->product_container_type_name;
+          $invoice_detail_array[$invoice_detail_index]['status_text']               = $inv_detail->status_text;
+          $invoice_detail_index++;
+        }
+
+        // $invoice->invoice_detail = $invoice_details;
+        $invoice->invoice_detail = $invoice_detail_array;
         //end invoice_detail data
 
         if(isset($invoice) && count($invoice)>0){
@@ -715,5 +752,30 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
         $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
         return $returnedObj;
       }
+    }
+
+    public function saveInvoicePromotion($paramObj)
+    {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+      try{
+        $tempObj = Utility::addCreatedBy($paramObj);
+        $tempObj->save();
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Invoice promotion is successfully saved!";
+
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+          return $returnedObj;
+      }
+    }
+
+    public function getInvoicePromotionsByInvoiceId($invoice_id) {
+      $result = InvoicePromotion::where('invoice_id',$invoice_id)
+                                  ->get();
+      return $result;
     }
 }

@@ -69,7 +69,7 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
       $query = $query->whereNull('promotion_item_levels.deleted_at'); //not deleted;
       $query = $query->whereNull('product_lines.deleted_at'); //not deleted;
       $result = $query->get();
-      
+
       return $result;
     }
 
@@ -142,6 +142,13 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
 
                                     ->where('promotion_item_level_detail.product_id','=',$product_id)
                                     ->where('promotion_item_levels.product_line_id','=',$product_line_id)
+
+                                    ->where('promotion_item_levels.status','=',1)  //active record
+                                    ->where('promotion_item_level_detail.status','=',1)  //active record
+
+                                    ->whereNull('promotion_item_levels.deleted_at')  //not deleted
+                                    ->whereNull('promotion_item_level_detail.deleted_at')  //not deleted
+
                                     ->first();
 
       return $result;
