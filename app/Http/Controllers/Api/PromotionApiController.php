@@ -20,6 +20,7 @@ use App\Api\ShopList\ShopListApiRepository;
 use App\Api\Promotion\PromotionApiRepositoryInterface;
 use App\Core\PromotionConstance;
 use App\Core\Config\ConfigRepository;
+use Illuminate\Support\Facades\DB;
 
 class PromotionApiController extends Controller
 {
@@ -725,10 +726,38 @@ class PromotionApiController extends Controller
     $temp                   = Input::All();
     $inputAll               = json_decode($temp['param_data']);
     $checkServerStatusArray = Check::checkCodes($inputAll);
-    dd('check',$checkServerStatusArray);
-    if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
 
-    } else{
+    if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+      $params             = $checkServerStatusArray['data'][0];
+
+      $retailer_id              = $params->do_not_show_again->retailer_id;
+      $retailshop_id            = $params->do_not_show_again->retailshop_id;
+      $promotion_item_level_id  = $params->do_not_show_again->promotion_id;
+
+      DB::beginTransaction();
+      //start saving promotion id to show noti table
+      //returns true if mark as noti process is successful
+      $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id);
+
+      if(!$shown_noti_result) {
+        //fail
+        DB::rollBack();
+        $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
+        $returnedObj['aceplusStatusMessage']  = "Fail, this promotion didn't set as already shown!";
+        return \Response::json($returnedObj);
+      }
+
+      //success
+      DB::commit();
+
+      $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+      $returnedObj['aceplusStatusMessage']  = "Success, this promotion won't be shown again!";
+
+      return \Response::json($returnedObj);
+      //end saving promotion id to show noti table
+
+    }
+    else{
         return \Response::json($checkServerStatusArray);
     }
   }

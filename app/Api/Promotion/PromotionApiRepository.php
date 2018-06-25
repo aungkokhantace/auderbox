@@ -155,6 +155,13 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
     }
 
     public function markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id){
+      //clear old records with these ids to avoid data duplication
+      DB::table('invoice_session_show_noti')
+              ->where('retailer_id','=',$retailer_id)
+              ->where('retailshop_id','=',$retailshop_id)
+              ->where('promotion_item_level_id','=',$promotion_item_level_id)
+              ->delete();
+
       $result = DB::table('invoice_session_show_noti')->insert([
         'retailer_id'             => $retailer_id,
         'retailshop_id'           => $retailshop_id,
