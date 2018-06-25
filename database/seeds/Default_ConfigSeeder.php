@@ -32,6 +32,7 @@ class Default_ConfigSeeder extends Seeder
             ['code'=>'SHOW_EQUAL_QTY_TO_PROMOTION', 'type'=>'SETTING', 'value'=>'0','description'=>'Alert when purchase qty is equal to promotion qty'],
             ['code'=>'SHOW_GREATER_QTY_THAN_PROMOTION', 'type'=>'SETTING', 'value'=>'1','description'=>'Alert when purchase qty is greater than promotion qty'],
             ['code'=>'SHOW_LESS_QTY_THAN_PROMOTION', 'type'=>'SETTING', 'value'=>'1','description'=>'Alert when purchase qty is less than promotion qty'],
+            ['code'=>'CONTACT_PHONE_NUMBER', 'type'=>'SETTING', 'value'=>'09899043432','description'=>'Contact phone number'],
 
         );
 

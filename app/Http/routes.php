@@ -150,4 +150,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //do_not_show_this_promotion_again api
         Route::post('do_not_show_this_promotion_again', array('as'=>'do_not_show_this_promotion_again','uses'=>'Api\PromotionApiController@doNotShowPromotionAgain'));
+
+        //download_contact_phone_number api
+        Route::post('download_contact_phone_number', array('as'=>'download_contact_phone_number','uses'=>'Api\ConfigApiController@getContactPhoneNumber'));
     });

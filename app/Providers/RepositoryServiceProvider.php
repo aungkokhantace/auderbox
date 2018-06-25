@@ -41,6 +41,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Api\Cart\CartApiRepositoryInterface','App\Api\Cart\CartApiRepository');
         $this->app->bind('App\Api\Promotion\PromotionApiRepositoryInterface','App\Api\Promotion\PromotionApiRepository');
         $this->app->bind('App\Api\Point\PointApiRepositoryInterface','App\Api\Point\PointApiRepository');
+        $this->app->bind('App\Api\Config\ConfigApiRepositoryInterface','App\Api\Config\ConfigApiRepository');
 
     }
 }
