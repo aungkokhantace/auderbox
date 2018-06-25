@@ -600,6 +600,9 @@ class PromotionApiController extends Controller
               //save the received promotion to invoice_session_show_noti table
               $promotion_item_level_id = $promotionObj->id;
 
+              /*
+              //commented out according to new logic
+              //start saving promotion id to show noti table
               //returns true if mark as noti process is successful
               $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id);
 
@@ -608,6 +611,8 @@ class PromotionApiController extends Controller
                 $returnedObj['aceplusStatusMessage']  = "Promotion cannot be marked as already shown!";
                 return \Response::json($returnedObj);
               }
+              //end saving promotion id to show noti table
+              */
 
               //get all products included in current promotion
               $cart_item_id_array_included_in_promotion = array();
@@ -714,5 +719,17 @@ class PromotionApiController extends Controller
       else{
           return \Response::json($checkServerStatusArray);
       }
+  }
+
+  public function doNotShowPromotionAgain() {
+    $temp                   = Input::All();
+    $inputAll               = json_decode($temp['param_data']);
+    $checkServerStatusArray = Check::checkCodes($inputAll);
+    dd('check',$checkServerStatusArray);
+    if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+
+    } else{
+        return \Response::json($checkServerStatusArray);
+    }
   }
 }

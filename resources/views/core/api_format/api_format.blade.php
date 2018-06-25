@@ -26,6 +26,7 @@
             <li><a data-toggle="tab" href="#download_item_level_promotion_api"><b>Download Item Level Promotions</b></a></li>
             <li><a data-toggle="tab" href="#add_additional_qty_api"><b>Add additional qty for promotion</b></a></li>
             <li><a data-toggle="tab" href="#download_retailer_total_points"><b>Download retailer total points</b></a></li>
+            <li><a data-toggle="tab" href="#do_not_show_this_promotion_again_api"><b>Do not show this promotion again</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -2261,6 +2262,43 @@
             </pre>
         </div>
         <!-- end download_retailer_total_points api content -->
+
+        <!-- start do_not_show_this_promotion_again_api content -->
+        <div id="do_not_show_this_promotion_again_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/do_not_show_this_promotion_again</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "do_not_show_again": {
+        "retailer_id": 1,
+        "retailshop_id": 1,
+        "promotion_id": 1
+      }
+    }
+  ]
+}
+            </pre>
+
+            <hr>
+            <h3>Response</h3>
+            <pre>
+{
+  "data": [
+
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success, this promotion won't be shown again!"
+}
+            </pre>
+        </div>
+        <!-- end do_not_show_this_promotion_again_api content -->
+
       </div>
     </div>
 </div>

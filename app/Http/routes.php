@@ -147,4 +147,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //download retailer total point api
         Route::post('download_retailer_total_points', array('as'=>'download_retailer_total_points','uses'=>'Api\PointApiController@getRetailerTotalPoints'));
+
+        //do_not_show_this_promotion_again api
+        Route::post('do_not_show_this_promotion_again', array('as'=>'do_not_show_this_promotion_again','uses'=>'Api\PromotionApiController@doNotShowPromotionAgain'));
     });
