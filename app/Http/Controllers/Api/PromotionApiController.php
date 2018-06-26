@@ -323,6 +323,9 @@ class PromotionApiController extends Controller
           $retailer_id = $params->download_item_level_promotions->retailer_id;
           $retailshop_id = $params->download_item_level_promotions->retailshop_id;
 
+          //last promotion flag is initially 0
+          $last_promotion_flag = 0;
+
           //get retailshop object
           $retailshop = $shopListApiRepo->getShopById($retailshop_id);
 
@@ -395,6 +398,12 @@ class PromotionApiController extends Controller
               $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']  = "No item level promotion available today !";
               return \Response::json($returnedObj);
+            }
+
+            //if there is only one unalerted promotion left
+            //set last promotion flag to 1
+            if(count($promotion_item_level_array) == 1) {
+              $last_promotion_flag = 1;
             }
 
             foreach($promotion_item_level_array as $promotion_item_level_value){
@@ -700,6 +709,7 @@ class PromotionApiController extends Controller
               $returnedObj['data'][0]["additional_qty"]       = $additional_qty;
               $returnedObj['data'][0]["additional_amt"]       = $additional_amt;
               $returnedObj['data'][0]["current_purchase_qty"] = $current_purchase_qty;
+              $returnedObj['data'][0]["last_promotion_flag"]  = $last_promotion_flag;
 
               return \Response::json($returnedObj);
 

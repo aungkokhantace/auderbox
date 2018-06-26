@@ -2170,7 +2170,7 @@
       "additional_qty": 4,
       "additional_amt": 0,
       "current_purchase_qty": 1,
-      "last_promotion": 1
+      "last_promotion_flag": 1
     }
   ],
   "aceplusStatusCode": 200,
