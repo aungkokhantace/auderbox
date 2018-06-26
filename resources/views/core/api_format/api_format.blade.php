@@ -2169,7 +2169,8 @@
       ],
       "additional_qty": 4,
       "additional_amt": 0,
-      "current_purchase_qty": 1
+      "current_purchase_qty": 1,
+      "last_promotion": 1
     }
   ],
   "aceplusStatusCode": 200,
@@ -2321,8 +2322,11 @@
             <pre>
 {
   "aceplusStatusCode": 200,
-  "aceplusStatusMessage": "Success, contact phone number is downloaded successfully!",
-  "contact_phone_number": "09899043432"
+  "aceplusStatusMessage": "Success, contact phone numbers are downloaded successfully!",
+  "contact_phone_number": [
+    "09899043432",
+    "09899043437"
+  ]
 }
             </pre>
         </div>
