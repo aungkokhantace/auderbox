@@ -14,6 +14,7 @@ use App\Backend\Retailshop\Retailshop;
 use Auth;
 use App\Log\LogCustom;
 use App\Core\CoreConstance;
+use App\Backend\InvoicePromotion\InvoicePromotion;
 
 
 /**
@@ -577,5 +578,11 @@ class InvoiceRepository implements InvoiceRepositoryInterface
           $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
           return $returnedObj;
       }
+    }
+
+    public function getInvoicePromotionsByInvoiceId($invoice_id) {
+      $result = InvoicePromotion::where('invoice_id',$invoice_id)
+                                  ->get();
+      return $result;
     }
 }

@@ -189,6 +189,25 @@
                       </tr>
                       <?php $number_count++; ?>
                       @endforeach
+
+                      <!-- start invoice promotion -->
+                      @foreach($promo_product_array as $promo_product_detail)
+                      <tr>
+                          <td>{{$number_count}}</td>
+                          <td>{{$promo_product_detail->brand_owner_name}}</td>
+                          <td>{{$promo_product_detail->name}}</td>
+                          <td>{{$promo_product_detail->sku}}</td>
+                          <td>{{$promo_product_detail->quantity}}</td>
+                          <td>{{$invoice->order_date}}</td>
+                          <td>{{$invoice->delivery_date}}</td>
+                          <td>{{number_format($promo_product_detail->payable_amt,2)}}</td>
+                          <td>{{$promo_product_detail->status_text}}</td>
+                          <td></td>
+                          <td></td>
+                      <tr>
+                      <?php $number_count++; ?>
+                      @endforeach
+                      <!-- end invoice promotion -->
                     </tbody>
                 </table>
             </div>

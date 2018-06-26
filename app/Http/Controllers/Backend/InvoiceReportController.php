@@ -24,6 +24,8 @@ use App\Backend\Point\RetailerPoint;
 use Illuminate\Support\Facades\DB;
 use App\Log\LogCustom;
 use App\Backend\RetailerPointLog\RetailerPointLog;
+use App\Api\Product\ProductApiRepository;
+use App\Api\ShopList\ShopListApiRepository;
 
 class InvoiceReportController extends Controller
 {
@@ -91,8 +93,47 @@ class InvoiceReportController extends Controller
       //get invoice details
       $invoice = $this->repo->getInvoiceDetail($invoice_id);
 
+      //start invoice promotion
+      if(isset($invoice) && count($invoice)) {
+        $promo_product_array = array();
+        $productApiRepo     = new ProductApiRepository();
+        $shopListApiRepo    = new ShopListApiRepository();
+
+        $invoice_id = $invoice->id;
+        $retailshop_id = $invoice->retailshop_id;
+        //get retailshop object
+        $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+        //get retailshop ward id
+        $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+        //get invoice promotions by invoice_id
+        $invoice_promotions = $this->repo->getInvoicePromotionsByInvoiceId($invoice_id);
+
+        foreach($invoice_promotions as $invoice_promotion){
+          $promo_product_id = $invoice_promotion->product_id;
+          $promo_qty        = $invoice_promotion->qty;
+
+          //get product detail including price
+          $promo_product_detail_result = $productApiRepo->getProductDetailByID($promo_product_id,$retailshop_address_ward_id);
+
+          if($promo_product_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+            $returnedObj['aceplusStatusCode']     = $promo_product_detail_result['aceplusStatusCode'];
+            $returnedObj['aceplusStatusMessage']  = $promo_product_detail_result['aceplusStatusMessage'];
+            return \Response::json($returnedObj);
+          }
+          $promo_product_detail               = $promo_product_detail_result['resultObj'];
+          $promo_product_detail->quantity     = $promo_qty;
+          $promo_product_detail->payable_amt  = 0.0;  //because this is present item
+          $promo_product_detail->status_text  = "Gift Item";
+
+          array_push($promo_product_array,$promo_product_detail);
+        }
+      }
+      //end invoice promotion
+
       return view('report.invoice_report.invoice_detail')
-          ->with('invoice',$invoice);
+          ->with('invoice',$invoice)
+          ->with('promo_product_array',$promo_product_array);
     }
     else{
       return redirect('backend/unauthorize');
@@ -528,6 +569,8 @@ class InvoiceReportController extends Controller
           */
 
           $invoice_id = $invoice_header->id;
+
+          //start invoice_detail
           $invoice_with_detail = $this->repo->getInvoiceDetail($invoice_id);
 
           foreach($invoice_with_detail->invoice_details as $invoice_detail){
@@ -549,9 +592,68 @@ class InvoiceReportController extends Controller
             //increase counter
             $count++;
           }
+          //end invoice_detail
+
+          //start invoice promotion
+          $promo_product_array = array();
+          $productApiRepo     = new ProductApiRepository();
+          $shopListApiRepo    = new ShopListApiRepository();
+
+          $retailshop_id = $invoice_header->retailshop_id;
+          //get retailshop object
+          $retailshop = $shopListApiRepo->getShopById($retailshop_id);
+          //get retailshop ward id
+          $retailshop_address_ward_id = $retailshop->address_ward_id;
+
+          //get invoice promotions by invoice_id
+          $invoice_promotions = $this->repo->getInvoicePromotionsByInvoiceId($invoice_id);
+
+          foreach($invoice_promotions as $invoice_promotion){
+            $promo_product_id = $invoice_promotion->product_id;
+            $promo_qty        = $invoice_promotion->qty;
+
+            //get product detail including price
+            $promo_product_detail_result = $productApiRepo->getProductDetailByID($promo_product_id,$retailshop_address_ward_id);
+
+            if($promo_product_detail_result['aceplusStatusCode'] !== ReturnMessage::OK){
+              $returnedObj['aceplusStatusCode']     = $promo_product_detail_result['aceplusStatusCode'];
+              $returnedObj['aceplusStatusMessage']  = $promo_product_detail_result['aceplusStatusMessage'];
+              return \Response::json($returnedObj);
+            }
+            $promo_product_detail               = $promo_product_detail_result['resultObj'];
+            $promo_product_detail->quantity     = $promo_qty;
+            $promo_product_detail->payable_amt  = 0.0;  //because this is present item
+            $promo_product_detail->status_text  = "Gift Item";
+
+            array_push($promo_product_array,$promo_product_detail);
+          }
+          // dd('$invoice_with_detail',$invoice_with_detail);
+          //start adding invoice_promotions to export array
+          foreach($promo_product_array as $invoice_promotion){
+            // dd('inv_promo',$invoice_promotion);
+            //construct array to export in excel
+            $invoice_export_array[$count]['Invoice Number']         = $invoice_with_detail->id;
+            $invoice_export_array[$count]['Shop Name']              = $invoice_with_detail->retailshop_name_eng;
+            $invoice_export_array[$count]['Shop Address']           = $invoice_with_detail->retailshop_address;
+            $invoice_export_array[$count]['Retailer Name']          = $invoice_with_detail->retailer_name_eng;
+            $invoice_export_array[$count]['Retailer Phone Number']  = $invoice_with_detail->retailer_phone;
+            $invoice_export_array[$count]['Brand Owner']            = $invoice_promotion->brand_owner_name;
+            $invoice_export_array[$count]['Product Name']           = $invoice_promotion->name;
+            $invoice_export_array[$count]['SKU']                    = $invoice_promotion->sku;
+            $invoice_export_array[$count]['Product Quantity']       = $invoice_promotion->quantity;
+            $invoice_export_array[$count]['Order Date']             = $invoice_with_detail->order_date;
+            $invoice_export_array[$count]['Delivery Date']          = $invoice_with_detail->delivery_date;
+            $invoice_export_array[$count]['Amount']                 = $invoice_promotion->payable_amt;
+            $invoice_export_array[$count]['Status']                 = $invoice_promotion->status_text;
+
+            //increase counter
+            $count++;
+          }
+          //end adding invoice_promotions to export array
+          //end invoice promotion
         }
       }
-
+      
       $today_date = date('d-m-Y');
       Excel::create($today_date.'_InvoiceReport', function($excel)use($invoice_export_array) {
               $excel->sheet('InvoiceReport', function($sheet)use($invoice_export_array) {
