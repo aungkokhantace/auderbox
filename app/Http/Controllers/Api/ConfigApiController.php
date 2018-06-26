@@ -40,15 +40,21 @@ class ConfigApiController extends Controller
     $checkServerStatusArray = Check::checkCodes($inputAll);
 
     if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
-      $returnedObj['data'] = [];
+      // $returnedObj['data'] = [];
 
-      $contact_phone_number = $this->repo->getContactPhoneNumber();
+      $contact_phone_number_raw = $this->repo->getContactPhoneNumber();
 
-      if (isset($contact_phone_number) && count($contact_phone_number) > 0) {
+      //remove unnecessary spaces from phone number string
+      $contact_phone_number_string = str_replace(' ', '', $contact_phone_number_raw);
+
+      //separate the string by comma
+      $contact_phone_number_array = explode(",",$contact_phone_number_string);
+
+      if (isset($contact_phone_number_array) && count($contact_phone_number_array) > 0) {
 
         $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
         $returnedObj['aceplusStatusMessage']  = "Success, contact phone number is downloaded successfully!";
-        $returnedObj['contact_phone_number']  = $contact_phone_number;
+        $returnedObj['contact_phone_number']  = $contact_phone_number_array;
         return \Response::json($returnedObj);
       }
       else{
