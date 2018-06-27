@@ -153,4 +153,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //download_contact_phone_number api
         Route::post('download_contact_phone_number', array('as'=>'download_contact_phone_number','uses'=>'Api\ConfigApiController@getContactPhoneNumber'));
+
+        //select_retailshop api
+        Route::post('select_retailshop', array('as'=>'select_retailshop','uses'=>'Api\ShopListApiController@selectRetailshop'));
     });
