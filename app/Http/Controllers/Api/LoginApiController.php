@@ -117,10 +117,15 @@ class LoginApiController extends Controller
               $cart_item_count = Utility::getCartItemCount($retailerObj->retailer_id);
 
               //start retailshop
+              $retailshop_obj = null;
+
               $retailer_id = $retailerObj->retailer_id;
               $retailer_session = $retailerProfileApiRepo->getRetailerSessionByRetailerId($retailer_id);
-              $retailshop_id = $retailer_session->retailshop_id;
-              $retailshop_obj = $shopListApiRepo->getShopById($retailshop_id);
+              //if there is retailer session
+              if(isset($retailer_session) && count($retailer_session) > 0){
+                $retailshop_id = $retailer_session->retailshop_id;
+                $retailshop_obj = $shopListApiRepo->getShopById($retailshop_id);
+              }
               //end retailshop
 
               //login request is successful and return login user id
