@@ -27,6 +27,7 @@ use App\Api\Login\LoginApiRepository;
 use App\Api\User\UserApiRepository;
 use App\Api\RetailerProfile\RetailerProfileApiRepository;
 use App\Core\Utility;
+use App\Api\ShopList\ShopListApiRepository;
 
 class LoginApiController extends Controller
 {
@@ -69,6 +70,7 @@ class LoginApiController extends Controller
           $loginApiRepo = new LoginApiRepository();
           $userApiRepo  = new UserApiRepository();
           $retailerProfileApiRepo = new RetailerProfileApiRepository();
+          $shopListApiRepo = new ShopListApiRepository();
 
           $login_attempt = $checkServerStatusArray['data'][0]->login_info;
 
@@ -114,11 +116,19 @@ class LoginApiController extends Controller
               //get cart item count
               $cart_item_count = Utility::getCartItemCount($retailerObj->retailer_id);
 
+              //start retailshop
+              $retailer_id = $retailerObj->retailer_id;
+              $retailer_session = $retailerProfileApiRepo->getRetailerSessionByRetailerId($retailer_id);
+              $retailshop_id = $retailer_session->retailshop_id;
+              $retailshop_obj = $shopListApiRepo->getShopById($retailshop_id);
+              //end retailshop
+
               //login request is successful and return login user id
               $returnedObj['aceplusStatusCode']       = ReturnMessage::OK;
               $returnedObj['aceplusStatusMessage']    = "Success!";
               $returnedObj['user_id']                 = $user->id;
               $returnedObj['retailer']                = $retailerObj;
+              $returnedObj['retailshop']              = $retailshop_obj;
               $returnedObj['force_password_change']   = $force_password_change;
               $returnedObj['cart_item_count']         = $cart_item_count;
 

@@ -48,4 +48,11 @@ class RetailerProfileApiRepository implements RetailerProfileApiRepositoryInterf
           return $returnedObj;
       }
     }
+
+    public function getRetailerSessionByRetailerId($retailer_id) {
+      $result = DB::table('retailer_session')
+                      ->where('retailer_id',$retailer_id)
+                      ->first();
+      return $result;
+    }
 }
