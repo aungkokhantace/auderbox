@@ -71,6 +71,15 @@
     "address": "No(59), Kan Lann, Hlaing, Yangon",
     "photo": "\/images\/retailer_images\/retailer_profile.png"
   },
+  "retailshop": {
+    "id": 1,
+    "retailer_id": 1,
+    "name_eng": "Pyae Sone (1)",
+    "name_mm": "\u103b\u1015\u100a\u1037\u1039\u1005\u102f\u1036 (\u1041)",
+    "phone": "0145678",
+    "address": "No(59), Kan Lann, Hlaing, Yangon",
+    "registration_no": "abc-112233"
+  },
   "force_password_change": true,
   "cart_item_count": 5
 }
