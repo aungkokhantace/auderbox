@@ -51,4 +51,44 @@ class ShopListApiRepository implements ShopListApiRepositoryInterface
       $retailshop = Retailshop::find($id);
       return $retailshop;
     }
+
+    public function saveSelectedShop($retailer_id,$retailshop_id) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try {
+        DB::beginTransaction();
+        //get current timestamp
+        $current_timestamp = date('Y-m-d H:i:s');
+
+        //clear old data
+        DB::table('retailer_session')
+                ->where('retailer_id',$retailer_id)
+                ->where('retailshop_id',$retailshop_id)
+                ->delete();
+
+        $result = DB::table('retailer_session')->insert([
+          'retailer_id'          => $retailer_id,
+          'retailshop_id'        => $retailshop_id,
+          'selected_datetime'    => $current_timestamp
+        ]);
+
+        if($result){
+          DB::commit();
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "Request is successful!";
+          return $returnedObj;
+        }
+        else{
+          DB::rollback();
+          //if retailshops do not exist
+          $returnedObj['aceplusStatusMessage']  = "Saving selected retailshop_id failed!";
+          return $returnedObj;
+        }
+      }
+      catch(\Exception $e){
+          $returnedObj['aceplusStatusMessage'] = $e->getMessage();
+          return $returnedObj;
+      }
+    }
 }
