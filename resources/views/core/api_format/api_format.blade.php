@@ -28,6 +28,7 @@
             <li><a data-toggle="tab" href="#download_retailer_total_points"><b>Download retailer total points</b></a></li>
             <li><a data-toggle="tab" href="#do_not_show_this_promotion_again_api"><b>Do not show this promotion again</b></a></li>
             <li><a data-toggle="tab" href="#download_contact_phone_number_api"><b>Contact Phone Number</b></a></li>
+            <li><a data-toggle="tab" href="#select_retailshop_api"><b>Select Retailshop</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -2331,6 +2332,41 @@
             </pre>
         </div>
         <!-- end download_contact_phone_number_api content -->
+
+        <!-- start select_retailshop_api content -->
+        <div id="select_retailshop_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/select_retailshop</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "select_retailshop": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+            </pre>
+
+            <hr>
+            <h3>Response</h3>
+            <pre>
+{
+  "data": [
+
+  ],
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success, selected retailshop id is saved successfully!"
+}
+            </pre>
+        </div>
+        <!-- end select_retailshop_api content -->
 
       </div>
     </div>
