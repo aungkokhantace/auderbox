@@ -64,7 +64,7 @@ class ShopListApiRepository implements ShopListApiRepositoryInterface
         //clear old data
         DB::table('retailer_session')
                 ->where('retailer_id',$retailer_id)
-                ->where('retailshop_id',$retailshop_id)
+                // ->where('retailshop_id',$retailshop_id)
                 ->delete();
 
         $result = DB::table('retailer_session')->insert([
