@@ -34,6 +34,11 @@ class PointApiRepository implements PointApiRepositoryInterface
                               ->where('retailshop_id',$retailshop_id)
                               ->sum('available_points');
 
+      //if there is no point for retailer, return 0 point
+      if(!isset($result) || $result == null){
+        $result = 0;
+      }
+
       $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
       $returnedObj['aceplusStatusMessage']  = "Point is successfully downloaded!";
       $returnedObj['retailer_total_points'] = $result;
