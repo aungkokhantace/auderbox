@@ -29,9 +29,9 @@ class InvoiceDetail extends Model
       'payable_amt' => 'double',
       'remark' => 'string',
       'confirm_by' => 'integer',
-      'confirm_date' => 'date',
+      'confirm_date' => 'string',
       'cancel_by' => 'integer',
-      'cancel_date' => 'date',
+      'cancel_date' => 'string',
       'status' => 'integer',
    ];
 
