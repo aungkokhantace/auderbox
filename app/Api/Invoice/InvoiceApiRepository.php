@@ -778,4 +778,27 @@ class InvoiceApiRepository implements InvoiceApiRepositoryInterface
                                   ->get();
       return $result;
     }
+
+    public function clearOneTimeAlertedFlag($retailer_id,$retailshop_id) {
+      $returnedObj = array();
+      $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+      try{
+        $result = DB::table('invoice_session_show_noti')
+            ->where('retailer_id', $retailer_id)
+            ->where('retailshop_id', $retailshop_id)
+            ->update([
+                'one_time_alerted' => 0,
+                // 'do_not_show_again_ticked' => $do_not_show_again_ticked
+              ]);
+
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+        $returnedObj['aceplusStatusMessage'] = "Show Noti list cleared successfully !";
+        return $returnedObj;
+      }
+      catch(\Exception $e){
+        $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+        return $returnedObj;
+      }
+    }
 }

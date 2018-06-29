@@ -88,6 +88,8 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
       $result = DB::table('invoice_session_show_noti')
                           ->where('retailer_id','=',$retailer_id)
                           ->where('retailshop_id','=',$retailshop_id)
+                          ->where('one_time_alerted','=', 1) //don't show one-time alerted promotions
+                          ->orWhere('do_not_show_again_ticked','=', 1) //don't show 'do_not_show_again' checked promotions
                           ->get();
       return $result;
     }
@@ -154,19 +156,46 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
       return $result;
     }
 
-    public function markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id){
+    // public function markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id){
+    public function  markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id,$one_time_alerted,$do_not_show_again_ticked) {
       //clear old records with these ids to avoid data duplication
-      DB::table('invoice_session_show_noti')
+      // DB::table('invoice_session_show_noti')
+      //         ->where('retailer_id','=',$retailer_id)
+      //         ->where('retailshop_id','=',$retailshop_id)
+      //         ->where('promotion_item_level_id','=',$promotion_item_level_id)
+      //         ->delete();
+      $result = true;
+
+      $old_record = DB::table('invoice_session_show_noti')
               ->where('retailer_id','=',$retailer_id)
               ->where('retailshop_id','=',$retailshop_id)
               ->where('promotion_item_level_id','=',$promotion_item_level_id)
-              ->delete();
+              ->first();
 
-      $result = DB::table('invoice_session_show_noti')->insert([
-        'retailer_id'             => $retailer_id,
-        'retailshop_id'           => $retailshop_id,
-        'promotion_item_level_id' => $promotion_item_level_id
-      ]);
+      // if there is already data in show_noti table, update the record
+      if(isset($old_record) && count($old_record) > 0) {
+        if(($old_record->one_time_alerted !== $one_time_alerted) || ($old_record->do_not_show_again_ticked !== $do_not_show_again_ticked)) {
+          $result = DB::table('invoice_session_show_noti')
+          ->where('retailer_id', $retailer_id)
+          ->where('retailshop_id', $retailshop_id)
+          ->where('promotion_item_level_id','=',$promotion_item_level_id)
+          ->update([
+            'one_time_alerted' => $one_time_alerted,
+            'do_not_show_again_ticked' => $do_not_show_again_ticked
+          ]);
+        }
+      }
+      //if there is no record already, insert a new record
+      else {
+
+        $result = DB::table('invoice_session_show_noti')->insert([
+          'retailer_id'               => $retailer_id,
+          'retailshop_id'             => $retailshop_id,
+          'promotion_item_level_id'   => $promotion_item_level_id,
+          'one_time_alerted'          => $one_time_alerted,
+          'do_not_show_again_ticked'  => $do_not_show_again_ticked
+        ]);
+      }
 
       return $result;
     }

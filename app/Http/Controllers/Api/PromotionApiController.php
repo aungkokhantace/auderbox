@@ -800,7 +800,7 @@ class PromotionApiController extends Controller
 
               //get already alerted promotions
               $raw_already_alerted_promotions = $this->repo->getAlreadyAlertedPromotions($retailer_id,$retailshop_id);
-
+              
               $alerted_promotion_id_array = array();
               foreach($raw_already_alerted_promotions as $raw_already_alerted_promotion){
                 array_push($alerted_promotion_id_array,$raw_already_alerted_promotion->promotion_item_level_id);
@@ -1045,11 +1045,13 @@ class PromotionApiController extends Controller
                 //save the received promotion to invoice_session_show_noti table
                 $promotion_item_level_id = $promotionObj->id;
 
-                /*
-                //commented out according to new logic
+                //set one time alerted
+                $one_time_alerted = 1;
+                $do_not_show_again_ticked = 0;
+
                 //start saving promotion id to show noti table
-                //returns true if mark as noti process is successful
-                $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id);
+                //returns true if mark as shown noti process is successful
+                $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id,$one_time_alerted,$do_not_show_again_ticked);
 
                 if(!$shown_noti_result) {
                   $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
@@ -1057,7 +1059,7 @@ class PromotionApiController extends Controller
                   return \Response::json($returnedObj);
                 }
                 //end saving promotion id to show noti table
-                */
+
 
                 //get all products included in current promotion
                 $cart_item_id_array_included_in_promotion = array();
@@ -1183,7 +1185,12 @@ class PromotionApiController extends Controller
       DB::beginTransaction();
       //start saving promotion id to show noti table
       //returns true if mark as noti process is successful
-      $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id);
+
+      $one_time_alerted = 1;
+      $do_not_show_again_ticked = 1;
+
+      // $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id);
+      $shown_noti_result = $this->repo->markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id,$one_time_alerted,$do_not_show_again_ticked);
 
       if(!$shown_noti_result) {
         //fail

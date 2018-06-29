@@ -15,4 +15,5 @@ interface PromotionApiRepositoryInterface
     public function checkAlreadyShownNoti($retailer_id,$retailshop_id,$item_level_promotion_id);
     public function getItemLevelPromotionById($id);
     public function getPromotionItemLevelGiftsByLevelId($level_id);
+    public function markAsShownNoti($retailer_id,$retailshop_id,$promotion_item_level_id,$one_time_alerted,$do_not_show_again_ticked);
 }

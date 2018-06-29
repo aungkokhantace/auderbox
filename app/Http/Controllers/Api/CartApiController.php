@@ -812,6 +812,7 @@ class CartApiController extends Controller
           $retailshopApiRepo  = new ShopListApiRepository();
           $promotionApiRepo   = new PromotionApiRepository();
           $shopListApiRepo    = new ShopListApiRepository();
+          $invoiceApiRepo     = new InvoiceApiRepository();
 
           $params             = $checkServerStatusArray['data'][0];
 
@@ -1111,6 +1112,16 @@ class CartApiController extends Controller
                 $gift_list_array[$gift_list_index]['payable_amount']                = $gift->payable_amt;
                 $gift_list_index++;
               }
+
+              //start clearing one_time_alerted flag
+              $one_time_alerted_clear_result = $invoiceApiRepo->clearOneTimeAlertedFlag($retailer_id,$retailshop_id);
+              
+              if($one_time_alerted_clear_result["aceplusStatusCode"] !== ReturnMessage::OK){
+                DB::rollback();
+                $returnedObj['aceplusStatusCode']     = ReturnMessage::INTERNAL_SERVER_ERROR;
+                $returnedObj['aceplusStatusMessage']  = $one_time_alerted_clear_result["aceplusStatusMessage"];
+              }
+              //end clearing one_time_alerted flag
 
               $returnedObj['data'][0]["order_list"]             = $order_list_array;
               $returnedObj['data'][0]["gift_list"]              = $gift_list_array;
