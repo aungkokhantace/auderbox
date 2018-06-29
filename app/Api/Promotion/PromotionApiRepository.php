@@ -199,4 +199,14 @@ class PromotionApiRepository implements PromotionApiRepositoryInterface
 
       return $result;
     }
+
+    public function getAllActivePromotions($today_date) {
+
+      $result = PromotionItemLevel::where('promotion_item_levels.from_date','<=', $today_date)
+                                    ->where('promotion_item_levels.to_date','>=', $today_date)
+                                    ->where('promotion_item_levels.status','=',1)  //active record
+                                    ->whereNull('promotion_item_levels.deleted_at')  //not deleted
+                                    ->get();
+      return $result;
+    }
 }

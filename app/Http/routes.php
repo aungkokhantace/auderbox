@@ -156,4 +156,7 @@ Route::group(['middleware' => 'web'], function () {
 
         //select_retailshop api
         Route::post('select_retailshop', array('as'=>'select_retailshop','uses'=>'Api\ShopListApiController@selectRetailshop'));
+
+        //download all active promotions api
+        Route::post('download_all_active_promotions', array('as'=>'download_all_active_promotions','uses'=>'Api\PromotionApiController@downloadAllActivePromotions'));
     });

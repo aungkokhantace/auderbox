@@ -800,7 +800,7 @@ class PromotionApiController extends Controller
 
               //get already alerted promotions
               $raw_already_alerted_promotions = $this->repo->getAlreadyAlertedPromotions($retailer_id,$retailshop_id);
-              
+
               $alerted_promotion_id_array = array();
               foreach($raw_already_alerted_promotions as $raw_already_alerted_promotion){
                 array_push($alerted_promotion_id_array,$raw_already_alerted_promotion->promotion_item_level_id);
@@ -1213,5 +1213,40 @@ class PromotionApiController extends Controller
     else{
         return \Response::json($checkServerStatusArray);
     }
+  }
+
+  public function downloadAllActivePromotions() {
+      $temp                   = Input::All();
+      $inputAll               = json_decode($temp['param_data']);
+      $checkServerStatusArray = Check::checkCodes($inputAll);
+
+      if($checkServerStatusArray['aceplusStatusCode'] == ReturnMessage::OK){
+        $params             = $checkServerStatusArray['data'][0];
+
+        $retailer_id              = $params->download_active_promotions->retailer_id;
+        $retailshop_id            = $params->download_active_promotions->retailshop_id;
+
+        //get today date
+        $today_date = date('Y-m-d');
+
+        $active_promotions = $this->repo->getAllActivePromotions($today_date);
+        if(isset($active_promotions) && count($active_promotions) > 0){
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "Success, all active promotions are downloaded successfully !";
+          $returnedObj['data'][0]["order_list"] = $active_promotions;
+        }
+        else {
+          $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
+          $returnedObj['aceplusStatusMessage']  = "There is no promotion available today !";
+          $returnedObj['data'][0]["order_list"] = [];
+        }
+
+
+        return \Response::json($returnedObj);
+        //end saving promotion id to show noti table
+      }
+      else{
+          return \Response::json($checkServerStatusArray);
+      }
   }
 }

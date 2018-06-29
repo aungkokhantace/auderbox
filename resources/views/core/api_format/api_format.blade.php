@@ -29,6 +29,7 @@
             <li><a data-toggle="tab" href="#do_not_show_this_promotion_again_api"><b>Do not show this promotion again</b></a></li>
             <li><a data-toggle="tab" href="#download_contact_phone_number_api"><b>Contact Phone Number</b></a></li>
             <li><a data-toggle="tab" href="#select_retailshop_api"><b>Select Retailshop</b></a></li>
+            <li><a data-toggle="tab" href="#download_all_active_promotions_api"><b>Download all active promotions</b></a></li>
         </ul>
 
         <div class="tab-content">
@@ -2377,6 +2378,95 @@
         </div>
         <!-- end select_retailshop_api content -->
 
+        <!-- start download_all_active_promotions_api content -->
+        <div id="download_all_active_promotions_api" class="tab-pane fade in">
+            <h3>URL</h3>
+            <p><b>http://localhost:8000/api/download_all_active_promotions</b></p>
+            <hr>
+
+            <h3>Request</h3>
+            <pre>
+{
+  "site_activation_key": "1234567",
+  "data": [
+    {
+      "download_active_promotions": {
+        "retailer_id": 1,
+        "retailshop_id": 1
+      }
+    }
+  ]
+}
+            </pre>
+
+            <hr>
+            <h3>Response</h3>
+            <pre>
+{
+  "aceplusStatusCode": 200,
+  "aceplusStatusMessage": "Success, all active promotions are downloaded successfully !",
+  "data": [
+    {
+      "order_list": [
+        {
+          "id": 1,
+          "promotion_item_level_group_id": 1,
+          "product_line_id": 1,
+          "code": "00001",
+          "name": "Coca Cola Promotion",
+          "promotion_image": "\/images\/promotion_images\/max_promotion.png",
+          "promo_purchase_type": 1,
+          "promo_present_type": 1,
+          "from_date": "2018-06-01",
+          "to_date": "2018-06-30",
+          "purchase_amt": 0,
+          "purchase_qty": 10,
+          "promo_percentage": 0,
+          "promo_amt": 0,
+          "max_count_apply": 50,
+          "promo_allow_max_count": 10,
+          "remark": null,
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null
+        },
+        {
+          "id": 2,
+          "promotion_item_level_group_id": 1,
+          "product_line_id": 3,
+          "code": "00002",
+          "name": "Max Promotion",
+          "promotion_image": "\/images\/promotion_images\/max_promotion.png",
+          "promo_purchase_type": 1,
+          "promo_present_type": 1,
+          "from_date": "2018-06-01",
+          "to_date": "2018-06-30",
+          "purchase_amt": 0,
+          "purchase_qty": 10,
+          "promo_percentage": 0,
+          "promo_amt": 0,
+          "max_count_apply": 50,
+          "promo_allow_max_count": 10,
+          "remark": null,
+          "status": 1,
+          "created_by": 1,
+          "updated_by": 1,
+          "deleted_by": null,
+          "created_at": null,
+          "updated_at": null,
+          "deleted_at": null
+        }
+      ]
+    }
+  ]
+}
+            </pre>
+        </div>
+        <!-- end download_all_active_promotions_api content -->
       </div>
     </div>
 </div>
