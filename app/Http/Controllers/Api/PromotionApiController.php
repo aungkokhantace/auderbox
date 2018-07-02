@@ -1233,12 +1233,12 @@ class PromotionApiController extends Controller
         if(isset($active_promotions) && count($active_promotions) > 0){
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "Success, all active promotions are downloaded successfully !";
-          $returnedObj['data'][0]["order_list"] = $active_promotions;
+          $returnedObj['data'][0]["active_promotions"] = $active_promotions;
         }
         else {
           $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;
           $returnedObj['aceplusStatusMessage']  = "There is no promotion available today !";
-          $returnedObj['data'][0]["order_list"] = [];
+          $returnedObj['data'][0]["active_promotions"] = [];
         }
 
 

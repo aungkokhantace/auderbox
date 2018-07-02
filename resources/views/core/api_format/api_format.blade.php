@@ -2407,7 +2407,7 @@
   "aceplusStatusMessage": "Success, all active promotions are downloaded successfully !",
   "data": [
     {
-      "order_list": [
+      "active_promotions": [
         {
           "id": 1,
           "promotion_item_level_group_id": 1,

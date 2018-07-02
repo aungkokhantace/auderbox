@@ -264,7 +264,7 @@ class CartApiRepository implements CartApiRepositoryInterface
 
             $product_id = $additional_product->product_id;
             $quantity   = $additional_product->qty;
-
+            if(isset($quantity) && $quantity > 0) {
             //start checking whether the product is already in cart list
             $existing_product = DB::table('invoice_session')
                                     ->where('retailer_id',$retailer_id)
@@ -331,6 +331,7 @@ class CartApiRepository implements CartApiRepositoryInterface
               ]);
             }
           }
+        }
 
           DB::commit();
 
@@ -338,6 +339,8 @@ class CartApiRepository implements CartApiRepositoryInterface
           $returnedObj['aceplusStatusMessage'] = "Cart data is successfully saved!";
 
           return $returnedObj;
+
+
         }
         catch(\Exception $e){
           DB::rollback();
