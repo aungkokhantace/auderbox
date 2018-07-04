@@ -18,7 +18,7 @@
                 <div class="first-login-form">
                     <h3> First Log In</h3>
                     <div class="login-inr">
-                         {!! Form::open(array('url' => 'backend/first_login'))!!}
+                         {!! Form::open(array('url' => 'backend/first_login' , 'id'=>'first_login'))!!}
                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         @if ($errors->has())
                             <p class="alert alert-danger">
@@ -48,3 +48,25 @@
     </section>
 </body>
 </html>
+
+<script src="/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="/assets/js/validation/jquery.validate.js"></script>
+<script src="/assets/js/validation/additional-methods.js"></script>
+<script>
+ //Start Validation for Entry and Edit Form
+  $('#first_login').validate({
+      rules: {
+          user_name         : 'required',
+          password          : 'required'
+      },
+      messages: {
+          user_name     : 'Username is required',
+          password      : 'Password is required'
+      },
+      submitHandler: function(form) {
+          $('input[type="submit"]').attr('disabled','disabled');
+          form.submit();
+      }
+  });
+//End Validation for Entry and Edit Form
+</script>

@@ -37,8 +37,8 @@ class LoginFormRequest extends Request
     public function messages()
     {
         return [
-            'user_name.required' => 'Please Type User Name!',
-            'password.required' => 'Forgot to type password',
+            'user_name.required' => 'Username is required!',
+            'password.required' => 'Password is required',
         ];
     }
 }

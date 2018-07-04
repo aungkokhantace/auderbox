@@ -7,6 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -45,9 +46,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-      if(!($e instanceof NotFoundHttpException) && !($e instanceof HttpResponseException)){         //for email format validation case, if email format is not valid, redirect to create form
+      if(!($e instanceof NotFoundHttpException) && !($e instanceof \Illuminate\Http\Exception\HttpResponseException)){         //for email format validation case, if email format is not valid, redirect to create form
             return response()->view('core.error.404', ['e'=>$e], 404);
-        }
-        return parent::render($request, $e);
+      }
+      return parent::render($request, $e);
     }
 }

@@ -976,3 +976,13 @@ Accordian
 .select-date {
 	position: relative;
 }
+
+/* start css for login validation error message */
+#username-error{
+  padding-left:50px;
+}
+
+#pw-error{
+	padding-left:50px;
+}
+/* end css for login validation error message */
