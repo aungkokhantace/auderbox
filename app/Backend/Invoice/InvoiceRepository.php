@@ -585,4 +585,46 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                                   ->get();
       return $result;
     }
+
+    public function getPromotionItemLevelGiftsByLevelId($level_id) {
+      //get all item_level_promotion_gifts
+      $result = PromotionItemLevelGift::select('promotion_item_level_gifts.*','product_group.name as promo_product_name')
+                                        ->leftJoin('products', 'products.id', '=', 'promotion_item_level_gifts.promo_product_id')
+                                        ->leftJoin('product_group', 'product_group.id', '=', 'products.product_group_id')
+
+                                        ->where('promotion_item_level_gifts.promotion_item_level_id','=', $level_id)
+
+                                        ->where('promotion_item_level_gifts.status','=',1)  //active
+                                        ->where('product_group.status','=',1)  //active
+                                        ->where('products.status','=',1)  //active
+
+                                        ->whereNull('promotion_item_level_gifts.deleted_at') //not deleted
+                                        ->whereNull('product_group.deleted_at') //not deleted
+                                        ->whereNull('products.deleted_at') //not deleted
+                                        ->get();
+      return $result;
+    }
+
+    public function clearInvoicePromotionByInvoiceId($invoice_id){
+        $returnedObj = array();
+        $returnedObj['aceplusStatusCode'] = ReturnMessage::INTERNAL_SERVER_ERROR;
+
+        try{
+          $result = InvoicePromotion::where('invoice_id',$invoice_id)->delete();
+          //delete successful
+          if($result == 1){
+            $returnedObj['aceplusStatusCode'] = ReturnMessage::OK;
+            $returnedObj['aceplusStatusMessage'] = "Old invoice promotions cleared!";
+            return $returnedObj;
+          }
+          else{
+            $returnedObj['aceplusStatusMessage'] = "Old invoice promotions are not cleared!";
+            return $returnedObj;
+          }
+        }
+        catch(\Exception $e){
+            $returnedObj['aceplusStatusMessage'] = $e->getMessage(). " ----- line " .$e->getLine(). " ----- " .$e->getFile();
+            return $returnedObj;
+        }
+    }
 }

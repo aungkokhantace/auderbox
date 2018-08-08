@@ -239,7 +239,8 @@ class PromotionApiController extends Controller
             // start getting promo_product_array
             //only qty promotions for now
             if($promotionObj->promo_present_type = PromotionConstance::promotion_quantity_value){
-              $promotion_gifts = $this->repo->getPromotionItemLevelGiftsByLevelId($promotion_item_level_id);
+              // $promotion_gifts = $this->repo->getPromotionItemLevelGiftsByLevelId($promotion_item_level_id);
+              $promotion_gifts = $this->repo->getPromotionItemLevelGiftsByLevelId($promotionObj->id);
 
               if(count($promotion_gifts) == 0) {
                 $returnedObj['aceplusStatusCode']     = ReturnMessage::OK;

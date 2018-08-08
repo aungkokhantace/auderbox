@@ -23,10 +23,15 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Core
         $this->app->bind('App\Core\Role\RoleRepositoryInterface','App\Core\Role\RoleRepository');
         $this->app->bind('App\Core\Permission\PermissionRepositoryInterface','App\Core\Permission\PermissionRepository');
         $this->app->bind('App\Core\Config\ConfigRepositoryInterface','App\Core\Config\ConfigRepository');
         $this->app->bind('App\Core\User\UserRepositoryInterface','App\Core\User\UserRepository');
+
+        // Backend
+        $this->app->bind('App\Backend\Product\ProductRepositoryInterface','App\Backend\Product\ProductRepository');
+        $this->app->bind('App\Backend\Retailshop\RetailshopRepositoryInterface','App\Backend\Retailshop\RetailshopRepository');
 
         // API
         $this->app->bind('App\Api\Login\LoginApiRepositoryInterface','App\Api\Login\LoginApiRepository');
