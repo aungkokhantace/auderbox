@@ -429,7 +429,10 @@ class InvoiceReportController extends Controller
 
     $currentUser = Utility::getCurrentUserID(); //get currently logged in user
 
-    //to redirect to detail list page
+    $configRepo   = new ConfigRepository();
+    $invoiceApiRepo = new InvoiceApiRepository();
+
+    //to redirect to invoice list page
     $invoice_id = $paramObj->invoice_id;
 
     //change to canceled status
@@ -461,6 +464,65 @@ class InvoiceReportController extends Controller
             ->withMessage(FormatGenerator::message('Fail', 'Invoice detail is canceled but invoice header price is not updated...'));
       }
       //end updating header price
+
+      // start recalculate promotion
+      //clear old invoice_promotion data with invoice id
+      $delete_invoice_promotion_result = $this->repo->clearInvoicePromotionByInvoiceId($invoice_id);
+
+      $invoice_details = $this->repo->getInvoiceDetailsByInvoiceId($invoice_id);
+
+      if(isset($invoice_details) && count($invoice_details) > 0){
+        foreach($invoice_details as $key=>$inv_detail){
+          $product_quantity_array[$key]["product_id"] = $inv_detail->product_id;
+          $product_quantity_array[$key]["quantity"]   = $inv_detail->quantity;
+          $product_quantity_array[$key]["retailshop_id"]   = $paramHeaderObj->retailshop_id;
+        }
+
+        $recalculate_promotion_result = $this->calculatePromotion($product_quantity_array);
+        // end recalculate promotion
+
+        //start invoice promotion
+        if($recalculate_promotion_result['aceplusStatusCode'] == ReturnMessage::OK){
+            $recalculate_promotion_data = $recalculate_promotion_result['data'][0];
+
+            $received_promotion  = $recalculate_promotion_data['received_promotion'];
+            $product_array = $recalculate_promotion_data['product_array'];
+            $promo_product_array = $recalculate_promotion_data['promo_product_array'];
+
+            $current_timestamp = date('Y-m-d H:i:s');  //get current timestamp
+
+            foreach($promo_product_array as $gift){
+              //start invoice_promotion_id generation
+              $date_str                       = date('Ymd',strtotime("now"));
+              $prefix                         = $date_str;
+              $table                          = (new InvoicePromotion())->getTable();
+              $col                            = 'id';
+              $offset                         = 1;
+              $pad_length                     = $configRepo->getDefaultIdPadLength(); //number of digits without prefix and date
+              //generate id
+              $invoice_promotion_id           = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
+              //end invoice_promotion_id generation
+
+              $invoicePrmotionObj = new InvoicePromotion();
+              $invoicePrmotionObj->id                       = $invoice_promotion_id;
+              $invoicePrmotionObj->promotion_item_level_id  = $gift->promotion_item_level_id;
+              $invoicePrmotionObj->invoice_id               = $invoice_id;
+              $invoicePrmotionObj->product_id               = $gift->promo_product_id;
+              $invoicePrmotionObj->qty                      = $gift->received_promo_qty;
+              $invoicePrmotionObj->date                     = $current_timestamp;
+
+              $invoice_promotion_result                     = $invoiceApiRepo->saveInvoicePromotion($invoicePrmotionObj);
+
+              //if saving invoice promotion fails,
+              if($invoice_promotion_result['aceplusStatusCode'] != ReturnMessage::OK){
+                DB::rollback();
+                return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+                    ->withMessage(FormatGenerator::message('Message', $invoice_promotion_result['aceplusStatusMessage']));
+              }
+            }
+        }
+      }
+      //end invoice promotion
 
       //check if all invoice details are canceled, if yes, update header status to canceled
       $all_details_canceled_flag = $this->repo->checkAllInvoiceDetailsAreCanceledOrNot($invoice_id);
@@ -830,59 +892,62 @@ class InvoiceReportController extends Controller
 
     $invoice_details = $this->repo->getInvoiceDetailsByInvoiceId($invoice_id);
 
-    foreach($invoice_details as $key=>$inv_detail){
-      $product_quantity_array[$key]["product_id"] = $inv_detail->product_id;
-      $product_quantity_array[$key]["quantity"]   = $inv_detail->quantity;
-      $product_quantity_array[$key]["retailshop_id"]   = $paramHeaderObj->retailshop_id;
-    }
-    $recalculate_promotion_result = $this->calculatePromotion($product_quantity_array);
-    // dd('recalculate',$recalculate_promotion_result);
-    // if($recalculate_promotion_result['aceplusStatusCode'] != ReturnMessage::OK){
-    //   DB::rollback();
-    //   return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
-    //       ->withMessage(FormatGenerator::message('Message', $recalculate_promotion_result['aceplusStatusMessage']));
-    // }
-    //end recalculating promotions
+    if(isset($invoice_details) && count($invoice_details) > 0){
+      foreach($invoice_details as $key=>$inv_detail){
+        $product_quantity_array[$key]["product_id"] = $inv_detail->product_id;
+        $product_quantity_array[$key]["quantity"]   = $inv_detail->quantity;
+        $product_quantity_array[$key]["retailshop_id"]   = $paramHeaderObj->retailshop_id;
+      }
 
-    //start invoice promotion
-    if($recalculate_promotion_result['aceplusStatusCode'] == ReturnMessage::OK){
-        $recalculate_promotion_data = $recalculate_promotion_result['data'][0];
+      $recalculate_promotion_result = $this->calculatePromotion($product_quantity_array);
 
-        $received_promotion  = $recalculate_promotion_data['received_promotion'];
-        $product_array = $recalculate_promotion_data['product_array'];
-        $promo_product_array = $recalculate_promotion_data['promo_product_array'];
+      // if($recalculate_promotion_result['aceplusStatusCode'] != ReturnMessage::OK){
+      //   DB::rollback();
+      //   return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+      //       ->withMessage(FormatGenerator::message('Message', $recalculate_promotion_result['aceplusStatusMessage']));
+      // }
+      //end recalculating promotions
 
-        $current_timestamp = date('Y-m-d H:i:s');  //get current timestamp
+      //start invoice promotion
+      if($recalculate_promotion_result['aceplusStatusCode'] == ReturnMessage::OK){
+          $recalculate_promotion_data = $recalculate_promotion_result['data'][0];
 
-        foreach($promo_product_array as $gift){
-          //start invoice_promotion_id generation
-          $date_str                       = date('Ymd',strtotime("now"));
-          $prefix                         = $date_str;
-          $table                          = (new InvoicePromotion())->getTable();
-          $col                            = 'id';
-          $offset                         = 1;
-          $pad_length                     = $configRepo->getDefaultIdPadLength(); //number of digits without prefix and date
-          //generate id
-          $invoice_promotion_id           = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
-          //end invoice_promotion_id generation
+          $received_promotion  = $recalculate_promotion_data['received_promotion'];
+          $product_array = $recalculate_promotion_data['product_array'];
+          $promo_product_array = $recalculate_promotion_data['promo_product_array'];
 
-          $invoicePrmotionObj = new InvoicePromotion();
-          $invoicePrmotionObj->id                       = $invoice_promotion_id;
-          $invoicePrmotionObj->promotion_item_level_id  = $gift->promotion_item_level_id;
-          $invoicePrmotionObj->invoice_id               = $invoice_id;
-          $invoicePrmotionObj->product_id               = $gift->promo_product_id;
-          $invoicePrmotionObj->qty                      = $gift->received_promo_qty;
-          $invoicePrmotionObj->date                     = $current_timestamp;
+          $current_timestamp = date('Y-m-d H:i:s');  //get current timestamp
 
-          $invoice_promotion_result                     = $invoiceApiRepo->saveInvoicePromotion($invoicePrmotionObj);
+          foreach($promo_product_array as $gift){
+            //start invoice_promotion_id generation
+            $date_str                       = date('Ymd',strtotime("now"));
+            $prefix                         = $date_str;
+            $table                          = (new InvoicePromotion())->getTable();
+            $col                            = 'id';
+            $offset                         = 1;
+            $pad_length                     = $configRepo->getDefaultIdPadLength(); //number of digits without prefix and date
+            //generate id
+            $invoice_promotion_id           = Utility::generate_id($prefix,$table,$col,$offset,$pad_length);
+            //end invoice_promotion_id generation
 
-          //if saving invoice promotion fails,
-          if($invoice_promotion_result['aceplusStatusCode'] != ReturnMessage::OK){
-            DB::rollback();
-            return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
-                ->withMessage(FormatGenerator::message('Message', $invoice_promotion_result['aceplusStatusMessage']));
+            $invoicePrmotionObj = new InvoicePromotion();
+            $invoicePrmotionObj->id                       = $invoice_promotion_id;
+            $invoicePrmotionObj->promotion_item_level_id  = $gift->promotion_item_level_id;
+            $invoicePrmotionObj->invoice_id               = $invoice_id;
+            $invoicePrmotionObj->product_id               = $gift->promo_product_id;
+            $invoicePrmotionObj->qty                      = $gift->received_promo_qty;
+            $invoicePrmotionObj->date                     = $current_timestamp;
+
+            $invoice_promotion_result                     = $invoiceApiRepo->saveInvoicePromotion($invoicePrmotionObj);
+
+            //if saving invoice promotion fails,
+            if($invoice_promotion_result['aceplusStatusCode'] != ReturnMessage::OK){
+              DB::rollback();
+              return redirect()->action('Backend\InvoiceReportController@invoiceDetail', ['invoice_id' => $invoice_id])
+                  ->withMessage(FormatGenerator::message('Message', $invoice_promotion_result['aceplusStatusMessage']));
+            }
           }
-        }
+      }
     }
     //end invoice promotion
 

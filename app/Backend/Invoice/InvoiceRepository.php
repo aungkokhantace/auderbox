@@ -296,8 +296,14 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     }
 
     public function getInvoiceDetailsByInvoiceId($invoice_id){
-      $invoice_details = InvoiceDetail::get()
-                                      ->where('invoice_id',$invoice_id);
+      //array with all cancel statuses
+      $cancel_status_array = [StatusConstance::status_retailer_cancel_value,
+                              StatusConstance::status_brand_owner_cancel_value,
+                              StatusConstance::status_auderbox_cancel_value];
+
+      $invoice_details = InvoiceDetail::where('invoice_id',$invoice_id) //by invoice_id
+                                      ->whereNotIn('status',$cancel_status_array) //get only not-canceled ones
+                                      ->get();
       return $invoice_details;
     }
 
