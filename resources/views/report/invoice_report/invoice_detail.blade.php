@@ -156,18 +156,34 @@
 
                                               <div class="col-md-4">
                                                 <select class="form-control" id="new_qty" name="new_qty">
-                                                  @for($i = $invoice_detail->quantity - 1; $i >= 0 ; $i--)
-                                                    @if($i == 0)
-                                                      <option value="{{$i}}">{{$i}} (Cancel)</option>
-                                                    @else
-                                                      <option value="{{$i}}">{{$i}}</option>
-                                                    @endif
-                                                  @endfor
+                                                  <!-- if upper limit to show is greater than $max_order_qty, just show up to $max_order_qty -->
+                                                  @if((ceil(($invoice_detail->quantity) / 100)) * 100) < $max_order_qty)
+                                                    <!-- nearest hundred of (qty+100) -->
+                                                    @for($i = (ceil(($invoice_detail->quantity) / 100)) * 100; $i >= 0 ; $i--)
+                                                      @if($i == 0)
+                                                        <option value="{{$i}}">{{$i}} (Cancel)</option>
+                                                      @elseif($i == $invoice_detail->quantity)
+                                                        <option value="{{$i}}" selected>{{$i}}</option>
+                                                      @else
+                                                        <option value="{{$i}}">{{$i}}</option>
+                                                      @endif
+                                                    @endfor
+                                                  @else
+                                                    @for($i = $max_order_qty; $i >= 0 ; $i--)
+                                                      @if($i == 0)
+                                                        <option value="{{$i}}">{{$i}} (Cancel)</option>
+                                                      @elseif($i == $max_order_qty)
+                                                        <option value="{{$i}}" selected>{{$i}}</option>
+                                                      @else
+                                                        <option value="{{$i}}">{{$i}}</option>
+                                                      @endif
+                                                    @endfor
+                                                  @endif
                                                 </select>
                                               </div>
                                               <div class="col-md-4">
                                                 <button type="button" onclick="change_invoice_detail_quantity('{{$invoice_detail->id}}');" class="btn btn-danger">
-                                                    Reduce Quantity
+                                                    Change Quantity
                                                 </button>
                                               </div>
                                             </div>

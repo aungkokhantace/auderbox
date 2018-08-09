@@ -161,7 +161,20 @@ class Utility
           $tax_amount = $amount * ($tax_percentage/100);
           return $tax_amount;
         }
-        
+
         return 0;
+    }
+
+    //get maximum qty that a user can order at a time
+    public static function getMaxOrderQty()
+    {
+        $tbConfig =  (new Config())->getTable();
+        $config  = DB::select("SELECT * FROM $tbConfig WHERE code = 'MAX_ORDER_QTY'");
+        if(isset($config) && count($config) > 0){
+          $max_order_qty = $config[0]->value;
+
+          return $max_order_qty;
+        }
+        return 100000;
     }
 }

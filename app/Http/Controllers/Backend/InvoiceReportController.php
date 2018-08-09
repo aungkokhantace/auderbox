@@ -137,9 +137,14 @@ class InvoiceReportController extends Controller
       }
       //end invoice promotion
 
+      //start max order quantity from config
+      $max_order_qty = Utility::getMaxOrderQty();
+      //end max order quantity from config
+
       return view('report.invoice_report.invoice_detail')
           ->with('invoice',$invoice)
-          ->with('promo_product_array',$promo_product_array);
+          ->with('promo_product_array',$promo_product_array)
+          ->with('max_order_qty',$max_order_qty);
     }
     else{
       return redirect('backend/unauthorize');
