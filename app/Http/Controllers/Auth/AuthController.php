@@ -111,7 +111,9 @@ class AuthController extends Controller
         $validation = Auth::guard('User')->attempt([
             'user_name'=>$request->user_name,
             'password'=>$request->password,
-            'role_id' =>1
+            'role_id' =>1,
+            'deleted_at' => null,
+            'status' => 1
         ]);
 
         if(!$validation){
@@ -133,10 +135,25 @@ class AuthController extends Controller
 
     public function doLogin(LoginFormRequest $request){
         $request->validate();
-            $validation = Auth::guard('User')->attempt([
-            'user_name'=>$request->user_name,
-            'password'=>$request->password,
-        ]);
+        $username               = $request->user_name;
+        $first_login_user       = $this->checkForFirstLoginRoleId($username);
+        $validation             = false;
+
+        //let the user login to second login only if he/she is not the first login user
+        if ($first_login_user == false) {
+          $request->validate();
+              $validation = Auth::guard('User')->attempt([
+              'user_name'=>$request->user_name,
+              'password'=>$request->password,
+              'deleted_at' => null,
+              'status' => 1
+          ]);
+        }
+        else{
+          return redirect()->back()->withErrors($this->getFailedLoginMessage());
+        }
+
+
 
         if(!$validation){
             return redirect()->back()->withErrors($this->getFailedLoginMessage());
@@ -159,5 +176,14 @@ class AuthController extends Controller
     {
         session()->flush();
         return redirect('/backend');
+    }
+
+    protected function checkForFirstLoginRoleId($username) {
+        $result     = true;
+        $first_login_user   = User::where('user_name','=',$username)->where('role_id','!=',1)->first();
+        if (count($first_login_user) > 0) {
+            $result     = false;
+        }
+        return $result;
     }
 }
