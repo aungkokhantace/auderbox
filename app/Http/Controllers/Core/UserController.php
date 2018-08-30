@@ -15,6 +15,7 @@ use Auth;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use Carbon\Carbon;
+use App\Core\Role\RoleRepository;
 
 class UserController extends Controller
 {
@@ -43,7 +44,9 @@ class UserController extends Controller
 
     public function create(){
         if (Auth::guard('User')->check()) {
-            $roles = $this->userRepository->getRoles();
+            // $roles = $this->userRepository->getRoles();
+            $roleRepo = new RoleRepository();
+            $roles = $roleRepo->getRolesWithoutSuperAdmins();
             return view('core.user.user')->with('roles', $roles);
         }
          return redirect('/backend/login');
