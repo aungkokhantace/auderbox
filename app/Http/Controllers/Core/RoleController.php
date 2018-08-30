@@ -27,7 +27,8 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         if (Auth::guard('User')->check()) {
-            $roles      = $this->roleRepository->getRoles();
+            // $roles      = $this->roleRepository->getRoles();
+            $roles      = $this->roleRepository->getRolesWithoutSuperAdmins();
             return view('core.role.index')->with('roles', $roles);
         }
         return redirect('/backend/login');

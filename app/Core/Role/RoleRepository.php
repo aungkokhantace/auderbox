@@ -22,6 +22,12 @@ class RoleRepository implements RoleRepositoryInterface
         return $roles;
     }
 
+    public function getRolesWithoutSuperAdmins()
+    {
+        $roles = Role::whereNull('deleted_at')->whereNotIn('id',[1,2])->get();
+        return $roles;
+    }
+
     public function create($paramObj)
     {
         $tempObj = Utility::addCreatedBy($paramObj);

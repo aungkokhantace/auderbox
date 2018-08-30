@@ -40,9 +40,10 @@ class UserRepository implements UserRepositoryInterface
     }
 
     public function getRoles(){
-        $roles = DB::table('core_roles')->get();
+        $roles = DB::table('core_roles')->whereNull('deleted_at')->get();
         return $roles;
     }
+
     public function delete_users($id){
         if($id != 1){
             //DB::table('core_users')->where('id',$id)->update(['deleted_at'=> date('Y-m-d H:m:i')]);
