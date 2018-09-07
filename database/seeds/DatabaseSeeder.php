@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Default Seeders
+        //core seeders
          $this->call(Default_ConfigSeeder::class);
          $this->call(Default_RoleSeeder::class);
          $this->call(Default_UserSeeder::class);
@@ -28,5 +29,30 @@ class DatabaseSeeder extends Seeder
          $this->call(Default_AddressWardsSeeder::class);
          $this->call(Default_AddressVillagetractsSeeder::class);
          $this->call(Default_AddressVillagesSeeder::class);
+         //core seeders
+
+         //setup data seeders
+         $this->call(Default_BrandownerSeeder::class);
+         $this->call(Default_BrandownerDeliveryBlackoutDaySeeder::class);
+         $this->call(Default_RetailerSeeder::class);
+         $this->call(Default_RetailShopTypeSeeder::class);
+         $this->call(Default_RetailShopSeeder::class);
+         $this->call(Default_CarTypeSeeder::class);
+         $this->call(Default_CarDriverSeeder::class);
+         $this->call(Default_CarSeeder::class);
+         $this->call(Default_DeliveryRouteSeeder::class);
+         $this->call(Default_DeliveryRouteDetailSeeder::class);
+         $this->call(Default_DeliveryRouteDaySeeder::class);
+         $this->call(Default_ProductVolumeTypeSeeder::class);
+         $this->call(Default_ProductContainerTypeSeeder::class);
+         $this->call(Default_ProductUomTypeSeeder::class);
+         $this->call(Default_ProductCategorySeeder::class);
+         $this->call(Default_ProductLineSeeder::class);
+         $this->call(Default_ProductGroupSeeder::class);
+         $this->call(Default_ProductSeeder::class);
+         $this->call(Default_ProductPriceSeeder::class);
+         //setup data seeders
+
+
     }
 }

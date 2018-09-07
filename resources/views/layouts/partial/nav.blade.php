@@ -82,7 +82,7 @@
                             <span>Site Config</span>
                         </a>
                     </li>
-                    @if(Auth::guard('User')->user()->role_id == '2')
+                    @if(Auth::guard('User')->user()->role_id == '2' || Auth::guard('User')->user()->role_id == '3')
                     <li nav-id="">
                         <a href="/backend/api_formats">
                             <span>API Formats</span>
